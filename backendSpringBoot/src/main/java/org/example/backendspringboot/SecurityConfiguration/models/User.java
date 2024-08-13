@@ -1,8 +1,5 @@
 package org.example.backendspringboot.SecurityConfiguration.models;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -15,6 +12,7 @@ import jakarta.validation.constraints.Size;
       @UniqueConstraint(columnNames = "email")
     })
 public class User {
+  
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -32,6 +30,7 @@ public class User {
   @Size(max = 120)
   private String password;
 
+  @Enumerated(EnumType.STRING)
   private ERole role;
 
   public User() {
@@ -82,5 +81,4 @@ public class User {
   public void setRole(ERole role) {
     this.role = role;
   }
-
 }
