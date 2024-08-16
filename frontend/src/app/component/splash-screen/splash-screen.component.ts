@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../../service/auth.service';
 
 @Component({
   selector: 'app-splash-screen',
@@ -9,11 +10,15 @@ import { Router } from '@angular/router';
   styleUrl: './splash-screen.component.css'
 })
 export class SplashScreenComponent {
-  constructor(private router: Router) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
     setTimeout(() => {
-      this.router.navigate(['/login']);
+      if (this.authService.isTokenExpired()) {
+        this.router.navigate(['/login']);
+      } else {
+        this.router.navigate(['/dashboard']);
+      }
     }, 3000);
   }
 }
