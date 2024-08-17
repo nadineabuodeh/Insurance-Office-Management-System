@@ -5,14 +5,15 @@ import { LoginRequest } from '../model/login-request';
 import { JwtResponse } from '../model/jwt-response';
 import { CookieService } from 'ngx-cookie-service';
 import { catchError, tap, throwError } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:8080/api/auth'; // Adjust the URL to match your backend
+  private baseUrl = 'http://localhost:8080/api/auth';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient , private router: Router) { }
 
   login(loginRequest: LoginRequest): Observable<JwtResponse> {
     return this.http.post<JwtResponse>(`${this.baseUrl}/signin`, loginRequest)
@@ -21,13 +22,20 @@ export class AuthService {
       );
   }
 
+  logout(): void {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('tokenExpiration');
+    localStorage.removeItem('userRole');
+    this.router.navigate(['/login']);
+  }
+
   saveToken(jwtResponse: JwtResponse): void {
     const now = new Date();
-    const expirationTime = now.getTime() + 3600 * 1000; // 1 hour
+    const expirationTime = now.getTime() + 3600 * 1000;
 
     localStorage.setItem('authToken', jwtResponse.token);
     localStorage.setItem('tokenExpiration', expirationTime.toString());
-    localStorage.setItem('userRole', jwtResponse.roles[0]); // Assuming one role per user
+    localStorage.setItem('userRole', jwtResponse.roles[0]);
   }
 
   isTokenExpired(): boolean {
