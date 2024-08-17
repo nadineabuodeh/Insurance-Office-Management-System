@@ -25,14 +25,22 @@ export class LoginComponent {
   onSubmit(): void {
     this.authService.login(this.loginRequest).subscribe({
       next: (response) => {
-        this.clearToast();
-        this.authService.saveToken(response.token);
-        this.router.navigate(['/dashboard']);
+        this.authService.saveToken(response);
+        this.redirectBasedOnRole();
       },
       error: (error: Error) => {
-        this.showToast(error.message);
+        this.errorMessage = error.message;
       }
     });
+  }
+
+  private redirectBasedOnRole(): void {
+    const role = this.authService.getUserRole();
+    if (role === 'ROLE_ADMIN') {
+      this.router.navigate(['/admin/dashboard']);
+    } else if (role === 'ROLE_CUSTOMER') {
+      this.router.navigate(['/customer/dashboard']);
+    }
   }
 
   showToast(message: string): void {

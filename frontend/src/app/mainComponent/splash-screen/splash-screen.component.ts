@@ -17,8 +17,17 @@ export class SplashScreenComponent {
       if (this.authService.isTokenExpired()) {
         this.router.navigate(['/login']);
       } else {
-        this.router.navigate(['/dashboard']);
+        this.redirectBasedOnRole();
       }
-    }, 3000);
+    }, 2000); // Splash screen duration
+  }
+
+  private redirectBasedOnRole(): void {
+    const role = this.authService.getUserRole();
+    if (role === 'ROLE_ADMIN') {
+      this.router.navigate(['/admin/dashboard']);
+    } else if (role === 'ROLE_CUSTOMER') {
+      this.router.navigate(['/customer/dashboard']);
+    }
   }
 }
