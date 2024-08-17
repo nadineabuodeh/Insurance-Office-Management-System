@@ -34,6 +34,20 @@ export class CustomerService {
     }
   }
 
+  deleteCustomer(customer: Customer): void {
+    this.customers = this.customers.filter(c => c !== customer);
+    this.saveCustomersToStorage();
+  }
+
+  updateCustomer(updatedCustomer: Customer): void {
+    const index = this.customers.findIndex(c => c.username === updatedCustomer.username);
+    if (index !== -1) {
+      this.customers[index] = updatedCustomer;
+      this.saveCustomersToStorage();
+    }
+  }
+
+
   // -----------------------------------
   private getCustomersFromStorage(): Customer[] {
     const customersJson = localStorage.getItem(this.storageKey);
@@ -50,9 +64,6 @@ export class CustomerService {
     localStorage.setItem(this.storageKey, JSON.stringify(this.customers));
   }
 
-  deleteCustomer(customer: Customer): void {
-    this.customers = this.customers.filter(c => c !== customer);
-    this.saveCustomersToStorage();
-  }
+
 
 }

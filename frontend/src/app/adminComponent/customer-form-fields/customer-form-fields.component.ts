@@ -23,6 +23,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 })
 export class CustomerFormFieldsComponent {
   @Input() formGroup!: FormGroup;
+  @Input() isEditMode: boolean = false; 
+  @Input() customerName: string = ''; // Add this line
 
   constructor() {}
  

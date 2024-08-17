@@ -4,6 +4,7 @@
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: '600px';
 }
 
 button {
@@ -77,4 +78,23 @@ button {
 
 .delete-btn {
   background-color: rgb(123, 15, 15);
+}
+
+.delete-btn:hover {
+  background-color: rgb(200, 49, 49);
+
+}
+
+/* ------- ICONS ------- */
+.btns {
+  background-color: transparent;
+  margin-left: 5px;
+  padding-right: 1px;
+  padding-left: 1px;
+  max-width: 40px;
+
+}
+
+.icons {
+  max-width: 25px;
 }

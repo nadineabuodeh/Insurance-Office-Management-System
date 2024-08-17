@@ -1,14 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { CustomerService } from '../../customer.service';
+import { Customer, CustomerService } from '../../customer.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { CustomerFormFieldsComponent } from '../customer-form-fields/customer-form-fields.component';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-customer-form',
@@ -33,10 +33,16 @@ export class CustomerFormComponent {
   customerForm: FormGroup;
   customers: any[] = [];
 
+  isEditMode: boolean = false; // check edit mode ..
+  existingCustomerData: any;
+  customerName: string = ''; 
 
-  constructor(private fb: FormBuilder,
-    private customerService: CustomerService
-    , private dialogRef: MatDialogRef<CustomerFormComponent>,
+
+  constructor(private fb: FormBuilder
+    , private customerService: CustomerService
+    , private dialogRef: MatDialogRef<CustomerFormComponent>
+    , @Inject(MAT_DIALOG_DATA) public data: any // Inject dialog data
+
   ) {
     this.customerForm = this.fb.group({
       firstName: ['', Validators.required],
@@ -54,6 +60,16 @@ export class CustomerFormComponent {
   }
 
 
+  ngOnInit() {
+    if (this.data && this.data.customer) {
+      this.customerForm.patchValue(this.data.customer);
+      this.isEditMode = true;
+      this.customerName = `${this.data.customer.firstName} ${this.data.customer.lastName}`; // Set customer name
+
+    }
+  }
+
+
   passwordMatchValidator(formGroup: FormGroup) {
     const password = formGroup.get('password');
     const confirmPassword = formGroup.get('confirmPassword');
@@ -67,17 +83,21 @@ export class CustomerFormComponent {
     }
   }
 
-  onSubmit() {
-    this.passwordMatchValidator(this.customerForm);
-
-    if (this.customerForm.valid) {
-      const newCustomer = this.customerForm.value;
-      this.customerService.addCustomer(newCustomer);
-      this.dialogRef.close(newCustomer);
-    }
-  }
 
   onCancel(): void {
     this.dialogRef.close();
   }
+
+  onSubmit() {
+    if (this.customerForm.valid) {
+      const customerData: Customer = this.customerForm.value;
+      if (this.isEditMode) {
+        this.customerService.updateCustomer(customerData); //update
+      } else {
+        this.customerService.addCustomer(customerData);//add
+      }
+      this.dialogRef.close(customerData);
+    }
+  }
+
 }

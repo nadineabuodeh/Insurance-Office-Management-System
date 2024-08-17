@@ -4,7 +4,7 @@ import { provideClientHydration } from '@angular/platform-browser';
 import { routes } from './app.routes'; // Ensure this file exists and contains your route configuration
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { CustomerTableRowComponent } from './components/customer-table-row/customer-table-row.component';
+import { CustomerTableRowComponent } from './adminComponent/customer-table-row/customer-table-row.component';
 import { CustomerService } from './customer.service';
 
 

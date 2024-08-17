@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { CustomerFormComponent } from "./components/customer-form/customer-form.component";
-import { CustomerTableComponent } from './components/customer-table/customer-table.component';
-import { CustomerTableRowComponent } from './components/customer-table-row/customer-table-row.component';
+import { CustomerFormComponent } from "./adminComponent/customer-form/customer-form.component";
+import { CustomerTableComponent } from './adminComponent/customer-table/customer-table.component';
+import { CustomerTableRowComponent } from './adminComponent/customer-table-row/customer-table-row.component';
 
 @Component({
   selector: 'app-root',

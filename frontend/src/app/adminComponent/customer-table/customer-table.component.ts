@@ -19,7 +19,7 @@ import { CommonModule } from '@angular/common';
     RouterOutlet,
     CommonModule,
     CustomerTableRowComponent,
-    MatDialogModule 
+    MatDialogModule
   ],
   templateUrl: './customer-table.component.html',
   styleUrls: ['./customer-table.component.css']
@@ -44,14 +44,13 @@ export class CustomerTableComponent implements OnInit {
 
   onAddButtonClick(): void { // opens the dialog..
     const dialogRef = this.dialog.open(CustomerFormComponent, {
-      width: '600px',
       panelClass: 'custom-dialog-container', //css class
 
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.customerService.addCustomer(result); 
+        this.customerService.addCustomer(result);
         this.loadCustomers();
       }
     });
@@ -64,5 +63,18 @@ export class CustomerTableComponent implements OnInit {
       this.loadCustomers(); ////
     }
   }
-  
+
+  editCustomer(customer: Customer): void {
+    const dialogRef = this.dialog.open(CustomerFormComponent, {
+      panelClass: 'custom-dialog-container',
+      data: { customer } 
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.customerService.updateCustomer(result); // Update customer
+        this.loadCustomers();
+      }
+    });
+  }
+
 }
