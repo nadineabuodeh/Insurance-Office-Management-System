@@ -1,10 +1,5 @@
-
 <form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
-  <!-- <app-customer-form-fields [formGroup]="customerForm"></app-customer-form-fields>    -->
-  <app-customer-form-fields
-   [formGroup]="customerForm" 
-   [isEditMode]="isEditMode" 
-   [customerName]="customerName"
-  ></app-customer-form-fields>
+  <app-customer-form-fields [formGroup]="customerForm" [isEditMode]="isEditMode" [customerName]="customerName">
+  </app-customer-form-fields>
 
 </form>

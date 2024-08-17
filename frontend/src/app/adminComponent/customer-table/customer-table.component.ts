@@ -26,7 +26,9 @@ import { CommonModule } from '@angular/common';
 })
 
 export class CustomerTableComponent implements OnInit {
-  displayedColumns: string[] = ['firstName', 'lastName', 'username', 'email', 'phoneNumber', 'idNumber', 'actions'];
+  // displayedColumns: string[] = ['firstName', 'lastName', 'username', 'email', 'phoneNumber', 'idNumber', 'actions'];
+  displayedColumns: string[] = ['firstName', 'lastName', 'username', 'email', 'phoneNumber', 'actions'];
+
   dataSource = new MatTableDataSource<Customer>();
 
   constructor(
@@ -56,13 +58,16 @@ export class CustomerTableComponent implements OnInit {
     });
   }
 
-  deleteCustomer(customer: Customer): void {
-    const index = this.dataSource.data.indexOf(customer);
-    if (index >= 0) {
-      this.customerService.deleteCustomer(customer);
-      this.loadCustomers(); ////
+
+  deleteCustomer(id: number): void {
+    if (confirm('Are you sure you want to delete this customer?')) {
+     console.log(id+":   id")
+      this.customerService.deleteCustomer(id);
+
+      this.loadCustomers();
     }
   }
+  
 
   editCustomer(customer: Customer): void {
     const dialogRef = this.dialog.open(CustomerFormComponent, {
@@ -71,7 +76,8 @@ export class CustomerTableComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.customerService.updateCustomer(result); // Update customer
+        // this.customerService.updateCustomer(result); // Update customer
+        this.customerService.updateCustomer(customer.id, result); // Update customer bt id
         this.loadCustomers();
       }
     });

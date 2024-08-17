@@ -8,7 +8,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { CustomerFormFieldsComponent } from '../customer-form-fields/customer-form-fields.component';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+
 
 @Component({
   selector: 'app-customer-form',
@@ -21,7 +22,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
     MatButtonModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    CustomerFormFieldsComponent
+    CustomerFormFieldsComponent,
   ],
   templateUrl: './customer-form.component.html',
   styleUrls: ['./customer-form.component.css']
@@ -35,12 +36,15 @@ export class CustomerFormComponent {
 
   isEditMode: boolean = false; // check edit mode ..
   existingCustomerData: any;
-  customerName: string = ''; 
+  customerName: string = '';
+
+  private initialFormValue: any;
 
 
   constructor(private fb: FormBuilder
     , private customerService: CustomerService
     , private dialogRef: MatDialogRef<CustomerFormComponent>
+    , private dialog: MatDialog
     , @Inject(MAT_DIALOG_DATA) public data: any // Inject dialog data
 
   ) {
@@ -53,16 +57,19 @@ export class CustomerFormComponent {
       phoneNumber: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', Validators.required],
-      idNumber: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+      // idNumber: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
     }, {
       validators: this.passwordMatchValidator
     });
+    this.dialogRef.disableClose = true; // **to prevent the dialog from closing when clicking outside..
+
   }
+
 
 
   ngOnInit() {
     if (this.data && this.data.customer) {
-      this.customerForm.patchValue(this.data.customer);
+      this.initialFormValue = this.data.customer; this.customerForm.patchValue(this.data.customer);
       this.isEditMode = true;
       this.customerName = `${this.data.customer.firstName} ${this.data.customer.lastName}`; // set customerr name
 
@@ -84,15 +91,13 @@ export class CustomerFormComponent {
   }
 
 
-  onCancel(): void {
-    this.dialogRef.close();
-  }
-
   onSubmit() {
     if (this.customerForm.valid) {
       const customerData: Customer = this.customerForm.value;
       if (this.isEditMode) {
-        this.customerService.updateCustomer(customerData); //update
+        this.customerService.updateCustomer(customerData.id, customerData); //update
+        // this.customerService.updateCustomer( customerData); //update
+
       } else {
         this.customerService.addCustomer(customerData);//add
       }
