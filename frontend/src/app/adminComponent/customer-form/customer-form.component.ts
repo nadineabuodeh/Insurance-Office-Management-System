@@ -64,7 +64,7 @@ export class CustomerFormComponent {
     if (this.data && this.data.customer) {
       this.customerForm.patchValue(this.data.customer);
       this.isEditMode = true;
-      this.customerName = `${this.data.customer.firstName} ${this.data.customer.lastName}`; // Set customer name
+      this.customerName = `${this.data.customer.firstName} ${this.data.customer.lastName}`; // set customerr name
 
     }
   }
