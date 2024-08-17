@@ -1,0 +1,116 @@
+<h2 mat-dialog-title class="title">Customer Information</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="formGroup">
+    <!--  =================== First & Last Name ======================  -->
+
+    <div class="name-fields-container">
+      <mat-form-field appearance="fill" class="custom-form-field">
+        <mat-label>First Name</mat-label>
+        <input matInput formControlName="firstName" />
+        @if (formGroup.get('firstName')?.hasError('required')) {
+        <mat-error>First Name is required</mat-error>
+        }
+      </mat-form-field>
+      <!--  =================================================  -->
+      <mat-form-field appearance="fill" class="custom-form-field">
+        <mat-label>Last Name</mat-label>
+        <input matInput formControlName="lastName" />
+        @if (formGroup.get('lastName')?.hasError('required')) {
+        <mat-error>Last Name is required</mat-error>
+        }
+      </mat-form-field>
+    </div>
+    <!--  =================================================  -->
+
+    <mat-form-field appearance="fill" class="custom-form-field">
+      <mat-label>Phone Number</mat-label>
+      <input matInput formControlName="phoneNumber" />
+      @if (formGroup.get('phoneNumber')?.hasError('required')) {
+      <mat-error>Phone Number is required</mat-error>
+      }
+      @if (formGroup.get('phoneNumber')?.hasError('pattern')) {
+      <mat-error>Phone Number can only contain digits</mat-error>
+      }
+    </mat-form-field>
+    <!--  =================================================  -->
+
+    <mat-form-field appearance="fill" class="custom-form-field">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" />
+      @if (formGroup.get('email')?.hasError('required')) {
+      <mat-error>Email is required</mat-error>
+      }
+      @if (formGroup.get('email')?.hasError('email')) {
+      <mat-error>Invalid email format</mat-error>
+      }
+    </mat-form-field>
+    <!--  =================================================  -->
+
+    <mat-form-field appearance="fill" class="custom-form-field">
+      <mat-label>Username</mat-label>
+      <input matInput formControlName="username" />
+      @if (formGroup.get('username')?.hasError('required')) {
+      <mat-error>Username is required</mat-error>
+      }
+      @if (formGroup.get('username')?.hasError('pattern')) {
+      <mat-error>Username can only contain letters, numbers, and underscores</mat-error>
+      }
+    </mat-form-field>
+    <!--  =================================================  -->
+
+    <mat-form-field appearance="fill" class="custom-form-field">
+      <mat-label>Birth Date</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="birthDate" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      @if (formGroup.get('birthDate')?.hasError('required')) {
+      <mat-error>Birth Date is required</mat-error>
+      }
+    </mat-form-field>
+    <!--  =================================================  -->
+
+    <mat-form-field appearance="fill" class="custom-form-field">
+      <mat-label>Password</mat-label>
+      <input matInput type="password" formControlName="password" />
+      @if (formGroup.get('password')?.hasError('required')) {
+      <mat-error>Password is required</mat-error>
+      }
+      @if (formGroup.get('password')?.hasError('minlength')) {
+      <mat-error>Password must be at least 6 characters</mat-error>
+      }
+    </mat-form-field>
+    <!--  =================================================  -->
+
+    <mat-form-field appearance="fill" class="custom-form-field">
+      <mat-label>Confirm Password</mat-label>
+      <input matInput type="password" formControlName="confirmPassword" />
+      @if (formGroup.get('confirmPassword')?.hasError('required')) {
+      <mat-error>Confirm Password is required</mat-error>
+      }
+      @if (formGroup.get('confirmPassword')?.hasError('mismatch')) {
+      <mat-error>Passwords do not match</mat-error>
+      }
+    </mat-form-field>
+
+    <!--  =================================================  -->
+
+
+    <mat-form-field appearance="fill" class="custom-form-field">
+      <mat-label>ID Number</mat-label>
+      <input matInput formControlName="idNumber" />
+      @if (formGroup.get('idNumber')?.hasError('required')) {
+      <mat-error>ID Number is required</mat-error>
+      }
+      @if (formGroup.get('idNumber')?.hasError('pattern')) {
+      <mat-error>ID Number can only contain digits</mat-error>
+      }
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<!--  =================================================  -->
+
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button color="primary" [disabled]="formGroup.invalid">Submit</button>
+</mat-dialog-actions>
