@@ -19,7 +19,7 @@ export class SplashScreenComponent {
       } else {
         this.redirectBasedOnRole();
       }
-    }, 2000); // Splash screen duration
+    }, 3000);
   }
 
   private redirectBasedOnRole(): void {

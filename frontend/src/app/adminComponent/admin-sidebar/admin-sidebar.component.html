@@ -1,0 +1,24 @@
+<aside class="admin-sidebar">
+  <nav>
+    <ul>
+      <li>
+        <button (click)="navigateTo('dashboard')" [ngClass]="{'active-link': activeRoute === 'dashboard'}">Dashboard</button>
+      </li>
+      <li>
+        <button (click)="navigateTo('customer')" [ngClass]="{'active-link': activeRoute === 'customer'}">Customer</button>
+      </li>
+      <li>
+        <button (click)="navigateTo('insurance')" [ngClass]="{'active-link': activeRoute === 'insurance'}">Insurance</button>
+      </li>
+      <li>
+        <button (click)="navigateTo('transactions')" [ngClass]="{'active-link': activeRoute === 'transactions'}">Transactions & Debts</button>
+      </li>
+      <li>
+        <button (click)="navigateTo('notifications')" [ngClass]="{'active-link': activeRoute === 'notifications'}">Notifications</button>
+      </li>
+      <li>
+        <button (click)="navigateTo('reports')" [ngClass]="{'active-link': activeRoute === 'reports'}">Reports</button>
+      </li>
+    </ul>
+  </nav>
+</aside>
