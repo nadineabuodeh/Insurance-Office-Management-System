@@ -53,7 +53,7 @@ export class CustomerFormComponent {
   ) {
     this.maxDate = new Date(); 
     this.minDate = new Date();
-    this.minDate.setFullYear(this.minDate.getFullYear() - 18); // Min date is 18 years ago
+    this.minDate.setFullYear(this.minDate.getFullYear() - 18); // Min age is 18 years ago
 
 
     this.customerForm = this.fb.group({

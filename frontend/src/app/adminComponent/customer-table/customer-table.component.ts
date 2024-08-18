@@ -7,7 +7,7 @@ import { CustomerFormComponent } from '../customer-form/customer-form.component'
 import { MatDialogModule } from '@angular/material/dialog';
 import { CustomerTableRowComponent } from '../customer-table-row/customer-table-row.component';
 import { CommonModule } from '@angular/common';
-import { FormsModule} from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { MatCard, MatCardContent } from '@angular/material/card';
 
 @Component({
@@ -16,7 +16,7 @@ import { MatCard, MatCardContent } from '@angular/material/card';
 
 
   imports: [
-    MatTableModule,MatCard,MatCardContent,
+    MatTableModule, MatCard, MatCardContent,
     RouterOutlet,
     CommonModule, FormsModule,
     CustomerTableRowComponent,
@@ -88,6 +88,7 @@ export class CustomerTableComponent implements OnInit {
     });
   }
 
+
   toggleSearch() {
     this.isSearchActive = !this.isSearchActive;
     const searchBar = document.querySelector('.search-bar') as HTMLInputElement;
@@ -100,20 +101,20 @@ export class CustomerTableComponent implements OnInit {
         searchBar.focus();
       }
       if (buttonText) {
-        buttonText.classList.add('hidden'); // Hide the button text
+        buttonText.classList.add('hidden');
       }
       if (button) {
-        button.classList.add('minimized'); // Minimize the button
+        button.classList.add('minimized');
       }
     } else {
       if (searchBar) {
         searchBar.classList.remove('active');
       }
       if (buttonText) {
-        buttonText.classList.remove('hidden'); // Show the button text
+        buttonText.classList.remove('hidden');
       }
       if (button) {
-        button.classList.remove('minimized'); // Restore the button size
+        button.classList.remove('minimized');
       }
     }
   }

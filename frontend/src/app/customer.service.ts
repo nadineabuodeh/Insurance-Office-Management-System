@@ -28,6 +28,8 @@ export class CustomerService {
 
   }
 
+
+
   getCustomers(): Customer[] {
     return this.customers;
   }
@@ -35,7 +37,7 @@ export class CustomerService {
 
   addCustomer(customer: Customer): void {
     if (!this.customers.some(c => c.username === customer.username)) {
-      customer.id = this.nextId++; // Assign and increment the nextId
+      customer.id = this.nextId++;
       this.customers.push(customer);
       console.log("CHECK->" + customer.id + "," + customer.firstName)
       this.saveCustomersToStorage();
