@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Customer } from '../../customer.service';
+import { Customer } from '../../../service/customer.service';
 
 @Component({
   selector: 'app-customer-table-row',

@@ -1,6 +1,4 @@
 import { Routes } from '@angular/router';
-
-export const routes: Routes = [];
 import { SplashScreenComponent } from './mainComponent/splash-screen/splash-screen.component';
 import { LoginComponent } from './mainComponent/login/login.component';
 import { AdminDashboardComponent } from './adminComponent/admin-dashboard/admin-dashboard.component';
@@ -8,7 +6,6 @@ import { CustomerDashboardComponent } from './customerComponent/customer-dashboa
 import { adminGuard } from './service/admin.guard';
 import { customerGuard } from './service/customer.guard';
 import { UnauthorizedComponent } from './mainComponent/unauthorized/unauthorized.component';
-import { AdminCustomerComponent } from './adminComponent/admin-customer/admin-customer.component';
 import { AdminInsuranceComponent } from './adminComponent/admin-insurance/admin-insurance.component';
 import { AdminTransactionsComponent } from './adminComponent/admin-transactions/admin-transactions.component';
 import { AdminNotificationsComponent } from './adminComponent/admin-notifications/admin-notifications.component';
@@ -20,6 +17,7 @@ import { CustomerPaymentsComponent } from './customerComponent/customer-payments
 import { CustomerPaymentHistoryComponent } from './customerComponent/customer-payment-history/customer-payment-history.component';
 import { CustomerDebtsComponent } from './customerComponent/customer-debts/customer-debts.component';
 import { CustomerNotificationsComponent } from './customerComponent/customer-notifications/customer-notifications.component';
+import { CustomerTableComponent } from './adminComponent/admin-customer/customer-table/customer-table.component';
 
 export const routes: Routes = [
   { path: '', component: SplashScreenComponent },
@@ -31,7 +29,7 @@ export const routes: Routes = [
     canActivate: [adminGuard],
     children: [
       { path: 'dashboard', component: AdminDashboardComponent },
-      { path: 'customer', component: AdminCustomerComponent },
+      { path: 'customer', component: CustomerTableComponent },
       { path: 'insurance', component: AdminInsuranceComponent },
       { path: 'transactions', component: AdminTransactionsComponent },
       { path: 'notifications', component: AdminNotificationsComponent },

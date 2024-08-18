@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { CustomerService, Customer } from '../../customer.service';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { RouterOutlet } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
@@ -9,6 +8,7 @@ import { CustomerTableRowComponent } from '../customer-table-row/customer-table-
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatCard, MatCardContent } from '@angular/material/card';
+import { Customer, CustomerService } from '../../../service/customer.service';
 
 @Component({
   selector: 'app-customer-table',
