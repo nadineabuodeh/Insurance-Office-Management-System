@@ -1,0 +1,114 @@
+<div class="customer-table-container">
+
+  <!-- ==================================** ADD & SEARCH **========================================= -->
+
+  <button class="add-search-btns" (click)="onAddButtonClick()">
+    <img class="icons" src="./assets/add.png" alt="add" title="Add New Customer">
+    Add New Customer
+  </button>
+
+
+  <div class="search-container">
+    <button class="add-search-btns" (click)="toggleSearch()">
+      <img class="icons" src="./assets/search.png" alt="search" title="Search by part of name">
+      <span class="button-text">Search Customer</span>
+    </button>
+    <input type="text" class="search-bar" placeholder="Search By Name..." [(ngModel)]="searchTerm"
+      (ngModelChange)="applyFilter($event)" />
+  </div>
+
+  <!-- ============================================================================================= -->
+
+
+  @if (dataSource.data.length>0) {
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 styled-table">
+    <ng-container matColumnDef="firstName">
+      <th mat-header-cell *matHeaderCellDef> First Name </th>
+      <td mat-cell *matCellDef="let customer">
+        <app-customer-table-row [customer]="customer" column="firstName"></app-customer-table-row>
+      </td>
+    </ng-container>
+    <!-- ============================================================================================= -->
+
+    <ng-container matColumnDef="lastName">
+      <th mat-header-cell *matHeaderCellDef> Last Name </th>
+      <td mat-cell *matCellDef="let customer">
+        <app-customer-table-row [customer]="customer" column="lastName"></app-customer-table-row>
+      </td>
+    </ng-container>
+    <!-- ============================================================================================= -->
+
+    <ng-container matColumnDef="username">
+      <th mat-header-cell *matHeaderCellDef> Username </th>
+      <td mat-cell *matCellDef="let customer">
+        <app-customer-table-row [customer]="customer" column="username"></app-customer-table-row>
+      </td>
+    </ng-container>
+    <!-- ============================================================================================= -->
+
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef> Email </th>
+      <td mat-cell *matCellDef="let customer">
+        <app-customer-table-row [customer]="customer" column="email"></app-customer-table-row>
+      </td>
+    </ng-container>
+    <!-- ============================================================================================= -->
+
+    <ng-container matColumnDef="phoneNumber">
+      <th mat-header-cell *matHeaderCellDef> Phone Number </th>
+      <td mat-cell *matCellDef="let customer">
+        <app-customer-table-row [customer]="customer" column="phoneNumber"></app-customer-table-row>
+      </td>
+    </ng-container>
+
+    <!-- <ng-container matColumnDef="idNumber">
+      <th mat-header-cell *matHeaderCellDef> ID Number </th>
+      <td mat-cell *matCellDef="let customer">
+        <app-customer-table-row [customer]="customer" column="idNumber"></app-customer-table-row>
+      </td>
+    </ng-container> -->
+
+    <!-- ====================** DELETE & EDIT **============================= -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Actions </th>
+      <td mat-cell *matCellDef="let customer">
+
+        <button class="btns" (click)="deleteCustomer(customer.id)">
+          <img class="icons" src="./assets/delete.png" alt="delete" title="Delete This Customer">
+        </button>
+
+        <button class="btns" (click)="editCustomer(customer)">
+          <img class="icons" src="./assets/pencil.png" alt="edit" title="Update Customer's Information">
+        </button>
+
+
+      </td>
+    </ng-container>
+
+    <!-- Header -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+    <!-- Rows -->
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+}@else {
+
+  <div class="table-container2">
+    <table class="table2">
+      <thead>
+        <tr>
+          <th>Customers</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>There Are No Customers !</td>
+
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  } 
+</div>

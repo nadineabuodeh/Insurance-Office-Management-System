@@ -1,4 +1,6 @@
 import { Routes } from '@angular/router';
+
+export const routes: Routes = [];
 import { SplashScreenComponent } from './mainComponent/splash-screen/splash-screen.component';
 import { LoginComponent } from './mainComponent/login/login.component';
 import { AdminDashboardComponent } from './adminComponent/admin-dashboard/admin-dashboard.component';
