@@ -1,0 +1,22 @@
+<div class="login-container">
+  <div class="login-box">
+    <img src="assets/logo.png" alt="Logo" class="logo" />
+    <div class="app-name">InsuranceNexus</div>
+    <form (ngSubmit)="onSubmit()">
+      <div class="input-group">
+        <input type="text" placeholder="Username" [(ngModel)]="loginRequest.username" name="username" required>
+      </div>
+      <div class="input-group">
+        <input type="password" placeholder="Password" [(ngModel)]="loginRequest.password" name="password" required>
+      </div>
+      <button type="submit" class="login-button">Login</button>
+    </form>
+  </div>
+  
+  @if (errorMessage) {
+    <div class="toast-notification">
+      <span>{{ errorMessage }}</span>
+      <button (click)="closeToast()">×</button>
+    </div>
+  }
+</div>

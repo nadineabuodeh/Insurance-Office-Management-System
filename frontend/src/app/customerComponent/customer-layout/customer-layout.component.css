@@ -1,0 +1,11 @@
+.customer-layout {
+  display: flex;
+}
+
+.customer-content {
+  margin-top: 60px;
+  margin-left: 250px;
+  padding: 20px;
+  overflow-y: auto;
+  background-color: #EEEEEE;
+}

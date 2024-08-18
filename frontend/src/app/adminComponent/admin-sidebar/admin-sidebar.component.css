@@ -1,0 +1,35 @@
+.admin-sidebar {
+  position: fixed;
+  top: 80px;
+  left: 0;
+  height: calc(100vh - 60px);
+  background-color: #EEEEEE;
+  color: #EEEEEE;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); 
+  z-index: 1000;
+}
+
+.admin-sidebar nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.admin-sidebar nav ul li {
+  margin: 20px 0;
+}
+
+.admin-sidebar nav ul li button {
+  width: 100%;
+  background: none;
+  border: none;
+  color: #201E43;
+  text-align: left;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.admin-sidebar nav ul li button:hover,
+.admin-sidebar nav ul li .active-link {
+  background-color: #134B70;
+  color: #FFFFFF;
+}

@@ -2,11 +2,28 @@
     "configurations": [
         {
             "type": "java",
+            "name": "BackendSpringBootApplication",
+            "request": "launch",
+            "mainClass": "org.example.backendspringboot.BackendSpringBootApplication"
+        },
+        {
+            "type": "java",
             "name": "Spring Boot-BackendSpringBootApplication<backendSpringBoot>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
             "mainClass": "org.example.backendspringboot.BackendSpringBootApplication",
             "projectName": "backendSpringBoot",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=49693 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=backendSpringBoot"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-BackendApplication<backend>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "project.backend.BackendApplication",
+            "projectName": "backend",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
         }
