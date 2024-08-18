@@ -34,19 +34,34 @@
       @if (formGroup.get('phoneNumber')?.hasError('pattern')) {
       <mat-error>Phone Number can only contain digits</mat-error>
       }
+
+      @if (formGroup.get('phoneNumber')?.hasError('duplicate')) {
+      <mat-error> Phone number is already in use
+      </mat-error>
+      }
     </mat-form-field>
     <!--  =================================================  -->
 
+
     <mat-form-field appearance="fill" class="custom-form-field">
       <mat-label>Email</mat-label>
+      @if (isEditMode == true) {
+      <input matInput formControlName="email" [attr.disabled]="true" />
+      }@else {
       <input matInput formControlName="email" />
+      }
+
       @if (formGroup.get('email')?.hasError('required')) {
       <mat-error>Email is required</mat-error>
       }
       @if (formGroup.get('email')?.hasError('email')) {
       <mat-error>Invalid email format</mat-error>
       }
+      @if (formGroup.get('email')?.hasError('duplicate')) {
+      <mat-error>Email is already in use</mat-error>
+      }
     </mat-form-field>
+
     <!--  =================================================  -->
 
     <mat-form-field appearance="fill" class="custom-form-field">
@@ -64,10 +79,17 @@
     <mat-form-field appearance="fill" class="custom-form-field">
       <mat-label>Birth Date</mat-label>
       <input matInput [matDatepicker]="picker" formControlName="birthDate" />
+
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
+
       @if (formGroup.get('birthDate')?.hasError('required')) {
       <mat-error>Birth Date is required</mat-error>
+      }
+
+      @if (formGroup.get('birthDate')?.hasError('minAge')) {
+      <mat-error> You must be at least 18 years old
+      </mat-error>
       }
     </mat-form-field>
     <!--  =================================================  -->

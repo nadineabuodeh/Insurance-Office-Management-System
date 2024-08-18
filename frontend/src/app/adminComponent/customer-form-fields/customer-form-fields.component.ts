@@ -32,6 +32,7 @@ export class CustomerFormFieldsComponent {
   constructor(private dialog: MatDialog) { }
 
   ngOnInit(): void {
+    console.log('is Edit Mode:', this.isEditMode);
     this.initialFormValue = JSON.parse(JSON.stringify(this.formGroup.value));
   }
 

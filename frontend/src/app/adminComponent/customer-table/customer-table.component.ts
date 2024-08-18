@@ -8,6 +8,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { CustomerTableRowComponent } from '../customer-table-row/customer-table-row.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule} from '@angular/forms';
+import { MatCard, MatCardContent } from '@angular/material/card';
 
 @Component({
   selector: 'app-customer-table',
@@ -15,11 +16,11 @@ import { FormsModule} from '@angular/forms';
 
 
   imports: [
-    MatTableModule,
+    MatTableModule,MatCard,MatCardContent,
     RouterOutlet,
     CommonModule, FormsModule,
     CustomerTableRowComponent,
-    MatDialogModule
+    MatDialogModule,
   ],
   templateUrl: './customer-table.component.html',
   styleUrls: ['./customer-table.component.css']
