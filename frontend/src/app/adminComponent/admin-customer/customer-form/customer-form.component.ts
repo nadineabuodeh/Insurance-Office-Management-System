@@ -63,11 +63,9 @@ export class CustomerFormComponent {
       username: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9_]+$/)]],
       email: ['', [Validators.required, Validators.email]],
       phoneNumber: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', Validators.required],
-      // idNumber: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+      idNumber: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
     }, {
-      validators: this.passwordMatchValidator
+      // validators: this.passwordMatchValidator
     });
     this.dialogRef.disableClose = true; // **to prevent the dialog from closing when clicking outside..
 
@@ -98,19 +96,6 @@ export class CustomerFormComponent {
       return { minAge: true };
     }
     return null;
-  }
-
-  passwordMatchValidator(formGroup: FormGroup) {
-    const password = formGroup.get('password');
-    const confirmPassword = formGroup.get('confirmPassword');
-
-    if (password && confirmPassword) {
-      if (password.value !== confirmPassword.value) {
-        confirmPassword.setErrors({ mismatch: true });
-      } else {
-        confirmPassword.setErrors(null); //clear error
-      }
-    }
   }
 
 

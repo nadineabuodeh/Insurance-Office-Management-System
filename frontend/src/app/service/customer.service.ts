@@ -8,7 +8,7 @@ export interface Customer {
   username: string;
   email: string;
   phoneNumber: string;
-  // idNumber: string;
+  idNumber: string;
 }
 
 @Injectable({

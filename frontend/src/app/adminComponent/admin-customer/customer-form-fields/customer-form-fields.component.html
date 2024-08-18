@@ -45,11 +45,9 @@
 
     <mat-form-field appearance="fill" class="custom-form-field">
       <mat-label>Email</mat-label>
-      @if (isEditMode == true) {
-      <input matInput formControlName="email" [attr.disabled]="true" />
-      }@else {
+
       <input matInput formControlName="email" />
-      }
+
 
       @if (formGroup.get('email')?.hasError('required')) {
       <mat-error>Email is required</mat-error>
@@ -94,33 +92,8 @@
     </mat-form-field>
     <!--  =================================================  -->
 
-    <mat-form-field appearance="fill" class="custom-form-field">
-      <mat-label>Password</mat-label>
-      <input matInput type="password" formControlName="password" />
-      @if (formGroup.get('password')?.hasError('required')) {
-      <mat-error>Password is required</mat-error>
-      }
-      @if (formGroup.get('password')?.hasError('minlength')) {
-      <mat-error>Password must be at least 6 characters</mat-error>
-      }
-    </mat-form-field>
-    <!--  =================================================  -->
 
     <mat-form-field appearance="fill" class="custom-form-field">
-      <mat-label>Confirm Password</mat-label>
-      <input matInput type="password" formControlName="confirmPassword" />
-      @if (formGroup.get('confirmPassword')?.hasError('required')) {
-      <mat-error>Confirm Password is required</mat-error>
-      }
-      @if (formGroup.get('confirmPassword')?.hasError('mismatch')) {
-      <mat-error>Passwords do not match</mat-error>
-      }
-    </mat-form-field>
-
-    <!--  =================================================  -->
-
-
-    <!-- <mat-form-field appearance="fill" class="custom-form-field">
       <mat-label>ID Number</mat-label>
       <input matInput formControlName="idNumber" />
       @if (formGroup.get('idNumber')?.hasError('required')) {
@@ -129,7 +102,7 @@
       @if (formGroup.get('idNumber')?.hasError('pattern')) {
       <mat-error>ID Number can only contain digits</mat-error>
       }
-    </mat-form-field> -->
+    </mat-form-field>
 
 
   </form>

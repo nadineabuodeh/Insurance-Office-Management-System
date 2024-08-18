@@ -28,8 +28,8 @@ import { Customer, CustomerService } from '../../../service/customer.service';
 
 export class CustomerTableComponent implements OnInit {
 
-  // displayedColumns: string[] = ['firstName', 'lastName', 'username', 'email', 'phoneNumber', 'idNumber', 'actions'];
-  displayedColumns: string[] = ['firstName', 'lastName', 'username', 'email', 'phoneNumber', 'actions'];
+  displayedColumns: string[] = ['firstName', 'lastName', 'username', 'email', 'phoneNumber', 'idNumber', 'actions'];
+  // displayedColumns: string[] = ['firstName', 'lastName', 'username', 'email', 'phoneNumber', 'actions'];
 
   dataSource = new MatTableDataSource<Customer>();
   isSearchActive = false;
