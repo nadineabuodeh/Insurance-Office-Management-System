@@ -1,5 +1,10 @@
 /* #EEEEEE (light gray), #201E43 (deep purple), #134870 (navy blue), and #508C9B (teal). */
+*{
+font-family: Georgia, 'Times New Roman', Times, serif;}
 
+/* th{
+  font-family: Tahoma, sans-serif;
+} */
 .customer-table-container {
   padding: 20px;
   border-radius: 10px;
@@ -76,15 +81,6 @@ button {
   text-align: right;
 }
 
-.delete-btn {
-  background-color: rgb(123, 15, 15);
-}
-
-.delete-btn:hover {
-  background-color: rgb(200, 49, 49);
-
-}
-
 /* ------- ICONS ------- */
 .btns {
   background-color: transparent;
@@ -92,9 +88,64 @@ button {
   padding-right: 1px;
   padding-left: 1px;
   max-width: 40px;
-
 }
 
 .icons {
   max-width: 25px;
+  margin-right: 10px;
+}
+
+
+.add-search-btns {
+  color: #201E43;
+  background-color: transparent;
+  display: inline-flex;
+  align-items: center;
+  padding-top: 10px;
+  font-size: 16px;
+  max-width: 190px;
+  font-size: 16px;
+  white-space: nowrap;
+  margin-bottom: 8px;
+  margin-right: 75px;
+  position: relative;
+}
+
+.add-search-btns:hover {
+  color: #366a91;
+  transition: 0.2s;
+}
+
+.search-container {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+}
+
+.search-bar {
+  display: none;
+  position: absolute;
+  left: 45px;
+  top: 17px;
+  padding: 5px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: width 0.3s , opacity 0.3s ;
+  opacity: 0;
+  width: 0;
+}
+
+.search-bar.active {
+  display: inline-block;
+  opacity: 1;
+  width: 200px;
+}
+
+.hidden {
+  display: none;
+}
+
+.add-search-btns.minimized {
+  padding: 1px;
 }
