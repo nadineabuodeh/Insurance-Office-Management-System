@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import project.backend.DTOs.TransactionDTO;
 import project.backend.Repositories.TransactionRepository;
+import project.backend.SecurityConfiguration.models.User;
+import project.backend.SecurityConfiguration.repository.UserRepository;
 import project.backend.Services.TransactionService;
 import project.backend.models.Transaction;
 
@@ -18,10 +20,17 @@ public class TransactionService {
     @Autowired
     private TransactionRepository transactionRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+
     // Convert Transaction entity to TransactionDTO
     private TransactionDTO convertToDTO(Transaction transaction) {
         return new TransactionDTO(
                 transaction.getId(),
+
+                transaction.getUser() != null ? transaction.getUser().getId() : null, //  user id mapping
+
                 transaction.getStartDate(),
                 transaction.getAmount(),
                 transaction.getEndDate(),
@@ -41,6 +50,17 @@ public class TransactionService {
         transaction.setTransactionType(dto.getTransactionType());
         transaction.setCreatedAt(dto.getCreatedAt());
         transaction.setUpdatedAt(dto.getUpdatedAt());
+
+        if (dto.getUserId() != null) {
+            Optional<User> user = userRepository.findById(dto.getUserId());
+            if (user.isPresent()) {
+                transaction.setUser(user.get());
+            } else {
+                throw new RuntimeException("User not found with ID: " + dto.getUserId());
+            }
+        }
+
+//        return transaction;
         return transaction;
     }
 

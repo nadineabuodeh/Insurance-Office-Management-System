@@ -19,8 +19,11 @@ public class TransactionDTO {
 
     private Date updatedAt;
 
-    public TransactionDTO(Long id, Date startDate, Double amount, Date endDate, TransactionType transactionType, Date createdAt, Date updatedAt) {
+    private Long userId;
+
+    public TransactionDTO(Long id,Long userId, Date startDate, Double amount, Date endDate, TransactionType transactionType, Date createdAt, Date updatedAt) {
         this.id = id;
+        this.userId = userId;
         this.startDate = startDate;
         this.amount = amount;
         this.endDate = endDate;
@@ -32,6 +35,13 @@ public class TransactionDTO {
     public TransactionDTO() {
     }
 
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
     public Long getId() {
         return id;
     }

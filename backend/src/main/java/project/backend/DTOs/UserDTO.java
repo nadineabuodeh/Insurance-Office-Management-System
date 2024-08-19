@@ -14,6 +14,7 @@ public class UserDTO {
     private String role;
     private String password;
 
+
     public UserDTO(Long id, Long idNumber, String firstName, String lastName, String username, Long phoneNumber, String email, Date birthDate, String role, String password) {
         this.id = id;
         this.idNumber = idNumber;
