@@ -188,15 +188,36 @@ button {
   color: #EEEEEE;
   padding: 16px 16px 16px 6px;
 }
+
 .empty-table-message {
-  text-align: center;
-  font-size: 18px;
-  color: #134870; 
-  padding: 120px 280px 130px 280px;
-  border: 1px solid #ddd; 
-  background-color: #abbfcf;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #EEEEEE;
+  color: #201E43;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin-top: 20px;
-  max-width: 990px;
-  border-radius: 25px;
-  margin-left: 50px;
+  margin-left: 40px;
+  text-align: center;
+}
+
+.empty-icon {
+  width: 100px;
+  height: 100px;
+  opacity: 0.7;
+}
+
+.empty-text {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.empty-subtext {
+  font-size: 16px;
+  color: #508C9B;
+  margin-top: 0;
 }
