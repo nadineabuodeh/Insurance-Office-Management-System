@@ -1,13 +1,9 @@
 package project.backend.models;
 
 import java.time.LocalDate;
+import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import project.backend.SecurityConfiguration.models.User;
 
 @Entity
@@ -21,13 +17,19 @@ public class Policy {
     private Double totalAmount;
     private String coverageDetails;
 
+
+    //==============================
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-
+   //==============================
     @ManyToOne
     @JoinColumn(name = "insurance_id")
     private Insurance insurance;
+    //==============================
+    @OneToMany(mappedBy = "policy")
+    private List<Transaction> transactions;
+    //==============================
 
     private LocalDate createdAt;
     private LocalDate updatedAt;

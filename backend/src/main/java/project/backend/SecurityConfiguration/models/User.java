@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import project.backend.models.Policy;
 import project.backend.models.Transaction;
 
 import java.util.Date;
@@ -20,8 +21,14 @@ import java.util.List;
 
 public class User {
 
+    //-----------------------------------------
     @OneToMany(mappedBy = "user")
     private List<Transaction> transactions;
+    //-----------------------------------------
+    @OneToMany(mappedBy = "user")
+    private List<Policy> policies;
+    //-----------------------------------------
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
