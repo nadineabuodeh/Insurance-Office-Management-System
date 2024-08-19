@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import project.backend.DTOs.UserDTO;
+import project.backend.SecurityConfiguration.models.ERole;
 import project.backend.SecurityConfiguration.models.User;
 import project.backend.SecurityConfiguration.repository.UserRepository;
 
@@ -31,7 +32,7 @@ import java.util.Optional;
             dto.setIdNumber(user.getIdNumber());
             dto.setFirstName(user.getFirstName());
             dto.setLastName(user.getLastName());
-            dto.setUserName(user.getUsername());
+            dto.setUsername(user.getUsername());
             dto.setPhoneNumber(user.getPhoneNumber());
             dto.setEmail(user.getEmail());
             dto.setBirthDate(user.getBirthDate());
@@ -47,11 +48,17 @@ import java.util.Optional;
             user.setIdNumber(dto.getIdNumber());
             user.setFirstName(dto.getFirstName());
             user.setLastName(dto.getLastName());
-            user.setUsername(dto.getUserName());
+            user.setUsername(dto.getUsername());
             user.setPhoneNumber(dto.getPhoneNumber());
             user.setEmail(dto.getEmail());
             user.setBirthDate(dto.getBirthDate());
 //            user.setRole(Enum.valueOf(dto.getRole())); // Convert string to enum
+            try {
+                user.setRole(ERole.valueOf(dto.getRole())); // Convert string to enum
+            } catch (IllegalArgumentException e) {
+                // Handle the case where the role is invalid
+                throw new IllegalArgumentException("Invalid role value: " + dto.getRole(), e);
+            }
             user.setPassword(dto.getPassword());
             return user;
         }

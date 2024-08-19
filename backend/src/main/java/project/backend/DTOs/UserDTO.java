@@ -34,15 +34,16 @@ public class UserDTO {
         return id;
     }
 
-
     public void setId(Long id) {
-    }
-
-    public void setIdNumber(Long idNumber) {
+        this.id = id;
     }
 
     public Long getIdNumber() {
         return idNumber;
+    }
+
+    public void setIdNumber(Long idNumber) {
+        this.idNumber = idNumber;
     }
 
     public String getFirstName() {
@@ -61,11 +62,11 @@ public class UserDTO {
         this.lastName = lastName;
     }
 
-    public String getUserName() {
+    public String getUsername() {
         return username;
     }
 
-    public void setUserName(String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
@@ -107,21 +108,5 @@ public class UserDTO {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    @Override
-    public String toString() { //for testing
-        return "UserDTO{" +
-                "id=" + id +
-                ", idNumber=" + idNumber +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", userName='" + username + '\'' +
-                ", phoneNumber=" + phoneNumber +
-                ", email='" + email + '\'' +
-                ", birthDate=" + birthDate +
-                ", role='" + role + '\'' +
-                ", password='" + password + '\'' +
-                '}';
     }
 }

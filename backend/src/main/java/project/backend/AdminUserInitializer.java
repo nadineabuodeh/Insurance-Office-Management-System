@@ -30,39 +30,36 @@ public class AdminUserInitializer implements CommandLineRunner {
 
     public void run(String... args) throws Exception {
         // Example data for demonstration purposes
-        createAdminUser(
-                123456L,                        // idNumber
+        createAdminUser(123456L,               // idNumber
                 "Admin",                        // firstName
                 "User",                         // lastName
                 "asal",                         // userName
                 1234567890L,                    // phoneNumber
                 "asal@example.com",             // email
                 new Date(),                     // birthDate
-                "ROLE_ADMIN",                   // role
+                ERole.ROLE_ADMIN,               // role
                 "asalPassword"                  // password
         );
 
-        createAdminUser(
-                654321L,                        // idNumber
+        createAdminUser(654321L,       // idNumber
                 "Arab",                         // firstName
                 "Company",                      // lastName
                 "arabcompany",                  // userName
                 9876543210L,                    // phoneNumber
                 "arabcompany@example.com",      // email
                 new Date(),                     // birthDate
-                "ROLE_ADMIN",                   // role
+                ERole.ROLE_ADMIN,               // role
                 "arabCompanyPassword"           // password
         );
 
-        createAdminUser(
-                789456L,                        // idNumber
+        createAdminUser(789456L,                        // idNumber
                 "International",                // firstName
                 "User",                         // lastName
                 "international",                // userName
                 1122334455L,                    // phoneNumber
                 "international@example.com",    // email
                 new Date(),                     // birthDate
-                "ROLE_ADMIN",                   // role
+                ERole.ROLE_ADMIN,               // role
                 "internationalPassword"         // password
         );
     }
@@ -78,33 +75,60 @@ public class AdminUserInitializer implements CommandLineRunner {
 //        }
 //    }
 
-    private void createAdminUser(Long idNumber, String firstName, String lastName, String userName, Long phoneNumber, String email, Date birthDate, String role, String password) {
-        // Check if username is blank or null
-        if (userName == null || userName.trim().isEmpty()) {
-            System.out.println("Username cannot be blank");
+
+    private void createAdminUser(Long idNumber, String firstName, String lastName, String username, Long phoneNumber, String email, Date birthDate, ERole role, String password) {
+        // Checking blank fields
+        if (username == null || username.trim().isEmpty()) {
+            System.out.println("Username CAN NOT be blank");
             return;
         }
 
-        // Check if email is blank or null
         if (email == null || email.trim().isEmpty()) {
-            System.out.println("Email cannot be blank");
+            System.out.println("Email CAN NOT be blank");
             return;
         }
 
-        // Check if password is blank or null
         if (password == null || password.trim().isEmpty()) {
-            System.out.println("Password cannot be blank");
+            System.out.println("Password CAN NOT be blank");
             return;
         }
 
-        if (!userRepository.existsByUsername(userName)) {
-            User admin = new User(idNumber, firstName, lastName, phoneNumber, birthDate, userName, email, passwordEncoder.encode(password), ERole.ROLE_ADMIN);
+        if (!userRepository.existsByUsername(username)) {
+            User admin = new User(idNumber, firstName, lastName, phoneNumber, birthDate, username, email, passwordEncoder.encode(password), role);
             userRepository.save(admin);
-            System.out.println("Admin user " + userName + " created");
+            System.out.println("Admin user " + username + " created");
         } else {
-            System.out.println("Admin user " + userName + " already exists");
+            System.out.println("Admin user " + username + " already exists");
         }
     }
-
 }
+//    private void createAdminUser(Long idNumber, String firstName, String lastName, String userName, Long phoneNumber, String email, Date birthDate, String role, String password) {
+//        // Check if username is blank or null
+//        if (userName == null || userName.trim().isEmpty()) {
+//            System.out.println("Username cannot be blank");
+//            return;
+//        }
+//
+//        // Check if email is blank or null
+//        if (email == null || email.trim().isEmpty()) {
+//            System.out.println("Email cannot be blank");
+//            return;
+//        }
+//
+//        // Check if password is blank or null
+//        if (password == null || password.trim().isEmpty()) {
+//            System.out.println("Password cannot be blank");
+//            return;
+//        }
+//
+//        if (!userRepository.existsByUsername(userName)) {
+//            User admin = new User(idNumber, firstName, lastName, phoneNumber, birthDate, userName, email, passwordEncoder.encode(password), ERole.ROLE_ADMIN);
+//            userRepository.save(admin);
+//            System.out.println("Admin user " + userName + " created");
+//        } else {
+//            System.out.println("Admin user " + userName + " already exists");
+//        }
+//    }
+//
+//}
 
