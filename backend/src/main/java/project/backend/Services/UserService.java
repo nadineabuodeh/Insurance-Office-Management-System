@@ -85,18 +85,12 @@ public class UserService {
         //done
         User user = convertToEntity(userDTO);
         return convertToDTO(userRepository.save(user));
-
-        //            User user = convertToEntity(userDTO);
-//            user.setPassword(passwordEncoder.encode(user.getPassword())); // Ensure password is encoded
-//            User savedUser = userRepository.save(user);
-//            return convertToDTO(savedUser);
     }
 
     public UserDTO updateUser(Long id, UserDTO userDTO) {
         User user = userRepository.findById(id).orElse(null);
         if (user != null) {
             user = convertToEntity(userDTO);
-//                user.setPassword(passwordEncoder.encode(user.getPassword())); // Encode password
             return convertToDTO(userRepository.save(user));
         }
         return null;

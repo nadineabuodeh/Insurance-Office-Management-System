@@ -79,6 +79,9 @@ public class AdminUserInitializer implements CommandLineRunner {
 
         if (!userRepository.existsByUsername(username)) {
             User admin = new User(idNumber, firstName, lastName, phoneNumber, birthDate, username, email, passwordEncoder.encode(password), role);
+//            User admin = new User(idNumber, firstName, lastName, phoneNumber, birthDate, username, email, password, role);
+           System.out.println("pppp:   "+passwordEncoder.encode(password));
+
             userRepository.save(admin);
             System.out.println("Admin user " + username + " created");
         } else {
