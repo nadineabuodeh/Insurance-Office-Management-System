@@ -7,7 +7,6 @@ import project.backend.DTOs.TransactionDTO;
 import project.backend.Repositories.TransactionRepository;
 import project.backend.SecurityConfiguration.models.User;
 import project.backend.SecurityConfiguration.repository.UserRepository;
-import project.backend.Services.TransactionService;
 import project.backend.models.Transaction;
 
 import java.util.List;
@@ -44,7 +43,7 @@ public class TransactionService {
     private Transaction convertToEntity(TransactionDTO dto) {
         Transaction transaction = new Transaction();
         transaction.setId(dto.getId());
-        transaction.setStartDate(dto.getStartDate()); // Mapping `startDate` to `transactionDate`
+        transaction.setStartDate(dto.getStartDate()); // mapping start Date -> transaction Date
         transaction.setAmount(dto.getAmount());
         transaction.setEndDate(dto.getEndDate());
         transaction.setTransactionType(dto.getTransactionType());
@@ -85,7 +84,7 @@ public class TransactionService {
         Optional<Transaction> existingTransaction = transactionRepository.findById(id);
         if (existingTransaction.isPresent()) {
             Transaction transaction = convertToEntity(transactionDTO);
-            transaction.setId(id); // Ensure we update the existing transaction
+            transaction.setId(id);
             Transaction updatedTransaction = transactionRepository.save(transaction);
             return convertToDTO(updatedTransaction);
         }

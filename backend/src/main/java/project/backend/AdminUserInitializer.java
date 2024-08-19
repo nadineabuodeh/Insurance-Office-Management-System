@@ -20,13 +20,6 @@ public class AdminUserInitializer implements CommandLineRunner {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-//    @Override
-//    public void run(String... args) throws Exception {
-//        createAdminUser("asal", "asal@example.com", "asalPassword");
-//        createAdminUser("Arab Company", "arabcompany@example.com", "arabCompanyPassword");
-//        createAdminUser("international", "international@example.com", "internationalPassword");
-//    }
-
 
     public void run(String... args) throws Exception {
         // Example data for demonstration purposes
@@ -64,19 +57,10 @@ public class AdminUserInitializer implements CommandLineRunner {
         );
     }
 
-//    private void createAdminUser(Long idNumber, String firstName, String lastName, String userName, Long phoneNumber, String email, Date birthDate, String role, String password) {
-//        if (!userRepository.existsByUsername(userName)) {
-//            User admin = new User(idNumber, firstName, lastName, userName, phoneNumber , email, birthDate, role,  passwordEncoder.encode(password));
-//            admin.setRole(ERole.ROLE_ADMIN);
-//            userRepository.save(admin);
-//            System.out.println("Admin user " + userName + " created");
-//        } else {
-//            System.out.println("Admin user " + userName + " already exists");
-//        }
-//    }
 
 
     private void createAdminUser(Long idNumber, String firstName, String lastName, String username, Long phoneNumber, String email, Date birthDate, ERole role, String password) {
+
         // Checking blank fields
         if (username == null || username.trim().isEmpty()) {
             System.out.println("Username CAN NOT be blank");
@@ -102,33 +86,5 @@ public class AdminUserInitializer implements CommandLineRunner {
         }
     }
 }
-//    private void createAdminUser(Long idNumber, String firstName, String lastName, String userName, Long phoneNumber, String email, Date birthDate, String role, String password) {
-//        // Check if username is blank or null
-//        if (userName == null || userName.trim().isEmpty()) {
-//            System.out.println("Username cannot be blank");
-//            return;
-//        }
-//
-//        // Check if email is blank or null
-//        if (email == null || email.trim().isEmpty()) {
-//            System.out.println("Email cannot be blank");
-//            return;
-//        }
-//
-//        // Check if password is blank or null
-//        if (password == null || password.trim().isEmpty()) {
-//            System.out.println("Password cannot be blank");
-//            return;
-//        }
-//
-//        if (!userRepository.existsByUsername(userName)) {
-//            User admin = new User(idNumber, firstName, lastName, phoneNumber, birthDate, userName, email, passwordEncoder.encode(password), ERole.ROLE_ADMIN);
-//            userRepository.save(admin);
-//            System.out.println("Admin user " + userName + " created");
-//        } else {
-//            System.out.println("Admin user " + userName + " already exists");
-//        }
-//    }
-//
-//}
+
 
