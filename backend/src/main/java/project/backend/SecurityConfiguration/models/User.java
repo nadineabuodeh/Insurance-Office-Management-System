@@ -4,81 +4,151 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import project.backend.models.Transaction;
+
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "users",
-    uniqueConstraints = {
-      @UniqueConstraint(columnNames = "username"),
-      @UniqueConstraint(columnNames = "email")
-    })
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "username"),
+                @UniqueConstraint(columnNames = "email")
+        })
+
+//id, idNumber,firstName,lastName, userName, phoneNumber, email, birthDate, role, password
+
 public class User {
-  
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
 
-  @NotBlank
-  @Size(max = 20)
-  private String username;
+    @OneToMany(mappedBy = "user")
+    private List<Transaction> transactions;
 
-  @NotBlank
-  @Size(max = 50)
-  @Email
-  private String email;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  @NotBlank
-  @Size(max = 120)
-  private String password;
+    private Long idNumber;
+    private String firstName;
+    private String lastName;
+    private Long phoneNumber;
+    private Date birthDate;
 
-  @Enumerated(EnumType.STRING)
-  private ERole role;
+    @NotBlank
+    @Size(max = 20)
+    private String username;
 
-  public User() {
-  }
+    @NotBlank
+    @Size(max = 50)
+    @Email
+    private String email;
 
-  public User(String username, String email, String password) {
-    this.username = username;
-    this.email = email;
-    this.password = password;
-  }
+    @NotBlank
+    @Size(max = 120)
+    private String password;
 
-  public Long getId() {
-    return id;
-  }
+    @Enumerated(EnumType.STRING)
+    private ERole role;
 
-  public void setId(Long id) {
-    this.id = id;
-  }
+    public User() {
+    }
 
-  public String getUsername() {
-    return username;
-  }
+    public User(Long idNumber, String firstName, String lastName, Long phoneNumber, Date birthDate, String username, String email, String password, ERole role) {
+        this.idNumber = idNumber;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.birthDate = birthDate;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
 
-  public void setUsername(String username) {
-    this.username = username;
-  }
+    public String getLastName() {
+        return lastName;
+    }
 
-  public String getEmail() {
-    return email;
-  }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-  public void setEmail(String email) {
-    this.email = email;
-  }
+    public Long getPhoneNumber() {
+        return phoneNumber;
+    }
 
-  public String getPassword() {
-    return password;
-  }
+    public void setPhoneNumber(Long phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 
-  public void setPassword(String password) {
-    this.password = password;
-  }
+    public Date getBirthDate() {
+        return birthDate;
+    }
 
-  public ERole getRole() {
-    return role;
-  }
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
 
-  public void setRole(ERole role) {
-    this.role = role;
-  }
+    public Long getIdNumber() {
+        return idNumber;
+    }
+
+    public void setIdNumber(Long idNumber) {
+        this.idNumber = idNumber;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public ERole getRole() {
+        return role;
+    }
+
+    public void setRole(ERole role) {
+        this.role = role;
+    }
+
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
+    }
 }
