@@ -27,6 +27,14 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    //***********************************************
+    @Autowired
+    public UserService(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+    //***********************************************
+
+
     // Convert User entity to UserDTO
     private UserDTO convertToDTO(User user) {
         UserDTO dto = new UserDTO();
@@ -81,16 +89,23 @@ public class UserService {
                 .orElse(null);
     }
 
-    public UserDTO createUser(UserDTO userDTO) {
-        //done
+
+    public UserDTO createUser(UserDTO userDTO) {//donne
         User user = convertToEntity(userDTO);
+        logger.info("Original password: {}", userDTO.getPassword());
+        String encodedPassword = passwordEncoder.encode(userDTO.getPassword());
+        logger.info("Encoded password: {}", encodedPassword);
+        user.setPassword(encodedPassword);
         return convertToDTO(userRepository.save(user));
     }
+
 
     public UserDTO updateUser(Long id, UserDTO userDTO) {
         User user = userRepository.findById(id).orElse(null);
         if (user != null) {
             user = convertToEntity(userDTO);
+            user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+
             return convertToDTO(userRepository.save(user));
         }
         return null;

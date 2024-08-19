@@ -6,111 +6,126 @@ import project.backend.SecurityConfiguration.models.User;
 import java.util.Date;
 
 
+@Entity
+@Table(name = "transactions")
+public class Transaction {
 
-    @Entity
-    @Table(name = "transactions")
-    public class Transaction {
 
-        @ManyToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name = "user_id")
-        private User user;
+    //==============================
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+    //==============================
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "policy_id")
+    private Policy policy;
+    //==============================
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
 
-        private Date startDate;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-        private Double amount;
+    private Date startDate;
 
-        private Date endDate;
+    private Double amount;
 
-        private TransactionType transactionType;
+    private Date endDate;
 
-        private Date createdAt;
+    private TransactionType transactionType;
 
-        private Date updatedAt;
+    private Date createdAt;
 
-        public Transaction() {
-        }
+    private Date updatedAt;
 
-        public Transaction(Long id, Date startDate, Double amount, Date endDate, TransactionType transactionType, Date createdAt, Date updatedAt, User user) {
-            this.id = id;
-            this.startDate = startDate;
-            this.amount = amount;
-            this.endDate = endDate;
-            this.transactionType = transactionType;
-            this.createdAt = createdAt;
-            this.updatedAt = updatedAt;
-            this.user = user;
-        }
+    public Transaction() {
+    }
 
-        public User getUser() {
-            return user;
-        }
+    public Transaction(Long id, Date startDate, Double amount, Date endDate, TransactionType transactionType, Date createdAt, Date updatedAt, User user, Policy policy) {
+        this.id = id;
+        this.startDate = startDate;
+        this.amount = amount;
+        this.endDate = endDate;
+        this.transactionType = transactionType;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.user = user;
+        this.policy = policy;
+    }
 
-        public void setUser(User user) {
-            this.user = user;
-        }
+    public User getUser() {
+        return user;
+    }
 
-        public Long getId() {
-            return id;
-        }
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-        public Date getStartDate() {
-            return startDate;
-        }
+    public Long getId() {
+        return id;
+    }
 
-        public void setId(Long id) {
-            this.id = id;
-        }
+    public Date getStartDate() {
+        return startDate;
+    }
 
-        public Date getStartDatestartDate() {
-            return startDate;
-        }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-        public void setStartDate(Date startDate) {
-            this.startDate = startDate;
-        }
+    public Date getStartDatestartDate() {
+        return startDate;
+    }
 
-        public Double getAmount() {
-            return amount;
-        }
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
 
-        public void setAmount(Double amount) {
-            this.amount = amount;
-        }
+    public Double getAmount() {
+        return amount;
+    }
 
-        public Date getEndDate() {
-            return endDate;
-        }
+    public void setAmount(Double amount) {
+        this.amount = amount;
+    }
 
-        public void setEndDate(Date endDate) {
-            this.endDate = endDate;
-        }
+    public Date getEndDate() {
+        return endDate;
+    }
 
-        public TransactionType getTransactionType() {
-            return transactionType;
-        }
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
 
-        public void setTransactionType(TransactionType transactionType) {
-            this.transactionType = transactionType;
-        }
+    public TransactionType getTransactionType() {
+        return transactionType;
+    }
 
-        public Date getCreatedAt() {
-            return createdAt;
-        }
+    public void setTransactionType(TransactionType transactionType) {
+        this.transactionType = transactionType;
+    }
 
-        public void setCreatedAt(Date createdAt) {
-            this.createdAt = createdAt;
-        }
+    public Date getCreatedAt() {
+        return createdAt;
+    }
 
-        public Date getUpdatedAt() {
-            return updatedAt;
-        }
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
 
-        public void setUpdatedAt(Date updatedAt) {
-            this.updatedAt = updatedAt;
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
 
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public Policy getPolicy() {
+        return policy;
+    }
+
+    public void setPolicy(Policy policy) {
+        this.policy = policy;
     }
 }
