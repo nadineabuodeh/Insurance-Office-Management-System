@@ -27,7 +27,7 @@ public class User {
     //-----------------------------------------
     @OneToMany(mappedBy = "user")
     private List<Policy> policies;
-    //-----------------------------------------
+   //-----------------------------------------
 
 
     @Id
@@ -157,5 +157,13 @@ public class User {
 
     public void setTransactions(List<Transaction> transactions) {
         this.transactions = transactions;
+    }
+
+    public List<Policy> getPolicies() {
+        return policies;
+    }
+
+    public void setPolicies(List<Policy> policies) {
+        this.policies = policies;
     }
 }
