@@ -58,10 +58,10 @@ public class User {
 
     @ManyToOne
     @JoinColumn(name = "admin_id")
-    private User admin; // For Customers, this refers to their Admin
+    private User admin;
 
     @OneToMany(mappedBy = "admin")
-    private List<User> customers; // For Admins, this refers to their Customers
+    private List<User> customers;
 
 
     public User() {

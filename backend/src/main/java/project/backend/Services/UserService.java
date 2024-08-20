@@ -108,7 +108,6 @@ public class UserService {
         logger.info("Original password: {}", generatedPassword);
         user.setPassword(passwordEncoder.encode(generatedPassword));
 
-        // Extract admin ID from the JWT token
         String adminUsername = jwtUtils.getUserNameFromJwtToken(jwtToken);
         User admin = userRepository.findByUsername(adminUsername)
                 .orElseThrow(() -> new ResourceNotFoundException("Admin not found with username: " + adminUsername));
