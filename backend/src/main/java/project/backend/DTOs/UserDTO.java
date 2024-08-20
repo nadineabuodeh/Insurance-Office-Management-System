@@ -2,6 +2,8 @@ package project.backend.DTOs;
 
 import java.util.Date;
 
+import project.backend.SecurityConfiguration.models.User;
+
 public class UserDTO {
     private Long id;
     private Long idNumber;
@@ -110,4 +112,5 @@ public class UserDTO {
     public void setPassword(String password) {
         this.password = password;
     }
+
 }

@@ -3,7 +3,7 @@ package project.backend.models;
 import jakarta.persistence.*;
 import project.backend.SecurityConfiguration.models.User;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 
 @Entity
@@ -26,22 +26,22 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Date startDate;
+    private LocalDate startDate;
 
     private Double amount;
 
-    private Date endDate;
+    private LocalDate endDate;
 
     private TransactionType transactionType;
 
-    private Date createdAt;
+    private LocalDate createdAt;
 
-    private Date updatedAt;
+    private LocalDate updatedAt;
 
     public Transaction() {
     }
 
-    public Transaction(Long id, Date startDate, Double amount, Date endDate, TransactionType transactionType, Date createdAt, Date updatedAt, User user, Policy policy) {
+    public Transaction(Long id, LocalDate startDate, Double amount, LocalDate endDate, TransactionType transactionType, LocalDate createdAt, LocalDate updatedAt, User user, Policy policy) {
         this.id = id;
         this.startDate = startDate;
         this.amount = amount;
@@ -65,7 +65,7 @@ public class Transaction {
         return id;
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
@@ -73,11 +73,11 @@ public class Transaction {
         this.id = id;
     }
 
-    public Date getStartDatestartDate() {
+    public LocalDate getStartDatestartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
@@ -89,11 +89,11 @@ public class Transaction {
         this.amount = amount;
     }
 
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 
@@ -105,19 +105,19 @@ public class Transaction {
         this.transactionType = transactionType;
     }
 
-    public Date getCreatedAt() {
+    public LocalDate getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(LocalDate createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdatedAt() {
+    public LocalDate getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(LocalDate updatedAt) {
         this.updatedAt = updatedAt;
     }
 

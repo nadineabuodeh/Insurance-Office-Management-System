@@ -56,6 +56,14 @@ public class User {
     @Enumerated(EnumType.STRING)
     private ERole role;
 
+    @ManyToOne
+    @JoinColumn(name = "admin_id")
+    private User admin; // For Customers, this refers to their Admin
+
+    @OneToMany(mappedBy = "admin")
+    private List<User> customers; // For Admins, this refers to their Customers
+
+
     public User() {
     }
 
@@ -157,5 +165,21 @@ public class User {
 
     public void setTransactions(List<Transaction> transactions) {
         this.transactions = transactions;
+    }
+
+    public User getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(User admin) {
+        this.admin = admin;
+    }
+
+    public List<User> getCustomers() {
+        return customers;
+    }
+
+    public void setCustomers(List<User> customers) {
+        this.customers = customers;
     }
 }

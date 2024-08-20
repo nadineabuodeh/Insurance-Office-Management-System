@@ -1,13 +1,16 @@
 package project.backend.Controllers;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.backend.DTOs.TransactionDTO;
 import project.backend.Services.TransactionService;
-import project.backend.models.Transaction;
+import project.backend.exceptions.ResourceNotFoundException;
 
 import java.util.List;
+
+@SuppressWarnings("null")
 @RestController
 @RequestMapping("/transactions")
 public class TransactionController {
@@ -16,27 +19,52 @@ public class TransactionController {
     private TransactionService transactionService;
 
     @GetMapping
-    public List<TransactionDTO> getAllTransactions() {
-        return transactionService.getAllTransactions();
+    public ResponseEntity<List<TransactionDTO>> getAllTransactions() {
+        List<TransactionDTO> transactions = transactionService.getAllTransactions();
+        return new ResponseEntity<>(transactions, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public TransactionDTO getTransactionById(@PathVariable Long id) {
-        return transactionService.getTransactionById(id);
+    public ResponseEntity<TransactionDTO> getTransactionById(@PathVariable Long id) {
+        try {
+            TransactionDTO transactionDTO = transactionService.getTransactionById(id);
+            return new ResponseEntity<>(transactionDTO, HttpStatus.OK);
+        } catch (ResourceNotFoundException ex) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping
-    public TransactionDTO createTransaction(@RequestBody TransactionDTO transactionDTO) {
-        return transactionService.createTransaction(transactionDTO);
+    public ResponseEntity<TransactionDTO> createTransaction(@RequestBody TransactionDTO transactionDTO) {
+        try {
+            TransactionDTO createdTransaction = transactionService.createTransaction(transactionDTO);
+            return new ResponseEntity<>(createdTransaction, HttpStatus.CREATED);
+        } catch (ResourceNotFoundException ex) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        } catch (IllegalArgumentException ex) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("/{id}")
-    public TransactionDTO updateTransaction(@PathVariable Long id, @RequestBody TransactionDTO transactionDTO) {
-        return transactionService.updateTransaction(id, transactionDTO);
+    public ResponseEntity<TransactionDTO> updateTransaction(@PathVariable Long id, @RequestBody TransactionDTO transactionDTO) {
+        try {
+            TransactionDTO updatedTransaction = transactionService.updateTransaction(id, transactionDTO);
+            return new ResponseEntity<>(updatedTransaction, HttpStatus.OK);
+        } catch (ResourceNotFoundException ex) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        } catch (IllegalArgumentException ex) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping("/{id}")
-    public void deleteTransaction(@PathVariable Long id) {
-        transactionService.deleteTransaction(id);
+    public ResponseEntity<Void> deleteTransaction(@PathVariable Long id) {
+        try {
+            transactionService.deleteTransaction(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (ResourceNotFoundException ex) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }
