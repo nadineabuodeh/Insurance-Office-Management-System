@@ -22,46 +22,43 @@ public class AdminUserInitializer implements CommandLineRunner {
 
 
     public void run(String... args) throws Exception {
-        // Example data for demonstration purposes
-        createAdminUser(123456L,               // idNumber
-                "Admin",                        // firstName
-                "User",                         // lastName
-                "asal",                         // userName
-                1234567890L,                    // phoneNumber
-                "asal@example.com",             // email
-                new Date(),                     // birthDate
-                ERole.ROLE_ADMIN,               // role
-                "asalPassword"                  // password
+        createAdminUser(123456L,              
+                "Admin",                        
+                "User",                        
+                "asal",                         
+                1234567890L,                   
+                "asal@example.com",             
+                new Date(),                     
+                ERole.ROLE_ADMIN,              
+                "asalPassword"                  
         );
 
-        createAdminUser(654321L,       // idNumber
-                "Arab",                         // firstName
-                "Company",                      // lastName
-                "arabcompany",                  // userName
-                9876543210L,                    // phoneNumber
-                "arabcompany@example.com",      // email
-                new Date(),                     // birthDate
-                ERole.ROLE_ADMIN,               // role
-                "arabCompanyPassword"           // password
+        createAdminUser(654321L,      
+                "Arab",                         
+                "Company",                     
+                "arabcompany",                  
+                9876543210L,                   
+                "arabcompany@example.com",      
+                new Date(),                     
+                ERole.ROLE_ADMIN,              
+                "arabCompanyPassword"           
         );
 
-        createAdminUser(789456L,                        // idNumber
-                "International",                // firstName
-                "User",                         // lastName
-                "international",                // userName
-                1122334455L,                    // phoneNumber
-                "international@example.com",    // email
-                new Date(),                     // birthDate
-                ERole.ROLE_ADMIN,               // role
-                "internationalPassword"         // password
+        createAdminUser(789456L,                       
+                "International",                
+                "User",                        
+                "international",                
+                1122334455L,                   
+                "international@example.com",    
+                new Date(),                     
+                ERole.ROLE_ADMIN,              
+                "internationalPassword"       
         );
     }
 
 
 
     private void createAdminUser(Long idNumber, String firstName, String lastName, String username, Long phoneNumber, String email, Date birthDate, ERole role, String password) {
-
-        // Checking blank fields
         if (username == null || username.trim().isEmpty()) {
             System.out.println("Username CAN NOT be blank");
             return;
@@ -79,7 +76,6 @@ public class AdminUserInitializer implements CommandLineRunner {
 
         if (!userRepository.existsByUsername(username)) {
             User admin = new User(idNumber, firstName, lastName, phoneNumber, birthDate, username, email, passwordEncoder.encode(password), role);
-//            User admin = new User(idNumber, firstName, lastName, phoneNumber, birthDate, username, email, password, role);
            System.out.println("pppp:   "+passwordEncoder.encode(password));
 
             userRepository.save(admin);

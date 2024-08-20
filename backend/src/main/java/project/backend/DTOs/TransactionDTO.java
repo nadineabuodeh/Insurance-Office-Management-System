@@ -2,26 +2,26 @@ package project.backend.DTOs;
 
 import project.backend.models.TransactionType;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class TransactionDTO {
     private Long id;
 
-    private Date startDate;
+    private LocalDate startDate;
 
     private Double amount;
 
-    private Date endDate;
+    private LocalDate endDate;
 
     private TransactionType transactionType;
 
-    private Date createdAt;
+    private LocalDate createdAt;
 
-    private Date updatedAt;
+    private LocalDate updatedAt;
 
     private Long userId;
 
-    public TransactionDTO(Long id,Long userId, Date startDate, Double amount, Date endDate, TransactionType transactionType, Date createdAt, Date updatedAt) {
+    public TransactionDTO(Long id,Long userId, LocalDate startDate, Double amount, LocalDate endDate, TransactionType transactionType, LocalDate createdAt, LocalDate updatedAt) {
         this.id = id;
         this.userId = userId;
         this.startDate = startDate;
@@ -50,11 +50,11 @@ public class TransactionDTO {
         this.id = id;
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
@@ -66,11 +66,11 @@ public class TransactionDTO {
         this.amount = amount;
     }
 
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 
@@ -82,19 +82,19 @@ public class TransactionDTO {
         this.transactionType = transactionType;
     }
 
-    public Date getCreatedAt() {
+    public LocalDate getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(LocalDate createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdatedAt() {
+    public LocalDate getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(LocalDate updatedAt) {
         this.updatedAt = updatedAt;
     }
 }
