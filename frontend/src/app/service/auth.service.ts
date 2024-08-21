@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { LoginRequest } from '../model/login-request';
 import { JwtResponse } from '../model/jwt-response';
-// import { CookieService } from 'ngx-cookie-service';
 import { catchError, tap, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 
@@ -15,37 +14,47 @@ export class AuthService {
 
   constructor(private http: HttpClient , private router: Router) { }
 
-
   login(loginRequest: LoginRequest): Observable<JwtResponse> {
     return this.http.post<JwtResponse>(`${this.baseUrl}/signin`, loginRequest)
       .pipe(
         tap(response => {
-          console.log('Backend response:', response);
-          if (response.token) { // Check if token exists
-            console.log('JWT Token:', response.token); // Print the JWT token
+          console.log('Full Backend Response:', response);
+          if (response && response.accessToken) {
+            console.log('JWT Token:', response.accessToken);
+            const role = response.roles[0];
+            this.saveToken(response.accessToken, role);
+          } else {
+            console.warn('Token is undefined or null');
           }
         }),
         catchError(this.handleError)
       );
-  
   }  
 
-  logout(): void {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('tokenExpiration');
-    localStorage.removeItem('userRole');
-    this.router.navigate(['/login']);
-  }
-
-  saveToken(jwtResponse: JwtResponse): void {
+  saveToken(token: string, role: string): void {
     const now = new Date();
     const expirationTime = now.getTime() + 3600 * 1000;
 
-    localStorage.setItem('authToken', jwtResponse.token);
+    localStorage.setItem('authToken', token);
     localStorage.setItem('tokenExpiration', expirationTime.toString());
-    localStorage.setItem('userRole', jwtResponse.roles[0]);
+    localStorage.setItem('userRole', role);
+    console.log('Token saved:', token);
   }
 
+  logout(): void {
+    const tokenBeforeLogout = localStorage.getItem('authToken');
+    console.log('Token before logout:', tokenBeforeLogout);
+  
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('tokenExpiration');
+    localStorage.removeItem('userRole');
+  
+    const tokenAfterLogout = localStorage.getItem('authToken');
+    console.log('Token after logout:', tokenAfterLogout);
+  
+    this.router.navigate(['/login']);
+  }  
+  
   isTokenExpired(): boolean {
     const expiration = localStorage.getItem('tokenExpiration');
     if (expiration) {

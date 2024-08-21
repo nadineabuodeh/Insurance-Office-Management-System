@@ -25,11 +25,13 @@ export class LoginComponent {
   onSubmit(): void {
     this.authService.login(this.loginRequest).subscribe({
       next: (response) => {
-        this.authService.saveToken(response);
+        const token = response.accessToken;
+        const role = response.roles[0]; 
+        this.authService.saveToken(token, role); 
         this.redirectBasedOnRole();
       },
       error: (error: Error) => {
-        this.errorMessage = error.message;
+        this.showToast(error.message);
       }
     });
   }

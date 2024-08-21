@@ -62,11 +62,6 @@ public class User {
 
     @OneToMany(mappedBy = "admin")
     private List<User> customers;
-<<<<<<< HEAD
-   //==========================
-=======
-
->>>>>>> 8e52b66fdf60a40468a66a2d9dc43bd91c131c48
 
     public User() {
     }

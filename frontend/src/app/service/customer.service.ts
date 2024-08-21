@@ -23,14 +23,14 @@ export class CustomerService {
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
-  // private getAuthHeaders(): HttpHeaders {
-  //   const token = localStorage.getItem('authToken');
-  //   console.log("TOKEN->"+token)
-  //   return new HttpHeaders({
-  //     'Content-Type': 'application/json',
-  //     'Authorization': `Bearer ${token}`
-  //   });
-  // }
+  private getAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem('authToken');
+    console.log("TOKEN->"+token)
+    return new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+  }
 
   getCustomers(): Observable<Customer[]> {
     return this.http.get<Customer[]>(this.baseUrl); 
