@@ -1,0 +1,70 @@
+import { Component, Inject } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { PolicyService } from '../../../service/policy.service';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { CommonModule } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { PolicyFormFieldsComponent } from '../policy-form-fields/policy-form-fields.component';
+
+@Component({
+  selector: 'app-policy-form',
+  standalone: true,
+  imports: [CommonModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    PolicyFormFieldsComponent,],
+  templateUrl: './policy-form.component.html',
+  styleUrl: './policy-form.component.css'
+})
+export class PolicyFormComponent {
+  policyForm: FormGroup;
+  isEditMode: boolean = false;
+  existingPolicyData: any;
+
+  constructor(private fb: FormBuilder,
+              private policyService: PolicyService,
+              private dialogRef: MatDialogRef<PolicyFormComponent>,
+              private dialog: MatDialog,
+              @Inject(MAT_DIALOG_DATA) public data: any) {
+
+    this.policyForm = this.fb.group({
+      startDate: ['', Validators.required],
+      endDate: ['', Validators.required],
+      totalAmount: ['', [Validators.required, Validators.min(0)]],
+      coverageDetails: ['', Validators.required],
+      userId: ['', Validators.required],
+      insuranceId: ['', Validators.required]
+    });
+
+    this.dialogRef.disableClose = true;
+  }
+
+  ngOnInit() {
+    if (this.data && this.data.policy) {
+      this.policyForm.patchValue(this.data.policy);
+      this.isEditMode = true;
+    }
+  }
+
+  onSubmit() {
+    if (this.policyForm.valid) {
+      const policyData = this.policyForm.value;
+
+      if (this.isEditMode) {
+        this.policyService.updatePolicy(policyData.id, policyData);
+      } else {
+        this.policyService.addPolicy(policyData);
+      }
+
+      this.dialogRef.close(policyData);
+    }
+  }
+}

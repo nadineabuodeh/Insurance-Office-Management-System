@@ -1,0 +1,86 @@
+.policy-layout-container {
+    padding: 20px;
+    width: 100%;
+  }
+  .icons{
+    width: 25px;
+    padding: 10px;
+  }
+  .add-policy-btn {
+    width: 200px;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    color: #134B70;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-bottom: 25px;
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  .styled-table {
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    margin-top: 10px;
+    box-shadow: #1d455f;
+  }
+  
+  .styled-table th {
+    background-color: #1d455f;
+    color: #FFFFFF;
+    text-align: center;
+    padding: 12px;
+    font-size: 16px;
+  }
+  
+  .styled-table td {
+    padding: 12px;
+    font-size: 14px;
+    color: #134870;
+    text-align: center;
+    border-bottom: 1px solid #508C9B;
+  }
+  
+  .styled-table tr:hover {
+    background-color: #F1F1F1;
+  }
+  
+  .styled-table tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .empty-table-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #EEEEEE;
+    color: #201E43;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    margin-left: 40px;
+    text-align: center;
+  }
+  
+  .empty-icon {
+    width: 10px;
+    height: 10px;
+    opacity: 0.7;
+  }
+  
+  .empty-text {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .empty-subtext {
+    font-size: 16px;
+    color: #508C9B;
+    margin-top: 0;
+  }
+  
