@@ -72,7 +72,6 @@ export class PolicyFormFieldsComponent {
       this.insuranceControl.setValue(selectedInsurance ? selectedInsurance.name : '');
     }
 
-    // Update formGroup with selected user and insurance IDs
     this.userControl.valueChanges.subscribe(value => {
       const selectedUser = this.users.find(user => user.name === value);
       this.formGroup.patchValue({ userId: selectedUser ? selectedUser.id : null });

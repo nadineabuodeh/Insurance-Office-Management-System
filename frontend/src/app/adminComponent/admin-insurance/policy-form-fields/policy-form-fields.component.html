@@ -33,7 +33,6 @@
         <mat-error *ngIf="formGroup.get('coverageDetails')?.hasError('required')">Coverage Details are required</mat-error>
       </mat-form-field>
   
-       <!-- User Combo Box -->
        <mat-form-field appearance="fill" class="custom-form-field">
         <mat-label>Select User</mat-label>
         <input type="text" matInput [formControl]="userControl" [matAutocomplete]="autoUser" />
