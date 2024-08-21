@@ -6,7 +6,7 @@ import { CustomerDashboardComponent } from './customerComponent/customer-dashboa
 import { adminGuard } from './service/admin.guard';
 import { customerGuard } from './service/customer.guard';
 import { UnauthorizedComponent } from './mainComponent/unauthorized/unauthorized.component';
-import { AdminInsuranceComponent } from './adminComponent/admin-insurance/admin-insurance.component';
+import { AdminInsuranceComponent } from './adminComponent/admin-insurance/policy-layout/admin-insurance.component';
 import { AdminTransactionsComponent } from './adminComponent/admin-transactions/admin-transactions.component';
 import { AdminNotificationsComponent } from './adminComponent/admin-notifications/admin-notifications.component';
 import { AdminReportsComponent } from './adminComponent/admin-reports/admin-reports.component';

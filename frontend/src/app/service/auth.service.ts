@@ -27,9 +27,9 @@ export class AuthService {
         }),
         catchError(this.handleError)
       );
-  }
   
-  
+  }  
+
   logout(): void {
     localStorage.removeItem('authToken');
     localStorage.removeItem('tokenExpiration');
