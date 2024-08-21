@@ -1,5 +1,6 @@
 package project.backend.Controllers;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,10 +13,15 @@ import project.backend.exceptions.ResourceAlreadyExistsException;
 import project.backend.exceptions.ResourceNotFoundException;
 
 import java.util.List;
+import java.util.logging.Logger;
+import org.slf4j.LoggerFactory;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/users")
 @SuppressWarnings("null")
+
+
 public class UserController {
 
     @Autowired
@@ -43,12 +49,17 @@ public class UserController {
             String jwtToken = request.getHeader("Authorization").substring(7);
             UserDTO createdUser = userService.createUser(userDTO, jwtToken);
             return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+
+
         } catch (ResourceAlreadyExistsException ex) {
             return new ResponseEntity<>(null, HttpStatus.CONFLICT);
         } catch (IllegalArgumentException ex) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+
+
+
 
     @PutMapping("/{id}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {

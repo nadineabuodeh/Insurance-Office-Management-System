@@ -86,7 +86,8 @@ public class UserService {
     public List<UserDTO> getAllUsers() {
         List<User> userList = userRepository.findAll();
         userList.forEach(task -> logger.info("Fetched User: {}", task));
-        List<UserDTO> userDTOList = modelMapper.map(userList, new TypeToken<List<UserDTO>>() {}.getType());
+        List<UserDTO> userDTOList = modelMapper.map(userList, new TypeToken<List<UserDTO>>() {
+        }.getType());
         userDTOList.forEach(taskDTO -> logger.info("Mapped UserDTO: {}", taskDTO));
         return userDTOList;
     }
@@ -102,7 +103,7 @@ public class UserService {
         if (userRepository.existsByEmail(userDTO.getEmail())) {
             throw new ResourceAlreadyExistsException("Email already in use: " + userDTO.getEmail());
         }
-
+       //encoding the new customers password
         User user = convertToEntity(userDTO);
         String generatedPassword = generateRandomPassword();
         logger.info("Original password: {}", generatedPassword);
@@ -121,6 +122,8 @@ public class UserService {
 
         return resultDTO;
     }
+
+
 
     private String generateRandomPassword() {
         SecureRandom random = new SecureRandom();

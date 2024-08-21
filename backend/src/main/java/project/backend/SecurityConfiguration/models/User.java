@@ -27,7 +27,7 @@ public class User {
     //-----------------------------------------
     @OneToMany(mappedBy = "user")
     private List<Policy> policies;
-   //-----------------------------------------
+    //-----------------------------------------
 
 
     @Id
@@ -55,14 +55,14 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private ERole role;
-
+    //============================
     @ManyToOne
     @JoinColumn(name = "admin_id")
-    private User admin; // For Customers, this refers to their Admin
+    private User admin;
 
     @OneToMany(mappedBy = "admin")
-    private List<User> customers; // For Admins, this refers to their Customers
-
+    private List<User> customers;
+   //==========================
 
     public User() {
     }
@@ -167,14 +167,15 @@ public class User {
         this.transactions = transactions;
     }
 
-<<<<<<< HEAD
     public List<Policy> getPolicies() {
         return policies;
     }
 
     public void setPolicies(List<Policy> policies) {
         this.policies = policies;
-=======
+    }
+
+
     public User getAdmin() {
         return admin;
     }
@@ -189,6 +190,5 @@ public class User {
 
     public void setCustomers(List<User> customers) {
         this.customers = customers;
->>>>>>> 0ea636b147ab7eced0527219c2d08e9378873d12
     }
 }
