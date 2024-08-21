@@ -1,78 +1,68 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { RouterOutlet } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { CustomerFormComponent } from '../customer-form/customer-form.component';
-import { MatDialogModule } from '@angular/material/dialog';
-import { CustomerTableRowComponent } from '../customer-table-row/customer-table-row.component';
+import { Customer, CustomerService } from '../../../service/customer.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatCard, MatCardContent } from '@angular/material/card';
-import { Customer, CustomerService } from '../../../service/customer.service';
+import { RouterOutlet } from '@angular/router';
+import { CustomerTableRowComponent } from '../customer-table-row/customer-table-row.component';
 
 @Component({
-  selector: 'app-customer-table',
-  standalone: true,
-
-
+  selector: 'app-customer-table', standalone: true,
   imports: [
-    MatTableModule, MatCard, MatCardContent,
+    FormsModule, // Add FormsModule here
+    MatTableModule,
+    MatCard,
+    MatCardContent,
     RouterOutlet,
-    CommonModule, FormsModule,
+    CommonModule,
     CustomerTableRowComponent,
     MatDialogModule,
   ],
   templateUrl: './customer-table.component.html',
   styleUrls: ['./customer-table.component.css']
 })
-
 export class CustomerTableComponent implements OnInit {
-
   displayedColumns: string[] = ['firstName', 'lastName', 'username', 'email', 'phoneNumber', 'idNumber', 'actions'];
-  // displayedColumns: string[] = ['firstName', 'lastName', 'username', 'email', 'phoneNumber', 'actions'];
-
   dataSource = new MatTableDataSource<Customer>();
   isSearchActive = false;
   searchTerm: string = '';
 
-
-  constructor(
-    private customerService: CustomerService,
-    public dialog: MatDialog) { }
+  constructor(private customerService: CustomerService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.loadCustomers();
   }
 
   loadCustomers(): void {
-    this.dataSource.data = this.customerService.getCustomers();
+    this.customerService.getCustomers().subscribe(customers => {
+      this.dataSource.data = customers;
+    });
   }
 
-
-  onAddButtonClick(): void { // opens the dialog..
+  onAddButtonClick(): void {
     const dialogRef = this.dialog.open(CustomerFormComponent, {
-      panelClass: 'custom-dialog-container', //css class
-
+      panelClass: 'custom-dialog-container',
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.customerService.addCustomer(result);
-        this.loadCustomers();
+        this.customerService.addCustomer(result).subscribe(() => {
+          this.loadCustomers();
+        });
       }
     });
   }
 
-
   deleteCustomer(id: number): void {
     if (confirm('Are you sure you want to delete this customer?')) {
-      console.log(id + ":   id")
-      this.customerService.deleteCustomer(id);
-
-      this.loadCustomers();
+      this.customerService.deleteCustomer(id).subscribe(() => {
+        this.loadCustomers();
+      });
     }
   }
-
 
   editCustomer(customer: Customer): void {
     const dialogRef = this.dialog.open(CustomerFormComponent, {
@@ -81,13 +71,12 @@ export class CustomerTableComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // this.customerService.updateCustomer(result); // Update customer
-        this.customerService.updateCustomer(customer.id, result); // Update customer bt id
-        this.loadCustomers();
+        this.customerService.updateCustomer(customer.id, result).subscribe(() => {
+          this.loadCustomers();
+        });
       }
     });
   }
-
 
   toggleSearch() {
     this.isSearchActive = !this.isSearchActive;
@@ -126,6 +115,4 @@ export class CustomerTableComponent implements OnInit {
     };
     this.dataSource.filter = filterValue;
   }
-
-
 }

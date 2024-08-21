@@ -1,5 +1,6 @@
 import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter, RouterModule } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service'; 
 
 import { routes } from './app.routes';
 import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
@@ -32,7 +33,9 @@ export const appConfig: ApplicationConfig = {
       MatTableModule,
       MatDialogModule,
       FormsModule,
-      ReactiveFormsModule
+      ReactiveFormsModule,
+
+      CookieService
     ),
       CustomerService
       , CustomerTableRowComponent]

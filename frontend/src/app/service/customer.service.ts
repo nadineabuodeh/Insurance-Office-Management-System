@@ -1,4 +1,8 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { AuthService } from './auth.service'; // Import AuthService to get the token
+import { catchError, tap, throwError } from 'rxjs';
 
 export interface Customer {
   id: number;
@@ -14,67 +18,42 @@ export interface Customer {
 @Injectable({
   providedIn: 'root'
 })
-
-
 export class CustomerService {
-  private customers: Customer[] = [];
+  private baseUrl = 'http://localhost:8080/users'; 
 
-  private storageKey = 'customers';
-  private nextId: number = 1;
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
-  constructor() {
-    this.customers = this.getCustomersFromStorage();
-    this.nextId = this.customers.length > 0 ? Math.max(...this.customers.map(c => c.id)) + 1 : 1;
+  // private getAuthHeaders(): HttpHeaders {
+  //   const token = localStorage.getItem('authToken');
+  //   console.log("TOKEN->"+token)
+  //   return new HttpHeaders({
+  //     'Content-Type': 'application/json',
+  //     'Authorization': `Bearer ${token}`
+  //   });
+  // }
 
+  getCustomers(): Observable<Customer[]> {
+    return this.http.get<Customer[]>(this.baseUrl); 
   }
 
-
-
-  getCustomers(): Customer[] {
-    return this.customers;
+  addCustomer(customer: Customer): Observable<Customer> {
+    console.log('Adding customer:', customer);
+    return this.http.post<Customer>(this.baseUrl, customer)
+      .pipe(
+        tap(response => console.log('Backend response:', response)),
+        catchError(error => {
+          console.error('Error occurred:', error);
+          return throwError(() => error);
+        })
+      );
+  }
+  
+  deleteCustomer(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`); 
   }
 
-
-  addCustomer(customer: Customer): void {
-    if (!this.customers.some(c => c.username === customer.username)) {
-      customer.id = this.nextId++;
-      this.customers.push(customer);
-      console.log("CHECK->" + customer.id + "," + customer.firstName)
-      this.saveCustomersToStorage();
-    }
+  updateCustomer(id: number, updatedCustomer: Customer): Observable<Customer> {
+    return this.http.put<Customer>(`${this.baseUrl}/${id}`, updatedCustomer); 
   }
-
-  deleteCustomer(id: number): void {
-    this.customers = this.customers.filter(c => c.id !== id);
-    this.saveCustomersToStorage();
-  }
-
-  updateCustomer(id: number, updatedCustomer: Customer): void {
-    const index = this.customers.findIndex(c => c.id === id);
-    if (index !== -1) {
-      this.customers[index] = { ...this.customers[index], ...updatedCustomer };
-      this.saveCustomersToStorage();
-    }
-  }
-
-
-
-  // -----------------------------------
-  private getCustomersFromStorage(): Customer[] {
-    const customersJson = localStorage.getItem(this.storageKey);
-    if (customersJson) {
-      return JSON.parse(customersJson).map((customer: any) => ({
-        ...customer,
-        birthDate: new Date(customer.birthDate) // strings -> date objs
-      }));
-    }
-    return [];
-  }
-
-  private saveCustomersToStorage(): void {
-    localStorage.setItem(this.storageKey, JSON.stringify(this.customers));
-  }
-
-
-
 }
+

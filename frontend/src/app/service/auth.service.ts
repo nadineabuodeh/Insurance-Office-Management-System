@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { LoginRequest } from '../model/login-request';
 import { JwtResponse } from '../model/jwt-response';
-import { CookieService } from 'ngx-cookie-service';
+// import { CookieService } from 'ngx-cookie-service';
 import { catchError, tap, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 
@@ -15,13 +15,21 @@ export class AuthService {
 
   constructor(private http: HttpClient , private router: Router) { }
 
+
   login(loginRequest: LoginRequest): Observable<JwtResponse> {
     return this.http.post<JwtResponse>(`${this.baseUrl}/signin`, loginRequest)
       .pipe(
+        tap(response => {
+          console.log('Backend response:', response);
+          if (response.token) { // Check if token exists
+            console.log('JWT Token:', response.token); // Print the JWT token
+          }
+        }),
         catchError(this.handleError)
       );
   }
-
+  
+  
   logout(): void {
     localStorage.removeItem('authToken');
     localStorage.removeItem('tokenExpiration');
