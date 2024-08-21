@@ -48,10 +48,10 @@ export class CustomerFormComponent {
     , private customerService: CustomerService
     , private dialogRef: MatDialogRef<CustomerFormComponent>
     , private dialog: MatDialog
-    , @Inject(MAT_DIALOG_DATA) public data: any 
+    , @Inject(MAT_DIALOG_DATA) public data: any
 
   ) {
-    this.maxDate = new Date(); 
+    this.maxDate = new Date();
     this.minDate = new Date();
     this.minDate.setFullYear(this.minDate.getFullYear() - 18); // Min age is 18 years ago
 
@@ -71,22 +71,21 @@ export class CustomerFormComponent {
 
   }
 
-
+  loadCustomers(): void {
+    this.customerService.getCustomers().subscribe(customers => {
+      this.customers = customers;
+    });
+  }
 
   ngOnInit() {
     if (this.data && this.data.customer) {
-      this.initialFormValue = this.data.customer; this.customerForm.patchValue(this.data.customer);
+      this.initialFormValue = this.data.customer;
+      this.customerForm.patchValue(this.data.customer);
       this.isEditMode = true;
-      this.customerName = `${this.data.customer.firstName} ${this.data.customer.lastName}`; // set customerr name
-
+      this.customerName = `${this.data.customer.firstName} ${this.data.customer.lastName}`;
     }
-    this.customers = this.getCustomersFromLocalStorage();
+    this.loadCustomers();
   }
-  getCustomersFromLocalStorage(): Customer[] {
-    const customersJson = localStorage.getItem('customers');
-    return customersJson ? JSON.parse(customersJson) : [];
-  }
-
 
 
   minAgeValidator(control: any) {
@@ -102,17 +101,17 @@ export class CustomerFormComponent {
   onSubmit() {
     if (this.customerForm.valid) {
       const customerData: Customer = this.customerForm.value;
-     
+
       if (this.isEmailDuplicate(customerData.email)) {
         this.customerForm.get('email')?.setErrors({ duplicate: true });
         return;
       }
-  
+
       if (this.isPhoneNumberDuplicate(customerData.phoneNumber)) {
         this.customerForm.get('phoneNumber')?.setErrors({ duplicate: true });
         return;
       }
-     
+
       if (this.isEditMode) {
         this.customerService.updateCustomer(customerData.id, customerData); //update
         // this.customerService.updateCustomer( customerData); //update
@@ -120,17 +119,20 @@ export class CustomerFormComponent {
       } else {
         this.customerService.addCustomer(customerData);//add
       }
-      this.dialogRef.close(customerData);
+      // this.dialogRef.close(customerData);
+      this.customerService.addCustomer(customerData).subscribe(() => {
+        this.dialogRef.close(customerData);
+      });
     }
   }
 
- isEmailDuplicate(email: string): boolean {
-  return this.customers.some(customer => customer.email === email && (!this.isEditMode || customer.id !== this.initialFormValue.id));
-}
+  isEmailDuplicate(email: string): boolean {
+    return this.customers.some(customer => customer.email === email && (!this.isEditMode || customer.id !== this.initialFormValue.id));
+  }
 
-isPhoneNumberDuplicate(phoneNumber: string): boolean {
-  return this.customers.some(customer => customer.phoneNumber === phoneNumber && (!this.isEditMode || customer.id !== this.initialFormValue.id));
-}
+  isPhoneNumberDuplicate(phoneNumber: string): boolean {
+    return this.customers.some(customer => customer.phoneNumber === phoneNumber && (!this.isEditMode || customer.id !== this.initialFormValue.id));
+  }
 
-  
+
 }
