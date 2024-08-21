@@ -32,6 +32,7 @@ export class CustomerService {
     });
   }
 
+
   getCustomers(): Observable<Customer[]> {
     return this.http.get<Customer[]>(this.baseUrl); 
   }
