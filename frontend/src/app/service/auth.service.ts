@@ -18,9 +18,10 @@ export class AuthService {
   login(loginRequest: LoginRequest): Observable<JwtResponse> {
     return this.http.post<JwtResponse>(`${this.baseUrl}/signin`, loginRequest)
       .pipe(
+        tap(response => console.log('Backend response:', response)),
         catchError(this.handleError)
       );
-  }
+  }  
 
   logout(): void {
     localStorage.removeItem('authToken');
