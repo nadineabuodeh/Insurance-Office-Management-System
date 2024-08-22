@@ -41,8 +41,9 @@ export class CustomerTableComponent implements OnInit {
       this.dataSource.data = customers;
     });
   }
+// =========================================
 
-  onAddButtonClick(): void {
+  onAddButtonClick(): void { //donne
     const dialogRef = this.dialog.open(CustomerFormComponent, {
       panelClass: 'custom-dialog-container',
     });
@@ -55,7 +56,7 @@ export class CustomerTableComponent implements OnInit {
       }
     });
   }
-
+// =========================================
   deleteCustomer(id: number): void {
     if (confirm('Are you sure you want to delete this customer?')) {
       this.customerService.deleteCustomer(id).subscribe(() => {
@@ -63,6 +64,7 @@ export class CustomerTableComponent implements OnInit {
       });
     }
   }
+// =========================================
 
   editCustomer(customer: Customer): void {
     const dialogRef = this.dialog.open(CustomerFormComponent, {
@@ -77,7 +79,8 @@ export class CustomerTableComponent implements OnInit {
       }
     });
   }
-
+// =========================================
+ 
   toggleSearch() {
     this.isSearchActive = !this.isSearchActive;
     const searchBar = document.querySelector('.search-bar') as HTMLInputElement;

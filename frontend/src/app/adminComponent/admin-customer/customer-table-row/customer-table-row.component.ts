@@ -7,7 +7,6 @@ import { Customer } from '../../../service/customer.service';
   imports: [], template: `
   <span>{{ getValue() }}</span>
 `,
-  // templateUrl: './customer-table-row.component.html',
   styleUrl: './customer-table-row.component.css'
 })
 export class CustomerTableRowComponent {

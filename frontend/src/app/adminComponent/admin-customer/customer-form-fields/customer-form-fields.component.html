@@ -28,20 +28,35 @@
     <mat-form-field appearance="fill" class="custom-form-field">
       <mat-label>Phone Number</mat-label>
       <input matInput formControlName="phoneNumber" />
+
+
       @if (formGroup.get('phoneNumber')?.hasError('required')) {
       <mat-error>Phone Number is required</mat-error>
       }
       @if (formGroup.get('phoneNumber')?.hasError('pattern')) {
-      <mat-error>Phone Number can only contain digits</mat-error>
+      <mat-error> Phone number must be 10 digits and contain only numbers</mat-error>
       }
 
       @if (formGroup.get('phoneNumber')?.hasError('duplicate')) {
-      <mat-error> Phone number is already in use
-      </mat-error>
+      <mat-error> Phone number is already in use</mat-error>
       }
     </mat-form-field>
     <!--  =================================================  -->
 
+    <mat-form-field appearance="fill" class="custom-form-field">
+      <mat-label>ID Number</mat-label>
+      <input matInput formControlName="idNumber" />
+      @if (formGroup.get('idNumber')?.hasError('required')) {
+      <mat-error>ID Number is required</mat-error>
+      }
+      @if (formGroup.get('idNumber')?.hasError('pattern')) {
+      <mat-error>ID Number must be 9 digits and contain only numbers</mat-error>
+      }
+      @if (formGroup.get('idNumber')?.hasError('duplicate')) {
+      <mat-error> ID Number must is already in use</mat-error>
+      }
+    </mat-form-field>
+    <!--  =================================================  -->
 
     <mat-form-field appearance="fill" class="custom-form-field">
       <mat-label>Email</mat-label>
@@ -59,8 +74,8 @@
       <mat-error>Email is already in use</mat-error>
       }
     </mat-form-field>
-
     <!--  =================================================  -->
+
 
     <mat-form-field appearance="fill" class="custom-form-field">
       <mat-label>Username</mat-label>
@@ -71,6 +86,9 @@
       @if (formGroup.get('username')?.hasError('pattern')) {
       <mat-error>Username can only contain letters, numbers, and underscores</mat-error>
       }
+      @if (formGroup.get('username')?.hasError('duplicate')) {
+        <mat-error>Username is already in use</mat-error>
+        }
     </mat-form-field>
     <!--  =================================================  -->
 
@@ -86,23 +104,14 @@
       }
 
       @if (formGroup.get('birthDate')?.hasError('minAge')) {
-      <mat-error> You must be at least 18 years old
-      </mat-error>
+      <mat-error> Customer must be at least 18 years old</mat-error>
       }
+
+
     </mat-form-field>
     <!--  =================================================  -->
 
 
-    <mat-form-field appearance="fill" class="custom-form-field">
-      <mat-label>ID Number</mat-label>
-      <input matInput formControlName="idNumber" />
-      @if (formGroup.get('idNumber')?.hasError('required')) {
-      <mat-error>ID Number is required</mat-error>
-      }
-      @if (formGroup.get('idNumber')?.hasError('pattern')) {
-      <mat-error>ID Number can only contain digits</mat-error>
-      }
-    </mat-form-field>
 
 
   </form>
