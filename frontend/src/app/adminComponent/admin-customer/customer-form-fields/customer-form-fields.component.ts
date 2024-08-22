@@ -28,22 +28,15 @@ export class CustomerFormFieldsComponent {
 
   private initialFormValue: any;
 
-  constructor(private dialog: MatDialog) {
-    console.log('Dialog Initialized with FormGroup:', this.formGroup);
-
-   }
+  constructor(private dialog: MatDialog) { }
 
   ngOnInit(): void {
-    // console.log('is Edit Mode:', this.isEditMode);
-    // this.initialFormValue = JSON.parse(JSON.stringify(this.formGroup.value));
     this.initialFormValue = this.formGroup.getRawValue();
-    console.log('Form Initialized:', this.formGroup.value);
-
   }
 
   onCancel(): void {
     if (this.formGroup.dirty) {
-      console.log('Form is dirty:', this.formGroup.value);
+
       if (confirm('Are you sure you want to discard your changes?')) {
 
         this.formGroup.patchValue(this.initialFormValue);
