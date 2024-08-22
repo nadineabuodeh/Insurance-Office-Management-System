@@ -97,14 +97,16 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + id));
         return convertToDTO(user);
     }
-
+//=================================================
 
     public UserDTO createUser(UserDTO userDTO, String jwtToken) {
         if (userRepository.existsByEmail(userDTO.getEmail())) {
             throw new ResourceAlreadyExistsException("Email already in use: " + userDTO.getEmail());
         }
-       //encoding the new customers password
-        User user = convertToEntity(userDTO);
+
+        User user = convertToEntity(userDTO);  //encoding the new customers password
+
+
         String generatedPassword = generateRandomPassword();
         logger.info("Original password: {}", generatedPassword);
         user.setPassword(passwordEncoder.encode(generatedPassword));
@@ -114,7 +116,7 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("Admin not found with username: " + adminUsername));
 
         user.setAdmin(admin);
-
+        ////////////////////////////
         User savedUser = userRepository.save(user);
         UserDTO resultDTO = convertToDTO(savedUser);
         resultDTO.setPassword(generatedPassword);
@@ -122,7 +124,7 @@ public class UserService {
         return resultDTO;
     }
 
-
+//=================================================
 
     private String generateRandomPassword() {
         SecureRandom random = new SecureRandom();
@@ -136,6 +138,7 @@ public class UserService {
         return password.toString();
     }
 
+//=================================================
 
     public UserDTO updateUser(Long id, UserDTO userDTO) {
         User existingUser = userRepository.findById(id)
@@ -149,6 +152,7 @@ public class UserService {
         User updatedUser = userRepository.save(userToUpdate);
         return convertToDTO(updatedUser);
     }
+//=================================================
 
     public void deleteUser(Long id) {
         if (!userRepository.existsById(id)) {

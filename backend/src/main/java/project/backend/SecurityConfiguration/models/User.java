@@ -34,10 +34,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long idNumber;
+
+    private String idNumber;
     private String firstName;
     private String lastName;
-    private Long phoneNumber;
+
+    private String phoneNumber;
     private Date birthDate;
 
     @NotBlank
@@ -66,7 +68,7 @@ public class User {
     public User() {
     }
 
-    public User(Long idNumber, String firstName, String lastName, Long phoneNumber, Date birthDate, String username, String email, String password, ERole role) {
+    public User(String idNumber, String firstName, String lastName, String phoneNumber, Date birthDate, String username, String email, String password, ERole role) {
         this.idNumber = idNumber;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -86,11 +88,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public Long getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(Long phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -102,11 +104,11 @@ public class User {
         this.birthDate = birthDate;
     }
 
-    public Long getIdNumber() {
+    public String getIdNumber() {
         return idNumber;
     }
 
-    public void setIdNumber(Long idNumber) {
+    public void setIdNumber(String idNumber) {
         this.idNumber = idNumber;
     }
 

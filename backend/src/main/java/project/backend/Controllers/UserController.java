@@ -47,7 +47,7 @@ public class UserController {
     public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO, HttpServletRequest request) {
         try {
             String jwtToken = request.getHeader("Authorization").substring(7);
-            UserDTO createdUser = userService.createUser(userDTO, jwtToken);
+            UserDTO createdUser = userService.createUser(userDTO, jwtToken);//]
             return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
 
 
@@ -59,12 +59,14 @@ public class UserController {
     }
 
 
-
-
     @PutMapping("/{id}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+        System.out.println("Received PUT request to update user with ID: " + id);
+        System.out.println("Data: " + userDTO.toString());
+
         try {
             UserDTO updatedUser = userService.updateUser(id, userDTO);
+            System.out.println("UPDATED USER: \n"+updatedUser.toString());
             return new ResponseEntity<>(updatedUser, HttpStatus.OK);
         } catch (ResourceNotFoundException ex) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
@@ -72,6 +74,9 @@ public class UserController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+
+
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {

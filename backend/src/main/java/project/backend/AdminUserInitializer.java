@@ -22,33 +22,33 @@ public class AdminUserInitializer implements CommandLineRunner {
 
 
     public void run(String... args) throws Exception {
-        createAdminUser(123456L,              
+        createAdminUser("1234567",
                 "Admin",                        
                 "User",                        
                 "asal",                         
-                1234567890L,                   
+                "0597279600",
                 "asal@example.com",             
                 new Date(),                     
                 ERole.ROLE_ADMIN,              
                 "asalPassword"                  
         );
 
-        createAdminUser(654321L,      
+        createAdminUser("6543217",
                 "Arab",                         
                 "Company",                     
                 "arabcompany",                  
-                9876543210L,                   
+                "0599316050",
                 "arabcompany@example.com",      
                 new Date(),                     
                 ERole.ROLE_ADMIN,              
                 "arabCompanyPassword"           
         );
 
-        createAdminUser(789456L,                       
+        createAdminUser("7894567",
                 "International",                
                 "User",                        
                 "international",                
-                1122334455L,                   
+                "0599316669",
                 "international@example.com",    
                 new Date(),                     
                 ERole.ROLE_ADMIN,              
@@ -58,7 +58,7 @@ public class AdminUserInitializer implements CommandLineRunner {
 
 
 
-    private void createAdminUser(Long idNumber, String firstName, String lastName, String username, Long phoneNumber, String email, Date birthDate, ERole role, String password) {
+    private void createAdminUser(String idNumber, String firstName, String lastName, String username, String phoneNumber, String email, Date birthDate, ERole role, String password) {
         if (username == null || username.trim().isEmpty()) {
             System.out.println("Username CAN NOT be blank");
             return;
