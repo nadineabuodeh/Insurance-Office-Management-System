@@ -17,7 +17,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-
+import { TreeModule } from 'primeng/tree';
 
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes),
@@ -32,7 +32,7 @@ export const appConfig: ApplicationConfig = {
       MatNativeDateModule,
       MatTableModule,
       MatDialogModule,
-      FormsModule,
+      FormsModule,TreeModule,
       ReactiveFormsModule,
 
       CookieService

@@ -1,7 +1,31 @@
+
+
+.admin-container {
+  display: flex;
+  /* margin-right: 0px; */
+}
+
 .admin-sidebar {
   position: fixed;
-  top: 80px;
+  top: 60px;
   left: 0;
+  height: calc(100vh - 60px);
+  background-color: #EEEEEE;
+  color: #EEEEEE;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); 
+  z-index: 1000;
+}
+
+.content {
+  /* margin-left: 147px; 
+  padding: 20px; 
+  margin-top: 115px;
+  margin-right:0px; */
+  position: fixed;
+  border-color: #201E43;
+  top: 60px;
+  left: 168px;
+  width: 170px;
   height: calc(100vh - 60px);
   background-color: #EEEEEE;
   color: #EEEEEE;

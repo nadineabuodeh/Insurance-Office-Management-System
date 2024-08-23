@@ -29,6 +29,8 @@ export class CustomerTableComponent implements OnInit {
   dataSource = new MatTableDataSource<Customer>();
   isSearchActive = false;
   searchTerm: string = '';
+  selectedCustomer?: Customer; 
+
 
   constructor(private customerService: CustomerService, public dialog: MatDialog) { }
 
@@ -117,5 +119,9 @@ export class CustomerTableComponent implements OnInit {
       return data.firstName.toLowerCase().includes(filter) || data.lastName.toLowerCase().includes(filter);
     };
     this.dataSource.filter = filterValue;
+  }
+
+  displayCustomerDetails(customer: Customer): void {
+    this.selectedCustomer = customer;
   }
 }

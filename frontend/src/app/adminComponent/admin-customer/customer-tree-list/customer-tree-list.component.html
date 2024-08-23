@@ -1,0 +1,17 @@
+<!-- <p-tree [value]="treeData" selectionMode="single" [style]="{'width':'15rem'}"></p-tree> -->
+<div class="secondary-sidebar">
+  <input type="text" [(ngModel)]="searchQuery" placeholder="Search customers..." class="search-input" />
+  <ul class="customer-list">
+    @for (customer of filteredCustomers(); track customer.id ; let i = $index) {
+    <li>
+      <button class="btn" (click)="onCustomerClick(customer)">
+        
+        {{ customer.firstName }} {{ customer.lastName }}
+        
+      </button>
+    </li>
+    }
+  </ul>
+</div>
+
+<app-customer-details [customer]="selectedCustomer"></app-customer-details>
