@@ -9,6 +9,10 @@ font-size: 15px;
   border-right: 1px solid #ddd;
   margin-right: 0px;
   margin-top: 8px;
+  height: 800px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(235, 229, 229) #04173c;
 }
 
 .search-input {
@@ -20,16 +24,22 @@ font-size: 15px;
   border-radius: 15px;
 }
 
+.search-input:focus{
+  border-color: #1d455f;
+  outline: none;
+}
+
 .customer-list {
-  list-style-type: none;
   padding: 0;
+  height: 800px; 
 }
 
 .btn{
   border-color: transparent;
   background-color: transparent;
   width: 100%;
-  height: 25px;
+  height: 33px;
+/* padding: 15px; */
 }
 
 .btn:hover{

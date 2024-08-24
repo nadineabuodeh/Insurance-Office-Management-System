@@ -31,11 +31,6 @@ button {
   border-collapse: collapse;
   margin-top: 10px;
   box-shadow: #1d455f;
-  /* margin-right: 410px; */
-  /* margin-left: 40px; */
-  /* margin-left: 0px;
-  margin-right: 0px; */
-
 }
 
 .styled-table th {
@@ -115,7 +110,7 @@ button {
   margin-bottom: 2px;
   margin-right: 75px;
   position: relative;
-  margin-left: 40px;
+  margin-left: 0px;
 
 }
 
@@ -133,16 +128,23 @@ button {
 .search-bar {
   display: none;
   position: absolute;
-  left: 85px;
+  left: 45px;
   top: 17px;
   padding: 5px;
   font-size: 16px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 15px;
   transition: width 0.3s, opacity 0.3s;
   opacity: 0;
   width: 0;
 }
+
+.search-bar:focus{
+  border-color: #1d455f;
+  outline: none;
+}
+
+
 
 .search-bar.active {
   display: inline-block;

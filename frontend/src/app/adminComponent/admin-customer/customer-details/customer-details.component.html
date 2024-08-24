@@ -36,8 +36,9 @@
    
     <div class="info-item">
       <label>Birth Date:</label>
-      <span>{{ customer.birthDate}}</span>
+      <span>{{ customer.birthDate | date: 'MMMM d, y' }}</span>
     </div>
+    
 
 
   </div>
@@ -49,3 +50,5 @@
     <p>No customer details available.</p>
   </div>
 </ng-template>
+
+
