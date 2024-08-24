@@ -12,9 +12,7 @@ import { DatePipe } from '@angular/common';
   styleUrl: './customer-details.component.css'
 })
 export class CustomerDetailsComponent implements OnInit {
-  // onCustomerSelected($event: Event) {
-  // throw new Error('Method not implemented.');
-  // }
+ 
 
   customer: Customer | undefined;
   activeRoute: any;
@@ -34,10 +32,8 @@ export class CustomerDetailsComponent implements OnInit {
 
           next: (data: Customer) => {
             this.customer = data;
-            console.log("FIRST NAME: " + this.customer.firstName)
           },
           error: (err) => {
-            console.error('Error fetching customer details:', err);
           }
         });
       }

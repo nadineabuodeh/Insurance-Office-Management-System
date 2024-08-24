@@ -11,8 +11,8 @@ font-size: 15px;
   margin-top: 8px;
   height: 800px;
   overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: rgb(235, 229, 229) #04173c;
+  scrollbar-color: rgb(235, 229, 229) #2d445d;
+  scrollbar-width: none; 
 }
 
 .search-input {

@@ -30,7 +30,7 @@
     </nav>
   </aside>
 
-  @if (activeRoute === 'customer') {
+  @if (activeRoute === 'customer' || activeRoute === 'customer/:id' ) {
     <div class="content">
       <div>
         <app-customer-tree-list (customerSelected)="onCustomerSelected($event)"></app-customer-tree-list>

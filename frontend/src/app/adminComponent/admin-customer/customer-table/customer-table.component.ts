@@ -1,3 +1,4 @@
+import { interval, Subscription } from 'rxjs';
 import { Component, Input, OnInit } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -33,6 +34,7 @@ export class CustomerTableComponent implements OnInit {
   dataSource = new MatTableDataSource<Customer>();
   isSearchActive = false;
   searchTerm: string = '';
+  private subscription: Subscription = new Subscription();
 
   @Input() selectedCustomer2?: Customer;
   selectedCustomer: any;
@@ -45,6 +47,9 @@ export class CustomerTableComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadCustomers();
+    this.subscription.add(
+      interval(500).subscribe(() => this.loadCustomers())
+    );
   }
 
   onCustomerSelected(customer: Customer): void {

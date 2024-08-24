@@ -34,7 +34,6 @@ export class AdminSidebarComponent {
 
   onCustomerSelected(customer: Customer): void {
     this.selectedCustomer = customer;
-    console.log("side bar customer selected: " + customer.id + " , name: " + customer.firstName)
   }
 
 }

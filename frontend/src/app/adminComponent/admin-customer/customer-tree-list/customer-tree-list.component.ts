@@ -7,6 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { Customer, CustomerService } from '../../../service/customer.service';
 import { CustomerDetailsComponent } from "../customer-details/customer-details.component";
 import { Router } from '@angular/router';
+import { interval, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-customer-tree-list',
@@ -21,12 +22,16 @@ export class CustomerTreeListComponent implements OnInit {
   errorMessage: string = '';
   selectedCustomer?: Customer;
   @Output() customerSelected = new EventEmitter<Customer>();
+  private subscription: Subscription = new Subscription();
 
   constructor(private customerService: CustomerService, private router: Router
   ) { }
 
   ngOnInit(): void {
     this.fetchCustomers();
+    this.subscription.add(
+      interval(500).subscribe(() => this.fetchCustomers()) 
+    );
   }
 
   ////////////////////////
