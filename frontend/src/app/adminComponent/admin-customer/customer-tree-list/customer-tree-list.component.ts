@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { TreeModule } from 'primeng/tree';
 import { SplitterModule } from 'primeng/splitter';
 import { FormsModule } from '@angular/forms';
@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { Customer, CustomerService } from '../../../service/customer.service';
 import { CustomerDetailsComponent } from "../customer-details/customer-details.component";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-customer-tree-list',
@@ -19,8 +20,10 @@ export class CustomerTreeListComponent implements OnInit {
   customers: Customer[] = [];
   errorMessage: string = '';
   selectedCustomer?: Customer;
+  @Output() customerSelected = new EventEmitter<Customer>();
 
-  constructor(private customerService: CustomerService) { }
+  constructor(private customerService: CustomerService, private router: Router
+  ) { }
 
   ngOnInit(): void {
     this.fetchCustomers();
@@ -46,10 +49,9 @@ export class CustomerTreeListComponent implements OnInit {
     );
   }
 
-  ////////////////////////
+
   onCustomerClick(customer: Customer): void {
-    console.log(customer.id + " clicked")
-    this.selectedCustomer = customer;
+    this.router.navigate(['/admin/customer', customer.id]); 
   }
 
 }

@@ -18,11 +18,16 @@
   </div>
 
   <!-- ============================================================================================= -->
+ <!-- @if(isCustomerSelected()){
+  <p style="color: blue; margin-left: 55px;"> tstststtstst</p>
+ } -->
+
+
 
 
   @if (dataSource.data.length>0) {
 
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 styled-table">
+  <table mat-table [dataSource]="dataSource" #showTable class="mat-elevation-z8 styled-table">
     <ng-container matColumnDef="firstName">
       <th mat-header-cell *matHeaderCellDef> First Name </th>
       <td mat-cell *matCellDef="let customer">
@@ -94,11 +99,13 @@
   </table>
   }@else {
 
-    <div class="empty-table-message">
-      <img src="./assets/logo.png" alt="No Customers" class="empty-icon">
-      <p class="empty-text">There Are No Customers!</p>
-      <p class="empty-subtext">Start adding new customers by clicking the "Add New Customer" button above.</p>
-    </div>
-    
-  }
+  <div class="empty-table-message">
+    <img src="./assets/logo.png" alt="No Customers" class="empty-icon">
+    <p class="empty-text">There Are No Customers!</p>
+    <p class="empty-subtext">Start adding new customers by clicking the "Add New Customer" button above.</p>
+  </div>
+
+}
+
+
 </div>

@@ -1,13 +1,51 @@
-<p>customer-details works!</p>
+@if (customer) {
+<div class="customer-details-container">
+  <h2 id="header">{{ customer.firstName }}  {{ customer.lastName }} Details</h2>
+<!-- <hr> -->
+  <div class="customer-info">
+    <div class="info-item">
+      <label>First Name:</label>
+      <span>{{ customer.firstName }}</span>
+    </div>
+
+    <div class="info-item">
+      <label>Last Name:</label>
+      <span>{{ customer.lastName }}</span>
+    </div>
+
+    <div class="info-item">
+      <label>Username:</label>
+      <span>{{ customer.username }}</span>
+    </div>
+
+    <div class="info-item">
+      <label>ID Number:</label>
+      <span>{{ customer.idNumber }}</span>
+    </div>
+
+    <div class="info-item">
+      <label>Phone Number:</label>
+      <span>{{ customer.phoneNumber }}</span>
+    </div>
+  
+    <div class="info-item">
+      <label>Email:</label>
+      <span>{{ customer.email }}</span>
+    </div>
+
+   
+    <div class="info-item">
+      <label>Birth Date:</label>
+      <span>{{ customer.birthDate}}</span>
+    </div>
 
 
-<!-- customer-detail.component.html -->
-<!-- 
-<div *ngIf="customer">
-  <h2>{{ customer.firstName }} {{ customer.lastName }}</h2>
-  <p><strong>Username:</strong> {{ customer.username }}</p>
-  <p><strong>Email:</strong> {{ customer.email }}</p>
-  <p><strong>Phone Number:</strong> {{ customer.phoneNumber }}</p>
-  <p><strong>ID Number:</strong> {{ customer.idNumber }}</p>
-  <p><strong>Birth Date:</strong> {{ customer.birthDate | date }}</p>
-</div> -->
+  </div>
+
+</div>
+}
+<ng-template #noCustomer>
+  <div class="no-customer-message">
+    <p>No customer details available.</p>
+  </div>
+</ng-template>

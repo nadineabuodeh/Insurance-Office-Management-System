@@ -33,10 +33,10 @@
   @if (activeRoute === 'customer') {
   <div class="content">
     <div>
-      <app-customer-tree-list></app-customer-tree-list>
+      <app-customer-tree-list (customerSelected)="onCustomerSelected($event)"></app-customer-tree-list>
+
     </div>
   </div>
 }
-
 
 </div>
