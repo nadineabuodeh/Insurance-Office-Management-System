@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { interval, Subscription } from 'rxjs';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { CustomerFormComponent } from '../customer-form/customer-form.component';
@@ -6,13 +7,16 @@ import { Customer, CustomerService } from '../../../service/customer.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatCard, MatCardContent } from '@angular/material/card';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { CustomerTableRowComponent } from '../customer-table-row/customer-table-row.component';
+import { CustomerDetailsComponent } from "../customer-details/customer-details.component";
+import { CustomerTreeListComponent } from '../customer-tree-list/customer-tree-list.component';
+import { TreeModule } from 'primeng/tree';
 
 @Component({
   selector: 'app-customer-table', standalone: true,
   imports: [
-    FormsModule, // Add FormsModule here
+    FormsModule,
     MatTableModule,
     MatCard,
     MatCardContent,
@@ -20,6 +24,7 @@ import { CustomerTableRowComponent } from '../customer-table-row/customer-table-
     CommonModule,
     CustomerTableRowComponent,
     MatDialogModule,
+    CustomerDetailsComponent, CustomerTreeListComponent, TreeModule, CustomerDetailsComponent
   ],
   templateUrl: './customer-table.component.html',
   styleUrls: ['./customer-table.component.css']
@@ -29,19 +34,37 @@ export class CustomerTableComponent implements OnInit {
   dataSource = new MatTableDataSource<Customer>();
   isSearchActive = false;
   searchTerm: string = '';
+  private subscription: Subscription = new Subscription();
 
-  constructor(private customerService: CustomerService, public dialog: MatDialog) { }
+  @Input() selectedCustomer2?: Customer;
+  selectedCustomer: any;
+
+
+  constructor(private customerService: CustomerService, public dialog: MatDialog, private router: Router) { }
+
+
+
 
   ngOnInit(): void {
     this.loadCustomers();
+    this.subscription.add(
+      interval(500).subscribe(() => this.loadCustomers())
+    );
   }
+
+  onCustomerSelected(customer: Customer): void {
+    this.selectedCustomer = customer;
+    this.router.navigate(['/admin/customer', customer.id]);
+    console.log("TABLE customer selected: " + customer.id + " , name: " + customer.firstName)
+  }
+  /////////////////////////////////
 
   loadCustomers(): void {
     this.customerService.getCustomers().subscribe(customers => {
       this.dataSource.data = customers;
     });
   }
-// =========================================
+  // =========================================
 
   onAddButtonClick(): void { //donne
     const dialogRef = this.dialog.open(CustomerFormComponent, {
@@ -56,7 +79,7 @@ export class CustomerTableComponent implements OnInit {
       }
     });
   }
-// =========================================
+  // =========================================
   deleteCustomer(id: number): void {
     if (confirm('Are you sure you want to delete this customer?')) {
       this.customerService.deleteCustomer(id).subscribe(() => {
@@ -64,7 +87,7 @@ export class CustomerTableComponent implements OnInit {
       });
     }
   }
-// =========================================
+  // =========================================
 
   editCustomer(customer: Customer): void {
     const dialogRef = this.dialog.open(CustomerFormComponent, {
@@ -79,8 +102,8 @@ export class CustomerTableComponent implements OnInit {
       }
     });
   }
-// =========================================
- 
+  // =========================================
+
   toggleSearch() {
     this.isSearchActive = !this.isSearchActive;
     const searchBar = document.querySelector('.search-bar') as HTMLInputElement;
@@ -118,4 +141,8 @@ export class CustomerTableComponent implements OnInit {
     };
     this.dataSource.filter = filterValue;
   }
+
+
+
+
 }

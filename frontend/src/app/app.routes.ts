@@ -18,6 +18,7 @@ import { CustomerPaymentHistoryComponent } from './customerComponent/customer-pa
 import { CustomerDebtsComponent } from './customerComponent/customer-debts/customer-debts.component';
 import { CustomerNotificationsComponent } from './customerComponent/customer-notifications/customer-notifications.component';
 import { CustomerTableComponent } from './adminComponent/admin-customer/customer-table/customer-table.component';
+import { CustomerDetailsComponent } from './adminComponent/admin-customer/customer-details/customer-details.component';
 
 export const routes: Routes = [
   { path: '', component: SplashScreenComponent },
@@ -30,13 +31,16 @@ export const routes: Routes = [
     children: [
       { path: 'dashboard', component: AdminDashboardComponent },
       { path: 'customer', component: CustomerTableComponent },
+      { path: 'customer/:id', component: CustomerDetailsComponent },
       { path: 'insurance', component: AdminInsuranceComponent },
       { path: 'transactions', component: AdminTransactionsComponent },
       { path: 'notifications', component: AdminNotificationsComponent },
       { path: 'reports', component: AdminReportsComponent },
+      { path: '**', redirectTo: 'dashboard' }
+      
     ]
   },
-
+  // ================================================
   {
     path: 'customer',
     component: CustomerLayoutComponent,
@@ -50,7 +54,7 @@ export const routes: Routes = [
       { path: 'notifications', component: CustomerNotificationsComponent },
     ]
   },
-  
+
   { path: 'unauthorized', component: UnauthorizedComponent },
 
   { path: '**', redirectTo: '' }

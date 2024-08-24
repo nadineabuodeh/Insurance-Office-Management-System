@@ -47,6 +47,18 @@ export class CustomerService {
         })
       );
   }
+
+
+  getCustomerById(id: number): Observable<Customer> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<Customer>(`${this.baseUrl}/${id}`, { headers })
+      .pipe(
+        catchError(error => {
+          console.error('Error fetching customer by ID:', error);
+          return throwError(() => error);
+        })
+      );
+  }
   // ==================================================================
 
   addCustomer(customer: Customer): Observable<Customer> {//pass

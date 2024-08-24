@@ -1,25 +1,39 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CustomerTreeListComponent } from "../admin-customer/customer-tree-list/customer-tree-list.component";
+import { SplitterModule } from 'primeng/splitter';
+import { TreeModule } from 'primeng/tree';
+import { CustomerDetailsComponent } from "../admin-customer/customer-details/customer-details.component";
+import { Customer } from '../../service/customer.service';
+import { CustomerTableComponent } from "../admin-customer/customer-table/customer-table.component";
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-admin-sidebar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,RouterModule, CustomerTreeListComponent, TreeModule, SplitterModule, CustomerDetailsComponent, CustomerTableComponent],
   templateUrl: './admin-sidebar.component.html',
   styleUrl: './admin-sidebar.component.css'
 })
 export class AdminSidebarComponent {
 
   activeRoute: string;
+  selectedCustomer: any;
 
   constructor(private router: Router, private route: ActivatedRoute) {
     this.activeRoute = this.route.snapshot.firstChild?.routeConfig?.path || 'dashboard';
+
+
   }
 
   navigateTo(route: string): void {
     this.router.navigate([`/admin/${route}`]);
     this.activeRoute = route;
+  }
+
+  onCustomerSelected(customer: Customer): void {
+    this.selectedCustomer = customer;
   }
 
 }
