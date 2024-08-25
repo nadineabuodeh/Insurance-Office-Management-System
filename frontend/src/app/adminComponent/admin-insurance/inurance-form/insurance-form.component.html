@@ -1,0 +1,4 @@
+<form [formGroup]="insuranceForm" (ngSubmit)="onSubmit()">
+    <app-insurance-form-fields [formGroup]="insuranceForm" [isEditMode]="isEditMode" [insuranceType]="insuranceType">
+    </app-insurance-form-fields>
+</form>  

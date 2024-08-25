@@ -11,6 +11,10 @@
             [ngClass]="{'active-link': activeRoute === 'customer'}">Customer</button>
         </li>
         <li>
+          <button (click)="navigateTo('policy')"
+            [ngClass]="{'active-link': activeRoute === 'policy'}">Policy</button>
+        </li>
+        <li>
           <button (click)="navigateTo('insurance')"
             [ngClass]="{'active-link': activeRoute === 'insurance'}">Insurance</button>
         </li>
