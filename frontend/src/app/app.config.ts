@@ -1,6 +1,6 @@
 import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter, RouterModule } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service'; 
+import { CookieService } from 'ngx-cookie-service';
 
 import { routes } from './app.routes';
 import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
@@ -21,9 +21,9 @@ import { TreeModule } from 'primeng/tree';
 
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes),
-    provideClientHydration(), HttpClientModule,provideClientHydration(),
-    provideHttpClient(), provideHttpClient(withFetch())
-    ,importProvidersFrom(
+  provideClientHydration(), HttpClientModule, provideClientHydration(),
+  provideHttpClient(), provideHttpClient(withFetch())
+    , importProvidersFrom(
       MatFormFieldModule,
       MatInputModule,
       BrowserAnimationsModule, //****************/
@@ -32,11 +32,11 @@ export const appConfig: ApplicationConfig = {
       MatNativeDateModule,
       MatTableModule,
       MatDialogModule,
-      FormsModule,TreeModule,
+      FormsModule, TreeModule,
       ReactiveFormsModule,
 
       CookieService
     ),
-      CustomerService
-      , CustomerTableRowComponent]
+    CustomerService
+    , CustomerTableRowComponent]
 };
