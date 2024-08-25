@@ -13,15 +13,18 @@ font-size: 15px;
   overflow-y: auto;
   scrollbar-color: rgb(235, 229, 229) #2d445d;
   scrollbar-width: none; 
+  /* width: 180px; */
+
 }
 
 .search-input {
-  width: 100%;
+  width: 150px;
   padding: 10px;
   height: 30px;
   margin-bottom: 10px;
   border: 0.1px solid #9594a3;
   border-radius: 15px;
+  margin-left: 7px;
 }
 
 .search-input:focus{
@@ -39,7 +42,6 @@ font-size: 15px;
   background-color: transparent;
   width: 100%;
   height: 33px;
-/* padding: 15px; */
 }
 
 .btn:hover{
@@ -56,4 +58,52 @@ font-size: 15px;
 .customer-list li:hover {
   background-color: #cfcfcf;
   cursor: pointer;
+}
+
+
+.icons {
+  max-width: 20px;
+  margin-right: 2px;
+  border: transparent;
+  position: absolute;
+  left: 165px;
+  top: 16px;
+}
+
+button{
+  border: transparent;
+}
+
+/* ========== */
+.empty-table-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #201E43;
+  padding: 40px;
+  border-radius: 10px;
+  margin-top: 20px;
+  margin-left: 0px;
+  text-align: center;
+}
+
+.empty-icon {
+  width: 100px;
+  height: 100px;
+  opacity: 0.7;
+}
+
+.empty-text {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.btn2{
+  width: 13px;
+  border: transparent;
+  position: absolute;
+  left: 133px;
+  top: 331.9px; 
 }

@@ -8,11 +8,13 @@ import { Customer, CustomerService } from '../../../service/customer.service';
 import { CustomerDetailsComponent } from "../customer-details/customer-details.component";
 import { Router } from '@angular/router';
 import { interval, Subscription } from 'rxjs';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { CustomerFormComponent } from '../customer-form/customer-form.component';
 
 @Component({
   selector: 'app-customer-tree-list',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, TreeModule, SplitterModule, FormsModule, CustomerDetailsComponent],
+  imports: [CustomerFormComponent, CommonModule, MatDialogModule, HttpClientModule, TreeModule, SplitterModule, FormsModule, CustomerDetailsComponent],
   templateUrl: './customer-tree-list.component.html',
   styleUrls: ['./customer-tree-list.component.css']
 })
@@ -24,13 +26,13 @@ export class CustomerTreeListComponent implements OnInit {
   @Output() customerSelected = new EventEmitter<Customer>();
   private subscription: Subscription = new Subscription();
 
-  constructor(private customerService: CustomerService, private router: Router
+  constructor(private customerService: CustomerService, public dialog: MatDialog, private router: Router
   ) { }
 
   ngOnInit(): void {
     this.fetchCustomers();
-    this.subscription.add(
-      interval(500).subscribe(() => this.fetchCustomers()) 
+    this.subscription.add( //to update the tree list after deletion or edition
+      interval(400).subscribe(() => this.fetchCustomers())
     );
   }
 
@@ -40,6 +42,8 @@ export class CustomerTreeListComponent implements OnInit {
     this.customerService.getCustomers().subscribe({
       next: (data: Customer[]) => {
         this.customers = data;
+        this.errorMessage = this.customers.length === 0 ? 'No customers available.' : '';
+
       },
       error: (err: any) => {
         console.error('Error fetching customers:', err);
@@ -48,15 +52,33 @@ export class CustomerTreeListComponent implements OnInit {
     });
   }
   ///////////////////////
+  
   filteredCustomers() {
     return this.customers.filter(customer =>
       (customer.firstName + ' ' + customer.lastName).toLowerCase().includes(this.searchQuery.toLowerCase())
     );
+
+
   }
 
 
   onCustomerClick(customer: Customer): void {
-    this.router.navigate(['/admin/customer', customer.id]); 
+    this.router.navigate(['/admin/customer', customer.id]);
+  }
+
+
+  onAddButtonClick(): void { //donne
+    const dialogRef = this.dialog.open(CustomerFormComponent, {
+      panelClass: 'custom-dialog-container',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.customerService.addCustomer(result).subscribe(() => {
+          this.fetchCustomers();
+        });
+      }
+    });
   }
 
 }

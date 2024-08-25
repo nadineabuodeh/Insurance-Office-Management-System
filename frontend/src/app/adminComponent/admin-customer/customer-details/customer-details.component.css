@@ -1,10 +1,6 @@
 * {
   font-family: 'Times New Roman', Times, serif;
 }
-#header{
-  border-bottom: 0.1px solid #201E43;
-  padding-bottom: 5px;
-}
 
 .customer-details-container {
   background-color: #EEEEEE;
@@ -51,4 +47,50 @@
   background-color: #134870;
   color: #EEEEEE;
   border-radius: 8px;
+}
+
+/* ------- ICONS ------- */
+.btns {
+  background-color: transparent;
+  margin-left: 5px;
+  padding-right: 1px;
+  padding-left: 1px;
+  max-width: 40px;
+  border: transparent;
+}
+
+.icons {
+  max-width: 20px;
+  margin-right: 10px;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  border-bottom: 0.1px solid #201E43;
+  margin-bottom: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+#header {
+  padding-bottom: 5px;
+  margin-right: 1px;
+  flex-grow: 1;
+
+}
+
+.empty-table-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #EEEEEE;
+  color: #201E43;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  margin-left: 40px;
+  text-align: center;
 }

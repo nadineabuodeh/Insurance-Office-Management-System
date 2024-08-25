@@ -1,7 +1,24 @@
 @if (customer) {
 <div class="customer-details-container">
-  <h2 id="header">{{ customer.firstName }}  {{ customer.lastName }} Details</h2>
-<!-- <hr> -->
+
+
+
+  <div class="container">
+
+    <h3 id="header">{{ customer.firstName }} {{ customer.lastName }} Details</h3>
+
+    <button class="btns" (click)="deleteCustomer(customer.id)">
+      <img class="icons" src="./assets/delete.png" alt="delete" title="Delete This Customer">
+    </button>
+
+    <button class="btns" (click)="editCustomer(customer)">
+      <img class="icons" src="./assets/pencil.png" alt="edit" title="Update Customer's Information">
+    </button>
+
+  </div>
+
+  <!-- <hr> -->
+
   <div class="customer-info">
     <div class="info-item">
       <label>First Name:</label>
@@ -27,28 +44,21 @@
       <label>Phone Number:</label>
       <span>{{ customer.phoneNumber }}</span>
     </div>
-  
+
     <div class="info-item">
       <label>Email:</label>
       <span>{{ customer.email }}</span>
     </div>
 
-   
+
     <div class="info-item">
       <label>Birth Date:</label>
       <span>{{ customer.birthDate | date: 'MMMM d, y' }}</span>
     </div>
-    
+
 
 
   </div>
 
 </div>
 }
-<ng-template #noCustomer>
-  <div class="no-customer-message">
-    <p>No customer details available.</p>
-  </div>
-</ng-template>
-
-

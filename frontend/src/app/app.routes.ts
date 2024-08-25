@@ -17,7 +17,6 @@ import { CustomerPaymentsComponent } from './customerComponent/customer-payments
 import { CustomerPaymentHistoryComponent } from './customerComponent/customer-payment-history/customer-payment-history.component';
 import { CustomerDebtsComponent } from './customerComponent/customer-debts/customer-debts.component';
 import { CustomerNotificationsComponent } from './customerComponent/customer-notifications/customer-notifications.component';
-import { CustomerTableComponent } from './adminComponent/admin-customer/customer-table/customer-table.component';
 import { CustomerDetailsComponent } from './adminComponent/admin-customer/customer-details/customer-details.component';
 
 export const routes: Routes = [
@@ -30,7 +29,7 @@ export const routes: Routes = [
     canActivate: [adminGuard],
     children: [
       { path: 'dashboard', component: AdminDashboardComponent },
-      { path: 'customer', component: CustomerTableComponent },
+      { path: 'customer', component: CustomerDetailsComponent },
       { path: 'customer/:id', component: CustomerDetailsComponent },
       { path: 'insurance', component: AdminInsuranceComponent },
       { path: 'transactions', component: AdminTransactionsComponent },

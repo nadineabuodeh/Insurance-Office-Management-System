@@ -6,13 +6,13 @@ import { SplitterModule } from 'primeng/splitter';
 import { TreeModule } from 'primeng/tree';
 import { CustomerDetailsComponent } from "../admin-customer/customer-details/customer-details.component";
 import { Customer } from '../../service/customer.service';
-import { CustomerTableComponent } from "../admin-customer/customer-table/customer-table.component";
+// import { CustomerTableComponent } from "../admin-customer/customer-table/customer-table.component";
 import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-admin-sidebar',
   standalone: true,
-  imports: [CommonModule,RouterModule, CustomerTreeListComponent, TreeModule, SplitterModule, CustomerDetailsComponent, CustomerTableComponent],
+  imports: [CommonModule,RouterModule, CustomerTreeListComponent, TreeModule, SplitterModule, CustomerDetailsComponent],
   templateUrl: './admin-sidebar.component.html',
   styleUrl: './admin-sidebar.component.css'
 })

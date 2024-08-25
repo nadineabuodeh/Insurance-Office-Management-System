@@ -1,5 +1,26 @@
 <div class="secondary-sidebar">
   <input type="text" [(ngModel)]="searchQuery" placeholder="Search customers..." class="search-input" />
+
+  <button class="add-search-btns" (click)="onAddButtonClick()">
+    <img class="icons" src="./assets/add.png" alt="add" title="Add New Customer">
+  </button>
+
+  @if (errorMessage) {
+ 
+  <div class="empty-table-message">
+    <img src="./assets/logo.png" alt="No Customers" class="empty-icon">
+    <p class="empty-text">There Are No Customers!</p>
+    <p class="empty-subtext"> Start adding new customers by clicking the 
+      <button  (click)="onAddButtonClick()">
+        <img class="btn2" src="./assets/add.png" alt="add" title="Add New Customer">
+      </button>
+      button above.
+    </p>
+  </div>
+  }
+
+
+
   <ul class="customer-list">
     @for (customer of filteredCustomers(); track customer.id ; let i = $index) {
     <li>
@@ -13,3 +34,4 @@
     }
   </ul>
 </div>
+
