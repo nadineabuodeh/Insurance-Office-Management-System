@@ -30,7 +30,7 @@
 }
   
 .input-group input {
-    width: 100%;
+    width: 115%;
     padding: 10px;
     border: 1px solid #508C9B;
     border-radius: 4px;
@@ -86,7 +86,7 @@
 
 .app-name {
     font-family: 'Lobster', cursive;
-    font-size: 28px;
+    font-size: 25px;
     color: #134B70;
     margin-bottom: 20px;
     margin-left: 25px;

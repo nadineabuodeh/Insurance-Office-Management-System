@@ -1,7 +1,7 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PolicyService } from '../../../service/policy.service';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
@@ -24,17 +24,17 @@ import { PolicyFormFieldsComponent } from '../policy-form-fields/policy-form-fie
   templateUrl: './policy-form.component.html',
   styleUrl: './policy-form.component.css'
 })
-export class PolicyFormComponent {
+export class PolicyFormComponent implements OnInit {
   policyForm: FormGroup;
   isEditMode: boolean = false;
-  existingPolicyData: any;
+  noUsersOrInsurances: boolean = true;
 
-  constructor(private fb: FormBuilder,
-              private policyService: PolicyService,
-              private dialogRef: MatDialogRef<PolicyFormComponent>,
-              private dialog: MatDialog,
-              @Inject(MAT_DIALOG_DATA) public data: any) {
-
+  constructor(
+    private fb: FormBuilder,
+    private policyService: PolicyService,
+    private dialogRef: MatDialogRef<PolicyFormComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
     this.policyForm = this.fb.group({
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
@@ -54,8 +54,12 @@ export class PolicyFormComponent {
     }
   }
 
+  onUsersAndInsurancesLoaded(usersAvailable: boolean, insurancesAvailable: boolean) {
+    this.noUsersOrInsurances = !(usersAvailable && insurancesAvailable);
+  }
+
   onSubmit() {
-    if (this.policyForm.valid) {
+    if (this.policyForm.valid && !this.noUsersOrInsurances) {
       const policyData = this.policyForm.value;
 
       if (this.isEditMode) {

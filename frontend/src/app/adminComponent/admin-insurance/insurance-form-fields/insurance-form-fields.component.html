@@ -1,0 +1,30 @@
+<h2 mat-dialog-title class="title">
+  {{ isEditMode ? 'Edit ' + insuranceType + ' Insurance' : 'Add New Insurance' }}
+</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="formGroup">
+    <mat-form-field appearance="fill" class="custom-form-field">
+      <mat-label>Insurance Type</mat-label>
+      <mat-select formControlName="insuranceType">
+        <mat-option *ngFor="let type of insuranceTypes" [value]="type">{{ type }}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="formGroup.get('insuranceType')?.hasError('required')">
+        Insurance Type is required
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="custom-form-field">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description" rows="5"></textarea>
+      <mat-error *ngIf="formGroup.get('description')?.hasError('required')">
+        Description is required
+      </mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" [disabled]="formGroup.invalid">Submit</button>
+</mat-dialog-actions>

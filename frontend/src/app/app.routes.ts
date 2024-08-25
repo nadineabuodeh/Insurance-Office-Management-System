@@ -6,7 +6,6 @@ import { CustomerDashboardComponent } from './customerComponent/customer-dashboa
 import { adminGuard } from './service/admin.guard';
 import { customerGuard } from './service/customer.guard';
 import { UnauthorizedComponent } from './mainComponent/unauthorized/unauthorized.component';
-import { AdminInsuranceComponent } from './adminComponent/admin-insurance/policy-layout/admin-insurance.component';
 import { AdminTransactionsComponent } from './adminComponent/admin-transactions/admin-transactions.component';
 import { AdminNotificationsComponent } from './adminComponent/admin-notifications/admin-notifications.component';
 import { AdminReportsComponent } from './adminComponent/admin-reports/admin-reports.component';
@@ -19,6 +18,8 @@ import { CustomerDebtsComponent } from './customerComponent/customer-debts/custo
 import { CustomerNotificationsComponent } from './customerComponent/customer-notifications/customer-notifications.component';
 import { CustomerTableComponent } from './adminComponent/admin-customer/customer-table/customer-table.component';
 import { CustomerDetailsComponent } from './adminComponent/admin-customer/customer-details/customer-details.component';
+import { PolicyLayoutComponent } from './adminComponent/admin-policy/policy-layout/policy-layout.component';
+import { InsuranceTableComponent } from './adminComponent/admin-insurance/insurance-table/insurance-table.component';
 
 export const routes: Routes = [
   { path: '', component: SplashScreenComponent },
@@ -32,7 +33,8 @@ export const routes: Routes = [
       { path: 'dashboard', component: AdminDashboardComponent },
       { path: 'customer', component: CustomerTableComponent },
       { path: 'customer/:id', component: CustomerDetailsComponent },
-      { path: 'insurance', component: AdminInsuranceComponent },
+      { path: 'policy', component: PolicyLayoutComponent },
+      { path: 'insurance', component: InsuranceTableComponent },
       { path: 'transactions', component: AdminTransactionsComponent },
       { path: 'notifications', component: AdminNotificationsComponent },
       { path: 'reports', component: AdminReportsComponent },
@@ -40,7 +42,6 @@ export const routes: Routes = [
       
     ]
   },
-  // ================================================
   {
     path: 'customer',
     component: CustomerLayoutComponent,

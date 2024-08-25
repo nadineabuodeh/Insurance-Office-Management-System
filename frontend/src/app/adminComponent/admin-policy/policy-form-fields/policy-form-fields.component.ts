@@ -9,6 +9,8 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { map, Observable, startWith } from 'rxjs';
+import { CustomerService } from '../../../service/customer.service';
+import { InsuranceService } from '../../../service/insurance.service';
 
 @Component({
   selector: 'app-policy-form-fields',
@@ -35,34 +37,31 @@ export class PolicyFormFieldsComponent {
   filteredUsers!: Observable<any[]>;
   filteredInsurances!: Observable<any[]>;
 
-  users = [
-    { id: 1, name: 'John Doe' },
-    { id: 2, name: 'Jane Smith' },
-    { id: 3, name: 'Michael Johnson' }
-  ];
+  users: any[] = [];
+  insurances: any[] = [];
 
-  insurances = [
-    { id: 101, name: 'Health Insurance' },
-    { id: 102, name: 'Car Insurance' },
-    { id: 103, name: 'Life Insurance' }
-  ];
-
-  private initialFormValue: any;
-
-  constructor(private dialog: MatDialog) {}
+  constructor(
+    private customerService: CustomerService,
+    private insuranceService: InsuranceService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
-    this.initialFormValue = this.formGroup.getRawValue();
+    this.customerService.getCustomers().subscribe(users => {
+      this.users = users.map(user => ({
+        id: user.id,
+        name: `${user.firstName} ${user.lastName} (${user.username})`
+      }));
+      this.initializeUserControl();
+    });
 
-    this.filteredUsers = this.userControl.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterUsers(value || ''))
-    );
-
-    this.filteredInsurances = this.insuranceControl.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterInsurances(value || ''))
-    );
+    this.insuranceService.getInsurances().subscribe(insurances => {
+      this.insurances = insurances.map(insurance => ({
+        id: insurance.id,
+        name: `${insurance.insuranceType} (${insurance.description})`
+      }));
+      this.initializeInsuranceControl();
+    });
 
     if (this.isEditMode) {
       const selectedUser = this.users.find(user => user.id === this.formGroup.get('userId')?.value);
@@ -81,6 +80,33 @@ export class PolicyFormFieldsComponent {
       const selectedInsurance = this.insurances.find(insurance => insurance.name === value);
       this.formGroup.patchValue({ insuranceId: selectedInsurance ? selectedInsurance.id : null });
     });
+    this.userControl.valueChanges.subscribe(value => {
+      const selectedUser = this.users.find(user => user.name === value);
+      this.formGroup.patchValue({ userId: selectedUser ? selectedUser.id : null });
+    });
+    
+    this.insuranceControl.valueChanges.subscribe(value => {
+      const selectedInsurance = this.insurances.find(insurance => insurance.name === value);
+      this.formGroup.patchValue({ insuranceId: selectedInsurance ? selectedInsurance.id : null });
+    });    
+  }
+
+  onCancel(): void {
+    this.dialog.closeAll();
+  }
+
+  private initializeUserControl() {
+    this.filteredUsers = this.userControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterUsers(value || ''))
+    );
+  }
+
+  private initializeInsuranceControl() {
+    this.filteredInsurances = this.insuranceControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterInsurances(value || ''))
+    );
   }
 
   private _filterUsers(value: string): any[] {
@@ -91,17 +117,5 @@ export class PolicyFormFieldsComponent {
   private _filterInsurances(value: string): any[] {
     const filterValue = value.toLowerCase();
     return this.insurances.filter(insurance => insurance.name.toLowerCase().includes(filterValue));
-  }
-
-  onCancel(): void {
-    if (this.formGroup.dirty) {
-      if (confirm('Are you sure you want to discard your changes?')) {
-        this.formGroup.patchValue(this.initialFormValue);
-        this.formGroup.markAsPristine();
-        this.dialog.closeAll();
-      }
-    } else {
-      this.dialog.closeAll();
-    }
   }
 }

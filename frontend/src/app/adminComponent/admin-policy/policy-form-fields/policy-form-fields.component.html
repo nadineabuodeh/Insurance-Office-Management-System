@@ -33,20 +33,20 @@
         <mat-error *ngIf="formGroup.get('coverageDetails')?.hasError('required')">Coverage Details are required</mat-error>
       </mat-form-field>
   
-       <mat-form-field appearance="fill" class="custom-form-field">
+      <mat-form-field appearance="fill" class="custom-form-field">
         <mat-label>Select User</mat-label>
-        <input type="text" matInput [formControl]="userControl" [matAutocomplete]="autoUser" />
+        <input type="text" matInput [formControl]="userControl" [matAutocomplete]="autoUser" required />
         <mat-autocomplete #autoUser="matAutocomplete">
           <mat-option *ngFor="let user of filteredUsers | async" [value]="user.name">
             {{ user.name }}
           </mat-option>
         </mat-autocomplete>
         <mat-error *ngIf="formGroup.get('userId')?.hasError('required')">User is required</mat-error>
-      </mat-form-field>      
-  
+      </mat-form-field>
+      
       <mat-form-field appearance="fill" class="custom-form-field">
         <mat-label>Select Insurance</mat-label>
-        <input type="text" matInput [formControl]="insuranceControl" [matAutocomplete]="autoInsurance" />
+        <input type="text" matInput [formControl]="insuranceControl" [matAutocomplete]="autoInsurance" required />
         <mat-autocomplete #autoInsurance="matAutocomplete">
           <mat-option *ngFor="let insurance of filteredInsurances | async" [value]="insurance.name">
             {{ insurance.name }}
@@ -54,6 +54,7 @@
         </mat-autocomplete>
         <mat-error *ngIf="formGroup.get('insuranceId')?.hasError('required')">Insurance is required</mat-error>
       </mat-form-field>
+      
     </form>
   </mat-dialog-content>
   

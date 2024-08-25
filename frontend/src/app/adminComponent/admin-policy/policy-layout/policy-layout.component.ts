@@ -6,15 +6,15 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-admin-insurance',
+  selector: 'app-policy-layout',
   standalone: true,
   imports: [CommonModule, 
     MatTableModule
   ],
-  templateUrl: './admin-insurance.component.html',
-  styleUrl: './admin-insurance.component.css'
+  templateUrl: './policy-layout.component.html',
+  styleUrl: './policy-layout.component.css'
 })
-export class AdminInsuranceComponent {
+export class PolicyLayoutComponent {
   displayedColumns: string[] = ['startDate', 'endDate', 'totalAmount', 'coverageDetails', 'userId', 'insuranceId', 'actions'];
   dataSource = new MatTableDataSource<Policy>();
 
