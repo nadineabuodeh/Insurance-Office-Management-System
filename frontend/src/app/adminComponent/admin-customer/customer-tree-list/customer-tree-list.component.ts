@@ -7,7 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { Customer, CustomerService } from '../../../service/customer.service';
 import { CustomerDetailsComponent } from "../customer-details/customer-details.component";
 import { Router } from '@angular/router';
-import { interval, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { CustomerFormComponent } from '../customer-form/customer-form.component';
 
@@ -31,11 +31,15 @@ export class CustomerTreeListComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchCustomers();
-    this.subscription.add( //to update the tree list after deletion or edition
-      interval(400).subscribe(() => this.fetchCustomers())
+
+    this.subscription.add(
+      this.customerService.customersChanged$.subscribe(() => this.fetchCustomers()) //update the ui
     );
   }
 
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
   ////////////////////////
 
   fetchCustomers(): void {
@@ -46,13 +50,12 @@ export class CustomerTreeListComponent implements OnInit {
 
       },
       error: (err: any) => {
-        console.error('Error fetching customers:', err);
-        this.errorMessage = 'Failed to fetch customers. Please try again later.';
+        this.errorMessage = 'Error fetching';
       }
     });
   }
   ///////////////////////
-  
+
   filteredCustomers() {
     return this.customers.filter(customer =>
       (customer.firstName + ' ' + customer.lastName).toLowerCase().includes(this.searchQuery.toLowerCase())
