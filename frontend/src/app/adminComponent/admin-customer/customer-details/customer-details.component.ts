@@ -6,6 +6,7 @@ import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { CustomerFormComponent } from '../customer-form/customer-form.component';
 import { Location } from '@angular/common';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -19,6 +20,7 @@ export class CustomerDetailsComponent implements OnInit {
   @Input() errorMessage: string = '';
 
   customer: Customer | undefined;
+  private subscriptions: Subscription = new Subscription();
 
 
   constructor(
@@ -29,31 +31,34 @@ export class CustomerDetailsComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
-      const id = params.get('id');
-      if (id) {
-        this.customerService.getCustomerById(Number(id)).subscribe({
-
-          next: (data: Customer) => {
-            if (data) {
-              this.customer = data;
-            } else {
-              this.errorMessage = 'No customer found with the provided ID.';
-            }
-          },
-          error: (err) => {
-            this.errorMessage = 'Failed to load customer details. Please try again later.'; 
-
-          }
-        });
-      }else {
-        this.errorMessage = 'No customer ID provided.';
-      }
-    });
+    this.subscriptions.add(
+      this.route.paramMap.subscribe(params => {
+        const id = params.get('id');
+        if (id) {
+          this.subscriptions.add(
+            this.customerService.getCustomerById(Number(id)).subscribe({
+              next: (data: Customer) => {
+                if (data) {
+                  this.customer = data;
+                } else {
+                  this.errorMessage = 'no customer found with this ID.';
+                }
+              },
+              error: (err) => {
+                this.errorMessage = 'failed to load customer details..';
+              }
+            })
+          );
+        } else {
+          this.errorMessage = 'No customer ID1';
+        }
+      })
+    );
   }
 
-
-
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe(); 
+  }
   // =========================================
 
 
@@ -67,34 +72,38 @@ export class CustomerDetailsComponent implements OnInit {
   }
   // =========================================
 
-
   editCustomer(customer: Customer): void {
     const dialogRef = this.dialog.open(CustomerFormComponent, {
       panelClass: 'custom-dialog-container',
       data: { customer }
     });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.customerService.updateCustomer(customer.id, result).subscribe(() => {
 
-
-          this.route.paramMap.subscribe(params => {   // Refresh customer data after update
-
-            const id = params.get('id');
-            if (id) {
-              this.customerService.getCustomerById(Number(id)).subscribe({
-                next: (data: Customer) => {
-                  this.customer = data;
-                },
-                error: (err) => {
-                  console.error('Error fetching customer details:', err);
-                }
-              });
-            }
-          });
-        });
-      }
-    });
+    this.subscriptions.add(
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.subscriptions.add(
+            this.customerService.updateCustomer(customer.id, result).subscribe(() => {
+              this.subscriptions.add(
+                this.route.paramMap.subscribe(params => { // Refresh customer data after update
+                  const id = params.get('id');
+                  if (id) {
+                    this.customerService.getCustomerById(Number(id)).subscribe({
+                      next: (data: Customer) => {
+                        this.customer = data;
+                      },
+                      error: (err) => {
+                        console.error('Error fetching customer details:', err);
+                      }
+                    });
+                  }
+                })
+              );
+            })
+          );
+        }
+      })
+    );
   }
+
 
 }

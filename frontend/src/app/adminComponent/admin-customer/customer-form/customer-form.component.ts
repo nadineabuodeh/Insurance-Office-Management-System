@@ -10,6 +10,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { CustomerFormFieldsComponent } from '../customer-form-fields/customer-form-fields.component';
 import { Customer, CustomerService } from '../../../service/customer.service';
 import { provideClientHydration } from '@angular/platform-browser';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -43,6 +44,7 @@ export class CustomerFormComponent {
   minDate: Date;
 
   private initialFormValue: any;
+  private subscription: Subscription = new Subscription();
 
 
   constructor(private fb: FormBuilder
@@ -74,10 +76,16 @@ export class CustomerFormComponent {
   // ==================================================================
 
 
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
   loadCustomers(): void {
-    this.customerService.getCustomers().subscribe(customers => {
-      this.customers = customers;
-    });
+    this.subscription.add(
+      this.customerService.getCustomers().subscribe(customers => {
+        this.customers = customers;
+      })
+    );
   }
   // ==================================================================
 
@@ -135,7 +143,6 @@ export class CustomerFormComponent {
       /////////////////
       if (this.isEditMode) {
         this.customerService.updateCustomer(this.data.customer.id, customerData) //Update customer info
-        // this.dialogRef.close(customerData);
 
       } else {
         this.customerService.addCustomer(customerData);//Add new customer
