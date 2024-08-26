@@ -11,6 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { map, Observable, startWith } from 'rxjs';
 import { CustomerService } from '../../../service/customer.service';
 import { InsuranceService } from '../../../service/insurance.service';
+import { PolicyFormComponent } from '../policy-form/policy-form.component';
 
 @Component({
   selector: 'app-policy-form-fields',
@@ -23,7 +24,7 @@ import { InsuranceService } from '../../../service/insurance.service';
     MatButtonModule,
     MatDialogModule ,
     MatAutocompleteModule, 
-    MatOptionModule],
+    MatOptionModule,],
   templateUrl: './policy-form-fields.component.html',
   styleUrl: './policy-form-fields.component.css'
 })

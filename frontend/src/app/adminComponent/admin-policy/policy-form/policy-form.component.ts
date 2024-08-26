@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { PolicyFormFieldsComponent } from '../policy-form-fields/policy-form-fields.component';
+import { Policy } from '../../../model/policy.model';
 
 @Component({
   selector: 'app-policy-form',
@@ -27,7 +28,6 @@ import { PolicyFormFieldsComponent } from '../policy-form-fields/policy-form-fie
 export class PolicyFormComponent implements OnInit {
   policyForm: FormGroup;
   isEditMode: boolean = false;
-  noUsersOrInsurances: boolean = true;
 
   constructor(
     private fb: FormBuilder,
@@ -36,6 +36,7 @@ export class PolicyFormComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.policyForm = this.fb.group({
+      id: [null],
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
       totalAmount: ['', [Validators.required, Validators.min(0)]],
@@ -54,21 +55,19 @@ export class PolicyFormComponent implements OnInit {
     }
   }
 
-  onUsersAndInsurancesLoaded(usersAvailable: boolean, insurancesAvailable: boolean) {
-    this.noUsersOrInsurances = !(usersAvailable && insurancesAvailable);
-  }
-
   onSubmit() {
-    if (this.policyForm.valid && !this.noUsersOrInsurances) {
-      const policyData = this.policyForm.value;
+    if (this.policyForm.valid) {
+      const policyData: Policy = this.policyForm.value;
 
       if (this.isEditMode) {
-        this.policyService.updatePolicy(policyData.id, policyData);
+        this.policyService.updatePolicy(policyData.id, policyData).subscribe(() => {
+          this.dialogRef.close(policyData);
+        });
       } else {
-        this.policyService.addPolicy(policyData);
+        this.policyService.createPolicy(policyData).subscribe((createdPolicy) => {
+          this.dialogRef.close(createdPolicy);
+        });
       }
-
-      this.dialogRef.close(policyData);
     }
   }
 }
