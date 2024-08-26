@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { PolicyFormComponent } from '../policy-form/policy-form.component';
-import { Policy, PolicyService } from '../../../service/policy.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
+import { PolicyService } from '../../../service/policy.service';
+import { Policy } from '../../../model/policy.model';
 
 @Component({
   selector: 'app-policy-layout',
@@ -15,7 +16,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './policy-layout.component.css'
 })
 export class PolicyLayoutComponent {
-  displayedColumns: string[] = ['startDate', 'endDate', 'totalAmount', 'coverageDetails', 'userId', 'insuranceId', 'actions'];
+  displayedColumns: string[] = ['startDate', 'endDate', 'totalAmount', 'coverageDetails', 'actions'];
   dataSource = new MatTableDataSource<Policy>();
 
   constructor(private policyService: PolicyService, public dialog: MatDialog) {}
@@ -25,7 +26,9 @@ export class PolicyLayoutComponent {
   }
 
   loadPolicies(): void {
-    this.dataSource.data = this.policyService.getPolicies();
+    this.policyService.getAllPolicies().subscribe(policies => {
+      this.dataSource.data = policies;
+    });
   }
 
   onAddPolicyClick(): void {
@@ -35,8 +38,7 @@ export class PolicyLayoutComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.policyService.addPolicy(result);
-        this.loadPolicies();
+        this.loadPolicies();  // Reload policies after adding
       }
     });
   }
@@ -49,16 +51,16 @@ export class PolicyLayoutComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.policyService.updatePolicy(policy.id, result);
-        this.loadPolicies();
+        this.loadPolicies();  // Reload policies after editing
       }
     });
   }
 
   deletePolicy(id: number): void {
     if (confirm('Are you sure you want to delete this policy?')) {
-      this.policyService.deletePolicy(id);
-      this.loadPolicies();
+      this.policyService.deletePolicy(id).subscribe(() => {
+        this.loadPolicies();  // Reload policies after deleting
+      });
     }
   }
 }

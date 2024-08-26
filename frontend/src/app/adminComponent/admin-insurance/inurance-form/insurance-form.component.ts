@@ -53,19 +53,30 @@ export class InsuranceFormComponent {
     if (this.insuranceForm.valid) {
       const insuranceData: Insurance = this.insuranceForm.value;
   
-      if (this.isEditMode) {
-        this.insuranceService.updateInsurance(this.data.insurance.id!, insuranceData).subscribe(
-          () => this.dialogRef.close(insuranceData),
-          error => console.error('Error updating insurance:', error)
-        );
-      } else {
-        this.insuranceService.addInsurance(insuranceData).subscribe(
-          (newInsurance) => this.dialogRef.close(newInsurance),
-          error => console.error('Error adding insurance:', error)
-        );
-      }
+      this.insuranceService.getInsurances().subscribe(
+        (existingInsurances) => {
+          const hasSameType = existingInsurances.some(ins => ins.insuranceType === insuranceData.insuranceType);
+  
+          if (hasSameType && !this.isEditMode) {
+            alert(`You have already added an insurance of type ${insuranceData.insuranceType}.`);
+          } else {
+            if (this.isEditMode) {
+              this.insuranceService.updateInsurance(this.data.insurance.id!, insuranceData).subscribe(
+                () => this.dialogRef.close(insuranceData),
+                error => console.error('Error updating insurance:', error)
+              );
+            } else {
+              this.insuranceService.addInsurance(insuranceData).subscribe(
+                (newInsurance) => this.dialogRef.close(newInsurance),
+                error => console.error('Error adding insurance:', error)
+              );
+            }
+          }
+        },
+        error => console.error('Error fetching insurances:', error)
+      );
     }
-  }
+  }  
 
   onCancel(): void {
     this.dialogRef.close();
