@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
-import { AuthService } from './auth.service';
+import { AuthService } from '../auth.service';
 import { catchError, map, tap, throwError } from 'rxjs';
 
 export interface Customer {

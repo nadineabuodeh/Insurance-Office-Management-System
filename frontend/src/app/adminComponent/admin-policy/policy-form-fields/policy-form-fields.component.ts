@@ -9,7 +9,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { map, Observable, startWith } from 'rxjs';
-import { CustomerService } from '../../../service/customer.service';
+import { CustomerService } from '../../../service/CustomerService/customer.service';
 import { InsuranceService } from '../../../service/insurance.service';
 import { PolicyFormComponent } from '../policy-form/policy-form.component';
 

@@ -4,7 +4,7 @@ import { SplitterModule } from 'primeng/splitter';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { Customer, CustomerService } from '../../../service/customer.service';
+import { Customer, CustomerService } from '../../../service/CustomerService/customer.service';
 import { CustomerDetailsComponent } from "../customer-details/customer-details.component";
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';

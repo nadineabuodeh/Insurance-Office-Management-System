@@ -8,7 +8,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CustomerFormFieldsComponent } from '../customer-form-fields/customer-form-fields.component';
-import { Customer, CustomerService } from '../../../service/customer.service';
+import { Customer, CustomerService } from '../../../service/CustomerService/customer.service';
 import { provideClientHydration } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 

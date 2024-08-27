@@ -11,13 +11,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CustomerTableRowComponent } from './adminComponent/admin-customer/customer-table-row/customer-table-row.component';
-import { CustomerService } from './service/customer.service';
+import { CustomerService } from './service/CustomerService/customer.service';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { TreeModule } from 'primeng/tree';
+import { TransactionService } from './service/TransactionService/transaction.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes),
@@ -29,7 +29,7 @@ export const appConfig: ApplicationConfig = {
       BrowserAnimationsModule, //****************/
       MatButtonModule,
       MatDatepickerModule,
-      MatNativeDateModule,
+      MatNativeDateModule,MatFormFieldModule,
       MatTableModule,
       MatDialogModule,
       FormsModule, TreeModule,
@@ -37,6 +37,6 @@ export const appConfig: ApplicationConfig = {
 
       CookieService
     ),
-    CustomerService
-    , CustomerTableRowComponent]
+    CustomerService,TransactionService
+    ]
 };
