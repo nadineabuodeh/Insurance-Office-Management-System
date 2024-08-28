@@ -10,17 +10,13 @@ import java.time.LocalDate;
 @Table(name = "transactions")
 public class Transaction {
 
-
-    //==============================
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
-    //==============================
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "policy_id")
     private Policy policy;
-    //==============================
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

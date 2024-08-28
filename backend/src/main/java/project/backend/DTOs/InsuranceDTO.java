@@ -1,17 +1,21 @@
 package project.backend.DTOs;
 
+import project.backend.models.InsuranceType;
+
 public class InsuranceDTO {
     private Long id;
     private String insuranceType;
     private String description;
+    private Long adminId;
 
     public InsuranceDTO() {
     }
 
-    public InsuranceDTO(Long id, String insuranceType, String description) {
+    public InsuranceDTO(Long id, InsuranceType insuranceType, String description, Long adminId) {
         this.id = id;
-        this.insuranceType = insuranceType;
+        this.insuranceType = insuranceType.name();
         this.description = description;
+        this.adminId = adminId;  
     }
 
     public Long getId() {
@@ -36,5 +40,13 @@ public class InsuranceDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Long getAdminId() {
+        return adminId;
+    }
+
+    public void setAdminId(Long adminId) {
+        this.adminId = adminId;
     }
 }
