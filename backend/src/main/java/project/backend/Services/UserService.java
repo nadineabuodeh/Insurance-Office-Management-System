@@ -38,15 +38,10 @@ public class UserService {
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private static final int PASSWORD_LENGTH = 8;
 
-    //***********************************************
-
     public UserService(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
-    //***********************************************
 
-
-    // Convert User entity to UserDTO
     private UserDTO convertToDTO(User user) {
         UserDTO dto = new UserDTO();
         dto.setId(user.getId());
@@ -57,12 +52,11 @@ public class UserService {
         dto.setPhoneNumber(user.getPhoneNumber());
         dto.setEmail(user.getEmail());
         dto.setBirthDate(user.getBirthDate());
-        dto.setRole(user.getRole().name()); // Convert enum -> string
+        dto.setRole(user.getRole().name());
         dto.setPassword(user.getPassword());
         return dto;
     }
 
-    // Convert UserDTO to User entity
     private User convertToEntity(UserDTO dto) {
         User user = new User();
         user.setId(dto.getId());
@@ -74,7 +68,7 @@ public class UserService {
         user.setEmail(dto.getEmail());
         user.setBirthDate(dto.getBirthDate());
         try {
-            user.setRole(ERole.valueOf(dto.getRole())); // Convert string -> enum
+            user.setRole(ERole.valueOf(dto.getRole()));
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Invalid role value: " + dto.getRole(), e);
         }
@@ -97,14 +91,13 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + id));
         return convertToDTO(user);
     }
-//=================================================
 
     public UserDTO createUser(UserDTO userDTO, String jwtToken) {
         if (userRepository.existsByEmail(userDTO.getEmail())) {
             throw new ResourceAlreadyExistsException("Email already in use: " + userDTO.getEmail());
         }
 
-        User user = convertToEntity(userDTO);  //encoding the new customers password
+        User user = convertToEntity(userDTO);
 
 
         String generatedPassword = generateRandomPassword();
@@ -116,15 +109,12 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("Admin not found with username: " + adminUsername));
 
         user.setAdmin(admin);
-        ////////////////////////////
         User savedUser = userRepository.save(user);
         UserDTO resultDTO = convertToDTO(savedUser);
         resultDTO.setPassword(generatedPassword);
 
         return resultDTO;
     }
-
-//=================================================
 
     private String generateRandomPassword() {
         SecureRandom random = new SecureRandom();
@@ -138,8 +128,6 @@ public class UserService {
         return password.toString();
     }
 
-//=================================================
-
     public UserDTO updateUser(Long id, UserDTO userDTO) {
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + id));
@@ -152,12 +140,20 @@ public class UserService {
         User updatedUser = userRepository.save(userToUpdate);
         return convertToDTO(updatedUser);
     }
-//=================================================
 
     public void deleteUser(Long id) {
         if (!userRepository.existsById(id)) {
             throw new ResourceNotFoundException("User not found with ID: " + id);
         }
         userRepository.deleteById(id);
+    }
+
+
+    public List<UserDTO> getAllUsersByAdmin(String adminUsername) {
+        List<User> userList = userRepository.findAllByAdminUsername(adminUsername);
+        userList.forEach(user -> logger.info("Fetched User: {}", user));
+        List<UserDTO> userDTOList = modelMapper.map(userList, new TypeToken<List<UserDTO>>() {}.getType());
+        userDTOList.forEach(userDTO -> logger.info("Mapped UserDTO: {}", userDTO));
+        return userDTOList;
     }
 }

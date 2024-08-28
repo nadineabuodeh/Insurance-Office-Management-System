@@ -27,16 +27,16 @@ export class InsuranceTableComponent implements OnInit {
       data => this.dataSource.data = data,
       error => console.error('Error loading insurances:', error)
     );
-  }
+  }  
 
   onAddButtonClick(): void {
     const dialogRef = this.dialog.open(InsuranceFormComponent, {
       panelClass: 'custom-dialog-container'
     });
-
+  
     dialogRef.afterClosed().subscribe(result => {
       if (result) {  
-        this.loadInsurances();
+        this.loadInsurances(); // This refreshes the table data after adding a new insurance
       }
     });
   }
@@ -55,11 +55,11 @@ export class InsuranceTableComponent implements OnInit {
       panelClass: 'custom-dialog-container',
       data: { insurance }
     });
-
+  
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.insuranceService.updateInsurance(insurance.id!, result).subscribe(
-          () => this.loadInsurances(),
+          () => this.loadInsurances(), // This refreshes the table data after updating an insurance
           error => console.error('Error updating insurance:', error)
         );
       }

@@ -13,6 +13,7 @@ import project.backend.Repositories.InsuranceRepository;
 import project.backend.Repositories.PolicyRepository;
 import project.backend.SecurityConfiguration.models.User;
 import project.backend.SecurityConfiguration.repository.UserRepository;
+import project.backend.SecurityConfiguration.security.jwt.JwtUtils;
 import project.backend.exceptions.ResourceNotFoundException;
 import project.backend.models.Policy;
 import project.backend.models.Insurance;
@@ -34,12 +35,16 @@ public class PolicyService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public List<PolicyDTO> getAllPolicies() {
-        return policyRepository.findAll()
-                .stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
-    }
+    @Autowired
+    private JwtUtils jwtUtils;
+
+    public List<PolicyDTO> getAllPolicies(String jwtToken) {
+        String adminUsername = jwtUtils.getUserNameFromJwtToken(jwtToken);
+        List<Policy> policies = policyRepository.findPoliciesByAdmin(adminUsername);
+        return policies.stream()
+                       .map(this::convertToDTO)
+                       .collect(Collectors.toList());
+    }    
 
     public PolicyDTO getPolicyById(Long id) {
         Policy policy = policyRepository.findById(id)
@@ -92,8 +97,6 @@ public class PolicyService {
         }
         return policies.stream()
                        .map(this::convertToDTO)
-                    //    .toList();
                        .collect(Collectors.toList());
     }
-
 }

@@ -17,19 +17,16 @@ public class Policy {
     private Double totalAmount;
     private String coverageDetails;
 
-
-    //==============================
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-   //==============================
+
     @ManyToOne
     @JoinColumn(name = "insurance_id")
     private Insurance insurance;
-    //==============================
+
     @OneToMany(mappedBy = "policy")
     private List<Transaction> transactions;
-    //==============================
 
     private LocalDate createdAt;
     private LocalDate updatedAt;

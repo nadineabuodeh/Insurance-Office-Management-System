@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpServletRequest;
 import project.backend.DTOs.UserDTO;
+import project.backend.SecurityConfiguration.security.jwt.JwtUtils;
 import project.backend.Services.UserService;
 import project.backend.exceptions.ResourceAlreadyExistsException;
 import project.backend.exceptions.ResourceNotFoundException;
@@ -22,10 +23,15 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private JwtUtils jwtUtils;
+
     @GetMapping
-    public ResponseEntity<List<UserDTO>> getAllUsers() {
-        List<UserDTO> users = userService.getAllUsers();
-        return new ResponseEntity<>(users, HttpStatus.OK);
+    public ResponseEntity<List<UserDTO>> getAllUsers(HttpServletRequest request) {
+       String jwtToken = request.getHeader("Authorization").substring(7);
+       String adminUsername = jwtUtils.getUserNameFromJwtToken(jwtToken);
+       List<UserDTO> users = userService.getAllUsersByAdmin(adminUsername);
+       return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -44,8 +50,6 @@ public class UserController {
             String jwtToken = request.getHeader("Authorization").substring(7);
             UserDTO createdUser = userService.createUser(userDTO, jwtToken);//]
             return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
-
-
         } catch (ResourceAlreadyExistsException ex) {
             return new ResponseEntity<>(null, HttpStatus.CONFLICT);
         } catch (IllegalArgumentException ex) {

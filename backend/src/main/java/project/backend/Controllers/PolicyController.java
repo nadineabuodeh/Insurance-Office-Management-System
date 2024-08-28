@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.servlet.http.HttpServletRequest;
 import project.backend.DTOs.PolicyDTO;
 import project.backend.Services.PolicyService;
 
@@ -29,8 +30,9 @@ public class PolicyController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping
-    public ResponseEntity<List<PolicyDTO>> getAllPolicies() {
-        List<PolicyDTO> policies = policyService.getAllPolicies();
+    public ResponseEntity<List<PolicyDTO>> getAllPolicies(HttpServletRequest request) {
+        String jwtToken = request.getHeader("Authorization").substring(7);
+        List<PolicyDTO> policies = policyService.getAllPolicies(jwtToken);
         return new ResponseEntity<>(policies, HttpStatus.OK);
     }
 
