@@ -84,7 +84,10 @@ public class TransactionService {
 
     public List<TransactionDTO> getAllTransactions(String jwtToken) {
         String username = jwtUtils.getUserNameFromJwtToken(jwtToken);
-        return transactionRepository.findTransactionsByAdmin(username);
+        List<Transaction> transactions = transactionRepository.findTransactionsByAdmin(username);
+        return transactions.stream()
+                           .map(this::convertToDTO)
+                           .toList();
     }
 
     public TransactionDTO getTransactionById(Long id) {
