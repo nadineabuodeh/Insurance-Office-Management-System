@@ -11,6 +11,7 @@ import project.backend.exceptions.ResourceNotFoundException;
 import java.util.List;
 
 @SuppressWarnings("null")
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/transactions")
 public class TransactionController {

@@ -16,13 +16,13 @@ public class Policy {
     private LocalDate endDate;
     private Double totalAmount;
     private String coverageDetails;
-
+    private String policyName;
 
     //==============================
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-   //==============================
+    //==============================
     @ManyToOne
     @JoinColumn(name = "insurance_id")
     private Insurance insurance;
@@ -37,7 +37,7 @@ public class Policy {
     public Policy() {
     }
 
-    public Policy(LocalDate startDate, LocalDate endDate, Double totalAmount, String coverageDetails, User user, Insurance insurance, LocalDate createdAt, LocalDate updatedAt) {
+    public Policy(LocalDate startDate, LocalDate endDate, Double totalAmount, String coverageDetails, User user, Insurance insurance, LocalDate createdAt, LocalDate updatedAt, String policyName) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.totalAmount = totalAmount;
@@ -46,6 +46,15 @@ public class Policy {
         this.insurance = insurance;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.policyName = policyName;
+    }
+
+    public String getPolicyName() {
+        return policyName;
+    }
+
+    public void setPolicyName(String policyName) {
+        this.policyName = policyName;
     }
 
     public Long getId() {

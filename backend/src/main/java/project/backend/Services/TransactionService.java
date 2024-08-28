@@ -4,10 +4,12 @@ package project.backend.Services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import project.backend.DTOs.TransactionDTO;
+import project.backend.Repositories.PolicyRepository;
 import project.backend.Repositories.TransactionRepository;
 import project.backend.SecurityConfiguration.models.User;
 import project.backend.SecurityConfiguration.repository.UserRepository;
 import project.backend.exceptions.ResourceNotFoundException;
+import project.backend.models.Policy;
 import project.backend.models.Transaction;
 
 import java.util.List;
@@ -24,6 +26,8 @@ public class TransactionService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PolicyRepository policyRepository;
 
     private TransactionDTO convertToDTO(Transaction transaction) {
         return new TransactionDTO(
@@ -36,7 +40,7 @@ public class TransactionService {
                 transaction.getEndDate(),
                 transaction.getTransactionType(),
                 transaction.getCreatedAt(),
-                transaction.getUpdatedAt()
+                transaction.getUpdatedAt(), transaction.getPolicy() != null ? transaction.getPolicy().getId() : null
         );
     }
 
@@ -56,6 +60,15 @@ public class TransactionService {
                 transaction.setUser(user.get());
             } else {
                 throw new RuntimeException("User not found with ID: " + dto.getUserId());
+            }
+        }
+
+        if (dto.getPolicyId() != null) {
+            Optional<Policy> policy = policyRepository.findById(dto.getPolicyId()); // Assuming you have a PolicyRepository
+            if (policy.isPresent()) {
+                transaction.setPolicy(policy.get());
+            } else {
+                throw new RuntimeException("Policy not found with ID: " + dto.getPolicyId());
             }
         }
 
