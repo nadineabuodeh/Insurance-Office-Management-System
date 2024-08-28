@@ -11,12 +11,14 @@ public class PolicyDTO {
     private Long userId;
     private Long insuranceId;
     private String policyName;
+    private String username;
+    private String insuranceType;
 
     public PolicyDTO() {
     }
 
     public PolicyDTO(Long id, LocalDate startDate, LocalDate endDate, Double totalAmount, String coverageDetails,
-            Long userId, Long insuranceId,String policyName) {
+                     Long userId, Long insuranceId, String policyName) {
         this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -81,12 +83,29 @@ public class PolicyDTO {
 
     public void setInsuranceId(Long insuranceId) {
         this.insuranceId = insuranceId;
-    }    
+    }
 
     public String getPolicyName() {
         return policyName;
     }
+
     public void setPolicyName(String policyName) {
         this.policyName = policyName;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getInsuranceType() {
+        return insuranceType;
+    }
+
+    public void setInsuranceType(String insuranceType) {
+        this.insuranceType = insuranceType;
     }
 }

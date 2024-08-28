@@ -5,7 +5,7 @@ import { CustomerTreeListComponent } from "../admin-customer/customer-tree-list/
 import { SplitterModule } from 'primeng/splitter';
 import { TreeModule } from 'primeng/tree';
 import { CustomerDetailsComponent } from "../admin-customer/customer-details/customer-details.component";
-import { Customer } from '../../service/customer.service';
+import { Customer } from '../../service/CustomerService/customer.service';
 // import { CustomerTableComponent } from "../admin-customer/customer-table/customer-table.component";
 import { RouterModule } from '@angular/router';
 

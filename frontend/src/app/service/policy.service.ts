@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Policy } from '../model/policy.model';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -23,6 +24,10 @@ export class PolicyService {
     return this.http.get<Policy[]>(this.apiUrl, { headers: this.getAuthHeaders() });
   }
 
+  getPoliciesByCustomerId(customerId: number): Observable<Policy[]> {
+    return this.http.get<Policy[]>(`${this.apiUrl}/customer/${customerId}`, { headers: this.getAuthHeaders() });
+  }
+  
   getPolicyById(id: number): Observable<Policy> {
     return this.http.get<Policy>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() });
   }

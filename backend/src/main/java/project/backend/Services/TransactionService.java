@@ -8,13 +8,13 @@ import project.backend.Repositories.PolicyRepository;
 import project.backend.Repositories.TransactionRepository;
 import project.backend.SecurityConfiguration.models.User;
 import project.backend.SecurityConfiguration.repository.UserRepository;
+import project.backend.SecurityConfiguration.security.jwt.JwtUtils;
 import project.backend.exceptions.ResourceNotFoundException;
 import project.backend.models.Policy;
 import project.backend.models.Transaction;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.time.LocalDate;
 
 @Service
@@ -27,20 +27,25 @@ public class TransactionService {
     private UserRepository userRepository;
 
     @Autowired
+    private JwtUtils jwtUtils;
+
+    @Autowired
     private PolicyRepository policyRepository;
+
 
     private TransactionDTO convertToDTO(Transaction transaction) {
         return new TransactionDTO(
                 transaction.getId(),
 
-                transaction.getUser() != null ? transaction.getUser().getId() : null, //  user id mapping
+                transaction.getUser() != null ? transaction.getUser().getId() : null,
 
                 transaction.getStartDate(),
                 transaction.getAmount(),
                 transaction.getEndDate(),
                 transaction.getTransactionType(),
                 transaction.getCreatedAt(),
-                transaction.getUpdatedAt(), transaction.getPolicy() != null ? transaction.getPolicy().getId() : null
+                transaction.getUpdatedAt(),
+                transaction.getPolicy() != null ? transaction.getPolicy().getId() : null
         );
     }
 
@@ -59,26 +64,27 @@ public class TransactionService {
             if (user.isPresent()) {
                 transaction.setUser(user.get());
             } else {
-                throw new RuntimeException("User not found with ID: " + dto.getUserId());
+                throw new ResourceNotFoundException("User not found with ID: " + dto.getUserId());
             }
         }
 
         if (dto.getPolicyId() != null) {
-            Optional<Policy> policy = policyRepository.findById(dto.getPolicyId()); // Assuming you have a PolicyRepository
+            Optional<Policy> policy = policyRepository.findById(dto.getPolicyId());
             if (policy.isPresent()) {
                 transaction.setPolicy(policy.get());
             } else {
-                throw new RuntimeException("Policy not found with ID: " + dto.getPolicyId());
+                throw new ResourceNotFoundException("Policy not found with ID: " + dto.getPolicyId());
             }
+        } else {
+            throw new IllegalArgumentException("Policy ID is required to create a transaction.");
         }
 
         return transaction;
     }
 
-    public List<TransactionDTO> getAllTransactions() {
-        return transactionRepository.findAll().stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+    public List<TransactionDTO> getAllTransactions(String jwtToken) {
+        String username = jwtUtils.getUserNameFromJwtToken(jwtToken);
+        return transactionRepository.findTransactionsByAdmin(username);
     }
 
     public TransactionDTO getTransactionById(Long id) {

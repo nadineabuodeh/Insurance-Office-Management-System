@@ -8,7 +8,10 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import project.backend.SecurityConfiguration.models.User;
 
 @Entity
 public class Insurance {
@@ -24,13 +27,17 @@ public class Insurance {
     @OneToMany(mappedBy = "insurance")
     private Set<Policy> policies;
 
+    @ManyToOne
+    @JoinColumn(name = "admin_id")
+    private User admin;
+
     public Insurance() {
     }
 
-    public Insurance(InsuranceType insuranceType, String description, Set<Policy> policies) {
+    public Insurance(InsuranceType insuranceType, String description, User admin) {
         this.insuranceType = insuranceType;
         this.description = description;
-        this.policies = policies;
+        this.admin = admin;
     }
 
     public Long getId() {
@@ -64,4 +71,13 @@ public class Insurance {
     public void setPolicies(Set<Policy> policies) {
         this.policies = policies;
     }
+
+    public User getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(User admin) {
+        this.admin = admin;
+    }
+
 }

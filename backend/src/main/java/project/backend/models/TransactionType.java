@@ -1,10 +1,8 @@
 package project.backend.models;
 
 public enum TransactionType {
-    DEPOSIT, //pay
+    DEPOSIT,
     WITHDRAWAL,
     TRANSFER,
     DEBT
 }
-
-

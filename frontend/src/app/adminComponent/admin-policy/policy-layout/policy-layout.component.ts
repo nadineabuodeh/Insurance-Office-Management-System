@@ -9,25 +9,30 @@ import { Policy } from '../../../model/policy.model';
 @Component({
   selector: 'app-policy-layout',
   standalone: true,
-  imports: [CommonModule, 
+  imports: [CommonModule,
     MatTableModule
   ],
   templateUrl: './policy-layout.component.html',
   styleUrl: './policy-layout.component.css'
 })
 export class PolicyLayoutComponent {
-  displayedColumns: string[] = ['startDate', 'endDate', 'totalAmount', 'coverageDetails', 'actions'];
+
+  displayedColumns: string[] = ['startDate', 'endDate', 'policyName', 'totalAmount', 'coverageDetails', 'username', 'insuranceType', 'actions'];
   dataSource = new MatTableDataSource<Policy>();
 
-  constructor(private policyService: PolicyService, public dialog: MatDialog) {}
+  constructor(private policyService: PolicyService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.loadPolicies();
   }
 
+
+
   loadPolicies(): void {
-    this.policyService.getAllPolicies().subscribe(policies => {
-      this.dataSource.data = policies;
+    this.policyService.getAllPolicies().subscribe({
+      next: (policies: Policy[]) => {
+        this.dataSource.data = policies;
+      }
     });
   }
 

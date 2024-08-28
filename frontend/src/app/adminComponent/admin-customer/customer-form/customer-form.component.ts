@@ -8,8 +8,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CustomerFormFieldsComponent } from '../customer-form-fields/customer-form-fields.component';
-import { Customer, CustomerService } from '../../../service/customer.service';
-import { provideClientHydration } from '@angular/platform-browser';
+import { Customer, CustomerService } from '../../../service/CustomerService/customer.service';
 import { Subscription } from 'rxjs';
 
 
@@ -73,7 +72,6 @@ export class CustomerFormComponent {
     this.dialogRef.disableClose = true; // **to prevent the dialog from closing when clicking outside..
 
   }
-  // ==================================================================
 
 
   ngOnDestroy(): void {
@@ -87,7 +85,6 @@ export class CustomerFormComponent {
       })
     );
   }
-  // ==================================================================
 
 
   ngOnInit() {
@@ -99,7 +96,6 @@ export class CustomerFormComponent {
     }
     this.loadCustomers();
   }
-  // ==================================================================
 
 
   minAgeValidator(control: any) {
@@ -111,39 +107,33 @@ export class CustomerFormComponent {
     return null;
   }
 
-  // ==================================================================
 
   onSubmit() {
     if (this.customerForm.valid) {
       const customerData: Customer = this.customerForm.value;
 
-      //////////////////
       if (this.isEmailDuplicate(customerData.email)) {
         this.customerForm.get('email')?.setErrors({ duplicate: true });
         return;
       }
-      ////////////////
-      if (this.isPhoneNumberDuplicate(customerData.phoneNumber)) {
 
+      if (this.isPhoneNumberDuplicate(customerData.phoneNumber)) {
         this.customerForm.get('phoneNumber')?.setErrors({ duplicate: true });
         return;
       }
-      /////////////////
-      if (this.isIDnumberDuplicate(customerData.idNumber)) {
 
+      if (this.isIDnumberDuplicate(customerData.idNumber)) {
         this.customerForm.get('idNumber')?.setErrors({ duplicate: true });
         return;
       }
-      /////////////////
-      if (this.isUserNameDuplicate(customerData.username)) {
 
+      if (this.isUserNameDuplicate(customerData.username)) {
         this.customerForm.get('username')?.setErrors({ duplicate: true });
         return;
       }
-      /////////////////
+
       if (this.isEditMode) {
         this.customerService.updateCustomer(this.data.customer.id, customerData) //Update customer info
-
       } else {
         this.customerService.addCustomer(customerData);//Add new customer
       }
@@ -152,7 +142,6 @@ export class CustomerFormComponent {
 
     }
   }
-  // ==================================================================
 
   isEmailDuplicate(email: string): boolean {
     return this.customers.some(customer => customer.email === email && (!this.isEditMode || customer.id !== this.initialFormValue.id));
@@ -163,12 +152,10 @@ export class CustomerFormComponent {
     return this.customers.some(customer => customer.username === username && (!this.isEditMode || customer.id !== this.initialFormValue.id));
   }
 
-  // ==================================================================
 
   isPhoneNumberDuplicate(phoneNumber: String): boolean {
     return this.customers.some(customer => customer.phoneNumber === phoneNumber && (!this.isEditMode || customer.id !== this.initialFormValue.id));
   }
-  // ==================================================================
 
   isIDnumberDuplicate(idNumber: String): boolean {
     return this.customers.some(customer => customer.idNumber === idNumber && (!this.isEditMode || customer.id !== this.initialFormValue.id));
