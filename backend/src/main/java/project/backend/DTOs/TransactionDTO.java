@@ -21,7 +21,9 @@ public class TransactionDTO {
 
     private Long userId;
 
-    public TransactionDTO(Long id,Long userId, LocalDate startDate, Double amount, LocalDate endDate, TransactionType transactionType, LocalDate createdAt, LocalDate updatedAt) {
+    private Long policyId;
+
+    public TransactionDTO(Long id, Long userId, LocalDate startDate, Double amount, LocalDate endDate, TransactionType transactionType, LocalDate createdAt, LocalDate updatedAt, Long policyId){   
         this.id = id;
         this.userId = userId;
         this.startDate = startDate;
@@ -30,6 +32,7 @@ public class TransactionDTO {
         this.transactionType = transactionType;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.policyId = policyId;
     }
 
     public TransactionDTO() {
@@ -96,5 +99,13 @@ public class TransactionDTO {
 
     public void setUpdatedAt(LocalDate updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Long getPolicyId() {
+        return policyId;
+    }
+
+    public void setPolicyId(Long policyId) {
+        this.policyId = policyId;
     }
 }

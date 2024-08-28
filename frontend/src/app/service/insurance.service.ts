@@ -48,13 +48,13 @@ export class InsuranceService {
     const headers = this.getAuthHeaders();
     return this.http.post<Insurance>(this.baseUrl, insurance, { headers })
       .pipe(
-        tap(response => console.log('Backend response:', response)),
+        tap(response => console.log('Backend response:', response)), // Ensure this logs the correct response
         catchError(error => {
           console.error('Error occurred:', error);
           return throwError(() => error);
         })
       );
-  }
+  }  
 
   updateInsurance(id: number, updatedInsurance: Insurance): Observable<Insurance> {
     const headers = this.getAuthHeaders();

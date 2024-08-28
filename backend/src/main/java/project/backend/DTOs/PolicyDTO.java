@@ -10,6 +10,9 @@ public class PolicyDTO {
     private String coverageDetails;
     private Long userId;
     private Long insuranceId;
+
+    private String username;
+    private String insuranceType;
    
     public PolicyDTO() {
     }
@@ -80,4 +83,20 @@ public class PolicyDTO {
     public void setInsuranceId(Long insuranceId) {
         this.insuranceId = insuranceId;
     }    
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getInsuranceType() {
+        return insuranceType;
+    }
+
+    public void setInsuranceType(String insuranceType) {
+        this.insuranceType = insuranceType;
+    }
 }

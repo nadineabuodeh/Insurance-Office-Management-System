@@ -7,4 +7,7 @@ export interface Policy {
     userId: number;
     insuranceId: number;
     policyName:string
-}  
+    username: string; 
+    insuranceType: string; 
+}
+

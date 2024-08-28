@@ -70,6 +70,10 @@ export class PolicyFormFieldsComponent {
 
       this.userControl.setValue(selectedUser ? selectedUser.name : '');
       this.insuranceControl.setValue(selectedInsurance ? selectedInsurance.name : '');
+
+      // Disable the controls in edit mode
+      this.userControl.disable();
+      this.insuranceControl.disable();
     }
 
     this.userControl.valueChanges.subscribe(value => {
@@ -90,6 +94,7 @@ export class PolicyFormFieldsComponent {
       const selectedInsurance = this.insurances.find(insurance => insurance.name === value);
       this.formGroup.patchValue({ insuranceId: selectedInsurance ? selectedInsurance.id : null });
     });
+
   }
 
   onCancel(): void {

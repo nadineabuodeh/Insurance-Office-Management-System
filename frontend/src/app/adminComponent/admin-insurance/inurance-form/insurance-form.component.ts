@@ -52,6 +52,7 @@ export class InsuranceFormComponent {
   onSubmit(): void {    
     if (this.insuranceForm.valid) {
       const insuranceData: Insurance = this.insuranceForm.value;
+      console.log('Submitting form with data:', insuranceData);
   
       this.insuranceService.getInsurances().subscribe(
         (existingInsurances) => {
@@ -62,12 +63,18 @@ export class InsuranceFormComponent {
           } else {
             if (this.isEditMode) {
               this.insuranceService.updateInsurance(this.data.insurance.id!, insuranceData).subscribe(
-                () => this.dialogRef.close(insuranceData),
+                () => {
+                  console.log('Insurance updated successfully');
+                  this.dialogRef.close(insuranceData);
+                },
                 error => console.error('Error updating insurance:', error)
               );
             } else {
               this.insuranceService.addInsurance(insuranceData).subscribe(
-                (newInsurance) => this.dialogRef.close(newInsurance),
+                (newInsurance) => {
+                  console.log('Insurance added successfully:', newInsurance);
+                  this.dialogRef.close(newInsurance);
+                },
                 error => console.error('Error adding insurance:', error)
               );
             }

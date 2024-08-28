@@ -1,0 +1,134 @@
+* {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-weight: bold;
+}
+
+
+.policy-table-container {
+  border-radius: 10px;
+  margin-left: 250px;
+  max-width: 65%;
+}
+
+.styled-table {
+  width: 100%;
+  text-align: center;
+  border-collapse: collapse;
+  margin-top: 10px;
+  box-shadow: #1d455f;
+}
+
+.styled-table th {
+  background-color: #1d455f;
+  color: #FFFFFF;
+  text-align: center;
+  padding: 12px;
+  font-size: 16px;
+}
+
+.styled-table td {
+  padding: 12px;
+  font-size: 14px;
+  color: #134870;
+  text-align: center;
+  border-bottom: 1px solid #508C9B;
+}
+
+.styled-table tr:hover {
+  background-color: #F1F1F1;
+}
+
+.styled-table tr:last-child td {
+  border-bottom: none;
+}
+
+
+.custom-dialog-container {
+  background-color: #201E43;
+  color: #EEEEEE;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+}
+
+.mat-dialog-title {
+  color: #134870;
+  font-weight: bold;
+}
+
+.mat-dialog-content {
+  padding: 16px;
+  background-color: #134870;
+}
+
+.mat-dialog-actions {
+  padding: 8px;
+  background-color: #508C9B;
+  text-align: right;
+}
+
+.table-container2 {
+  /* width: 12px; */
+  margin-top: 55px;
+  box-shadow: #1d455f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.table2 {
+  text-align: center;
+  align-items: center;
+  margin-left: 160px;
+  box-shadow: #1d455f;
+}
+
+.table2 td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  border-top:1px solid #ddd; ;
+}
+
+.table2 th {
+  background-color: #134870;
+  color: #EEEEEE;
+  padding: 16px 16px 16px 6px;
+}
+
+.empty-table-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #EEEEEE;
+  color: #201E43;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  margin-left: 40px;
+  text-align: center;
+}
+
+.empty-icon {
+  width: 100px;
+  height: 100px;
+  opacity: 0.7;
+}
+
+.empty-text {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.empty-subtext {
+  font-size: 16px;
+  color: #508C9B;
+  margin-top: 0;
+}
+
+.policies{
+  color: #1d455f;
+}

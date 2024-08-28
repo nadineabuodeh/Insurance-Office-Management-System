@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import project.backend.models.Insurance;
 import project.backend.models.Policy;
 import project.backend.models.Transaction;
 
@@ -16,18 +17,16 @@ import java.util.List;
                 @UniqueConstraint(columnNames = "username"),
                 @UniqueConstraint(columnNames = "email")
         })
-
-//id, idNumber,firstName,lastName, userName, phoneNumber, email, birthDate, role, password
-
 public class User {
 
-    //-----------------------------------------
     @OneToMany(mappedBy = "user")
     private List<Transaction> transactions;
-    //-----------------------------------------
+
     @OneToMany(mappedBy = "user")
     private List<Policy> policies;
-    //-----------------------------------------
+
+    @OneToMany(mappedBy = "admin")
+    private List<Insurance> insurancesCreated;
 
 
     @Id
@@ -57,7 +56,7 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private ERole role;
-    //============================
+
     @ManyToOne
     @JoinColumn(name = "admin_id")
     private User admin;
@@ -191,5 +190,13 @@ public class User {
 
     public void setCustomers(List<User> customers) {
         this.customers = customers;
+    }
+
+    public List<Insurance> getInsurancesCreated() {
+        return insurancesCreated;
+    }
+
+    public void setInsurancesCreated(List<Insurance> insurancesCreated) {
+        this.insurancesCreated = insurancesCreated;
     }
 }

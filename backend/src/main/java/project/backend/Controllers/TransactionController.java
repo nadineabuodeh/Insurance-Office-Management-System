@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import jakarta.servlet.http.HttpServletRequest;
 import project.backend.DTOs.TransactionDTO;
 import project.backend.Services.TransactionService;
 import project.backend.exceptions.ResourceNotFoundException;
@@ -19,8 +21,9 @@ public class TransactionController {
     private TransactionService transactionService;
 
     @GetMapping
-    public ResponseEntity<List<TransactionDTO>> getAllTransactions() {
-        List<TransactionDTO> transactions = transactionService.getAllTransactions();
+    public ResponseEntity<List<TransactionDTO>> getAllTransactions(HttpServletRequest request) {
+        String jwtToken = request.getHeader("Authorization").substring(7);
+        List<TransactionDTO> transactions = transactionService.getAllTransactions(jwtToken);
         return new ResponseEntity<>(transactions, HttpStatus.OK);
     }
 
@@ -45,7 +48,6 @@ public class TransactionController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
-
     @PutMapping("/{id}")
     public ResponseEntity<TransactionDTO> updateTransaction(@PathVariable Long id, @RequestBody TransactionDTO transactionDTO) {
         try {
