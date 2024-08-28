@@ -10,6 +10,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { PolicyFormFieldsComponent } from '../policy-form-fields/policy-form-fields.component';
 import { Policy } from '../../../model/policy.model';
+import { Observable, switchMap, catchError, map, of, take, tap } from 'rxjs';
 
 @Component({
   selector: 'app-policy-form',
@@ -28,6 +29,7 @@ import { Policy } from '../../../model/policy.model';
 export class PolicyFormComponent implements OnInit {
   policyForm: FormGroup;
   isEditMode: boolean = false;
+  existingPolicies: Policy[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -39,6 +41,7 @@ export class PolicyFormComponent implements OnInit {
       id: [null],
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
+      policyName: ['', Validators.required],
       totalAmount: ['', [Validators.required, Validators.min(0)]],
       coverageDetails: ['', Validators.required],
       userId: ['', Validators.required],
@@ -53,7 +56,14 @@ export class PolicyFormComponent implements OnInit {
       this.policyForm.patchValue(this.data.policy);
       this.isEditMode = true;
     }
+
+    this.policyService.getAllPolicies().subscribe(
+      policies => {
+        this.existingPolicies = policies;
+      }
+    );
   }
+
 
   onSubmit() {
     if (this.policyForm.valid) {
@@ -64,9 +74,17 @@ export class PolicyFormComponent implements OnInit {
           this.dialogRef.close(policyData);
         });
       } else {
-        this.policyService.createPolicy(policyData).subscribe((createdPolicy) => {
-          this.dialogRef.close(createdPolicy);
-        });
+        const isDuplicate = this.existingPolicies.some(
+          policy => policy.policyName === policyData.policyName
+        );
+
+        if (isDuplicate) {
+          this.policyForm.get('policyName')?.setErrors({ duplicate: true });
+        } else {
+          this.policyService.createPolicy(policyData).subscribe((createdPolicy) => {
+            this.dialogRef.close(createdPolicy);
+          });
+        }
       }
     }
   }

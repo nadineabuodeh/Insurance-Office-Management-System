@@ -6,7 +6,6 @@ import { CustomerDashboardComponent } from './customerComponent/customer-dashboa
 import { adminGuard } from './service/admin.guard';
 import { customerGuard } from './service/customer.guard';
 import { UnauthorizedComponent } from './mainComponent/unauthorized/unauthorized.component';
-import { AdminTransactionsComponent } from './adminComponent/admin-transactions/admin-transactions.component';
 import { AdminNotificationsComponent } from './adminComponent/admin-notifications/admin-notifications.component';
 import { AdminReportsComponent } from './adminComponent/admin-reports/admin-reports.component';
 import { AdminLayoutComponent } from './adminComponent/admin-layout/admin-layout.component';
@@ -19,6 +18,7 @@ import { CustomerNotificationsComponent } from './customerComponent/customer-not
 import { CustomerDetailsComponent } from './adminComponent/admin-customer/customer-details/customer-details.component';
 import { PolicyLayoutComponent } from './adminComponent/admin-policy/policy-layout/policy-layout.component';
 import { InsuranceTableComponent } from './adminComponent/admin-insurance/insurance-table/insurance-table.component';
+import { TransactionTableComponent } from './adminComponent/admin-transactions/transaction-table/transaction-table.component';
 
 export const routes: Routes = [
   { path: '', component: SplashScreenComponent },
@@ -34,7 +34,7 @@ export const routes: Routes = [
       { path: 'customer/:id', component: CustomerDetailsComponent },
       { path: 'policy', component: PolicyLayoutComponent },
       { path: 'insurance', component: InsuranceTableComponent },
-      { path: 'transactions', component: AdminTransactionsComponent },
+      { path: 'transactions', component: TransactionTableComponent },
       { path: 'notifications', component: AdminNotificationsComponent },
       { path: 'reports', component: AdminReportsComponent },
       { path: '**', redirectTo: 'dashboard' }

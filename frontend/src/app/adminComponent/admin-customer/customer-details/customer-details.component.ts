@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Customer, CustomerService } from '../../../service/customer.service';
+import { Customer, CustomerService } from '../../../service/CustomerService/customer.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustomerTreeListComponent } from "../customer-tree-list/customer-tree-list.component";
 import { CommonModule, DatePipe } from '@angular/common';

@@ -16,6 +16,11 @@
       <td mat-cell *matCellDef="let policy">{{ policy.endDate | date }}</td>
     </ng-container>
 
+    <ng-container  matColumnDef="policyName">
+      <th mat-header-cell *matHeaderCellDef> Policy Name </th>
+      <td mat-cell *matCellDef="let policy">{{ policy.policyName }}</td>
+    </ng-container>
+
     <ng-container matColumnDef="totalAmount">
       <th mat-header-cell *matHeaderCellDef> Total Amount </th>
       <td mat-cell *matCellDef="let policy">{{ policy.totalAmount | currency }}</td>

@@ -4,7 +4,7 @@ import { SplitterModule } from 'primeng/splitter';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { Customer, CustomerService } from '../../../service/customer.service';
+import { Customer, CustomerService } from '../../../service/CustomerService/customer.service';
 import { CustomerDetailsComponent } from "../customer-details/customer-details.component";
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -40,7 +40,6 @@ export class CustomerTreeListComponent implements OnInit {
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
-  ////////////////////////
 
   fetchCustomers(): void {
     this.customerService.getCustomers().subscribe({
@@ -54,7 +53,7 @@ export class CustomerTreeListComponent implements OnInit {
       }
     });
   }
-  ///////////////////////
+
 
   filteredCustomers() {
     return this.customers.filter(customer =>
@@ -70,7 +69,7 @@ export class CustomerTreeListComponent implements OnInit {
   }
 
 
-  onAddButtonClick(): void { //donne
+  onAddButtonClick(): void {
     const dialogRef = this.dialog.open(CustomerFormComponent, {
       panelClass: 'custom-dialog-container',
     });
