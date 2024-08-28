@@ -2,17 +2,18 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Customer, CustomerService } from '../../../service/customer.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustomerTreeListComponent } from "../customer-tree-list/customer-tree-list.component";
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { CustomerFormComponent } from '../customer-form/customer-form.component';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs';
+import { PolicyLayoutComponent } from "../policy-layout/policy-layout.component";
 
 
 @Component({
   selector: 'app-customer-details',
   standalone: true,
-  imports: [CustomerTreeListComponent, DatePipe],
+  imports: [CustomerTreeListComponent, DatePipe, PolicyLayoutComponent, CommonModule],
   templateUrl: './customer-details.component.html',
   styleUrl: './customer-details.component.css'
 })

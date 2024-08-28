@@ -23,6 +23,7 @@ import project.backend.Services.PolicyService;
 @RestController
 @RequestMapping("/policies")
 public class PolicyController {
+
     @Autowired
     private PolicyService policyService;
 
@@ -60,5 +61,12 @@ public class PolicyController {
     public ResponseEntity<Void> deletePolicy(@PathVariable Long id) {
         policyService.deletePolicy(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CUSTOMER')")
+    @GetMapping("/customer/{customerId}")
+    public ResponseEntity<List<PolicyDTO>> getPoliciesByCustomerId(@PathVariable Long customerId) {
+        List<PolicyDTO> policies = policyService.getPoliciesByCustomerId(customerId);
+        return new ResponseEntity<>(policies, HttpStatus.OK);
     }
 }
