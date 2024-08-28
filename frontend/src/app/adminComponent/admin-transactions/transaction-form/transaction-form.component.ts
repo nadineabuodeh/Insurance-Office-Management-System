@@ -19,13 +19,13 @@ import { TransactionFormFieldsComponent } from '../transaction-form-fields/trans
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatDatepickerModule,MatFormFieldModule,
-    MatNativeDateModule,TransactionFormFieldsComponent],
+    MatDatepickerModule, MatFormFieldModule,
+    MatNativeDateModule, TransactionFormFieldsComponent],
   templateUrl: './transaction-form.component.html',
   styleUrls: ['./transaction-form.component.css']
 })
 export class TransactionFormComponent {
-  transactionForm: FormGroup;  
+  transactionForm: FormGroup;
   isEditMode: boolean = false;
   private subscription: Subscription = new Subscription();
 
@@ -35,15 +35,20 @@ export class TransactionFormComponent {
     private dialogRef: MatDialogRef<TransactionFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.transactionForm = this.fb.group({  
+    this.transactionForm = this.fb.group({
       id: [null],
       startDate: ['', Validators.required],
       amount: [0, [Validators.required, Validators.min(1)]],
       endDate: ['', Validators.required],
-      transactionType: ['', Validators.required], 
+      transactionType: ['', Validators.required],
+
       userId: [null, Validators.required],
       policyId: [null, Validators.required],
+
+      policyName: [''],
+      username: ['']
     });
+
 
     if (this.data && this.data.transaction) {
       this.isEditMode = true;
@@ -58,7 +63,7 @@ export class TransactionFormComponent {
     if (this.isEditMode) {
       this.transactionForm.patchValue(this.data.transaction);
     }
-    
+
   }
 
   ngOnDestroy(): void {
@@ -66,6 +71,8 @@ export class TransactionFormComponent {
   }
 
   onSubmit() {
+
+
     if (this.transactionForm.valid) {
       const transactionData: Transaction = this.transactionForm.value;
 
@@ -74,6 +81,8 @@ export class TransactionFormComponent {
       } else {
         this.createTransaction(transactionData);
       }
+    } else {
+      console.log("form invalid")
     }
   }
 
@@ -81,8 +90,7 @@ export class TransactionFormComponent {
     this.subscription.add(
       this.transactionService.createTransaction(transaction).subscribe({
         next: (response) => {
-          console.log('Transaction created:', response);
-          this.dialogRef.close(response); 
+          this.dialogRef.close(response);
         },
         error: (error) => {
           console.error('Error creating transaction:', error);
@@ -95,8 +103,7 @@ export class TransactionFormComponent {
     this.subscription.add(
       this.transactionService.updateTransaction(transaction.id, transaction).subscribe({
         next: (response) => {
-          console.log('Transaction updated:', response);
-          this.dialogRef.close(response); 
+          this.dialogRef.close(response);
         },
         error: (error) => {
           console.error('Error updating transaction:', error);

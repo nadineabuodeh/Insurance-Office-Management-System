@@ -57,7 +57,7 @@ export class TransactionService {
   }
 
   createTransaction(transaction: Transaction): Observable<Transaction> {
-    transaction.createdAt = new Date().toISOString(); // Set created at to the current datee
+    transaction.createdAt = new Date().toISOString(); // Set [created at] to the current date
     const headers = this.getAuthHeaders();
     return this.http.post<Transaction>(this.baseUrl, transaction, { headers })
       .pipe(

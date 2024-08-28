@@ -11,15 +11,30 @@
       <mat-datepicker #startDatePicker></mat-datepicker>
       <mat-error *ngIf="formGroup.get('startDate')?.hasError('required')">Start Date is required</mat-error>
     </mat-form-field>
-    
+
     <mat-form-field appearance="fill" class="custom-form-field">
       <mat-label>End Date</mat-label>
       <input matInput [matDatepicker]="endDatePicker" formControlName="endDate" />
       <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
       <mat-datepicker #endDatePicker></mat-datepicker>
       <mat-error *ngIf="formGroup.get('endDate')?.hasError('required')">End Date is required</mat-error>
-      <mat-error *ngIf="formGroup.get('endDate')?.hasError('endDateBeforeStartDate')">End Date must be after Start Date</mat-error>
-    </mat-form-field>    
+      <mat-error *ngIf="formGroup.get('endDate')?.hasError('endDateBeforeStartDate')">End Date must be after Start
+        Date</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="custom-form-field">
+      <mat-label>Policy Name</mat-label>
+      <textarea matInput formControlName="policyName"></textarea>
+      @if(formGroup.get('policyName')?.hasError('required')){
+      <mat-error>
+        Policy Name is required
+      </mat-error>}
+      @if (formGroup.get('policyName')?.hasError('duplicate')) {
+      <mat-error>
+        Policy Name already exists
+      </mat-error>}
+    </mat-form-field>
+
 
     <mat-form-field appearance="fill" class="custom-form-field">
       <mat-label>Total Amount</mat-label>
@@ -31,7 +46,8 @@
     <mat-form-field appearance="fill" class="custom-form-field">
       <mat-label>Coverage Details</mat-label>
       <textarea matInput formControlName="coverageDetails"></textarea>
-      <mat-error *ngIf="formGroup.get('coverageDetails')?.hasError('required')">Coverage Details are required</mat-error>
+      <mat-error *ngIf="formGroup.get('coverageDetails')?.hasError('required')">Coverage Details are
+        required</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="custom-form-field">
@@ -44,7 +60,7 @@
       </mat-autocomplete>
       <mat-error *ngIf="formGroup.get('userId')?.hasError('required')">User is required</mat-error>
     </mat-form-field>
-    
+
     <mat-form-field appearance="fill" class="custom-form-field">
       <mat-label>Select Insurance</mat-label>
       <input type="text" matInput [formControl]="insuranceControl" [matAutocomplete]="autoInsurance" required />

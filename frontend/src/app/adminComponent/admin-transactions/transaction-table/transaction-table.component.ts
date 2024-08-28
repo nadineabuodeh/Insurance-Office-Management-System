@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-transaction-table',
   standalone: true,
-  imports: [FormsModule,MatTableModule, MatDialogModule, TransactionTableColComponent],
+  imports: [FormsModule, MatTableModule, MatDialogModule, TransactionTableColComponent],
   templateUrl: './transaction-table.component.html',
   styleUrls: ['./transaction-table.component.css']
 })
@@ -20,19 +20,18 @@ export class TransactionTableComponent implements OnInit {
   dataSource = new MatTableDataSource<Transaction>();
   searchTerm: string = '';
 
-  constructor(private transactionService: TransactionService, public dialog: MatDialog) {}
+  constructor(private transactionService: TransactionService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.loadTransactions(); 
+    this.loadTransactions();
   }
 
   loadTransactions(): void {
     this.transactionService.getAllTransactions().subscribe(transactions => {
       this.dataSource.data = transactions;
-      console.log('Transactions:', transactions); 
     });
   }
-  
+
 
   onAddTransactionClick(): void {
     const dialogRef = this.dialog.open(TransactionFormComponent, {
@@ -41,7 +40,7 @@ export class TransactionTableComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.loadTransactions();  
+        this.loadTransactions();
       }
     });
   }
@@ -54,7 +53,7 @@ export class TransactionTableComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.loadTransactions(); 
+        this.loadTransactions();
       }
     });
   }
@@ -62,7 +61,7 @@ export class TransactionTableComponent implements OnInit {
   deleteTransaction(id: number): void {
     if (confirm('Are you sure you want to delete this transaction?')) {
       this.transactionService.deleteTransaction(id).subscribe(() => {
-        this.loadTransactions();  
+        this.loadTransactions();
       });
     }
   }

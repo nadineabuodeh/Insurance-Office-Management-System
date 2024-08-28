@@ -4,7 +4,6 @@
 
 <mat-dialog-content>
   <form [formGroup]="formGroup">
-    <!--  =================== Start Date ======================  -->
     <mat-form-field appearance="fill" class="custom-form-field">
       <mat-label>Start Date</mat-label>
       <input matInput [matDatepicker]="startPicker" formControlName="startDate" />
@@ -14,9 +13,7 @@
       <mat-error>Start Date is required</mat-error>
       }
     </mat-form-field>
-    <!--  =================================================  -->
 
-    <!--  =================== End Date ======================  -->
     <mat-form-field appearance="fill" class="custom-form-field">
       <mat-label>End Date</mat-label>
       <input matInput [matDatepicker]="endPicker" formControlName="endDate" />
@@ -26,9 +23,7 @@
       <mat-error>End Date is required</mat-error>
       }
     </mat-form-field>
-    <!--  =================================================  -->
 
-    <!--  =================== Amount ======================  -->
     <mat-form-field appearance="fill" class="custom-form-field">
       <mat-label>Amount</mat-label>
       <input matInput formControlName="amount" type="number" />
@@ -39,9 +34,8 @@
       <mat-error>Amount must be greater than 0</mat-error>
       }
     </mat-form-field>
-    <!--  =================================================  -->
 
-     <!-- =================== Transaction Type ======================  -->
+
     <mat-form-field appearance="fill" class="custom-form-field">
       <mat-label>Transaction Type</mat-label>
       <mat-select formControlName="transactionType">
@@ -55,31 +49,72 @@
       <mat-error>Transaction Type is required</mat-error>
       }
     </mat-form-field>
-    
 
-    <!--  =================================================  -->
 
-    <!--  =================== User ID ======================  -->
+    @if(!isEditMode){
     <mat-form-field appearance="fill" class="custom-form-field">
-      <mat-label>User ID</mat-label>
-      <input matInput formControlName="userId" />
-      @if (formGroup.get('userId')?.hasError('required')) {
-      <mat-error>User ID is required</mat-error>
-      }
-    </mat-form-field>
-    <!--  =================================================  -->
+      <mat-label>Select User</mat-label>
+      <input type="text" matInput [formControl]="userControl" [matAutocomplete]="autoUser" placeholder="Select User"
+        required />
 
-    <!--  =================== Policy ID ======================  -->
-    <mat-form-field appearance="fill" class="custom-form-field">
-      <mat-label>Policy ID</mat-label>
-      <input matInput formControlName="policyId" />
-      @if (formGroup.get('policyId')?.hasError('required')) {
-      <mat-error>Policy ID is required</mat-error>
-      }
+      <mat-autocomplete #autoUser="matAutocomplete" [displayWith]="displayUser"
+        (optionSelected)="onUserSelection($event)">
+        <mat-option *ngFor="let user of users$ | async" [value]="user">
+          {{ user.firstName }} {{ user.lastName }} ({{ user.username }})
+        </mat-option>
+      </mat-autocomplete>
+      @if(formGroup.get('userId')?.hasError('required')){ <mat-error>
+        customer name is required
+      </mat-error>}
     </mat-form-field>
-    <!--  =================================================  -->
+
+
+    <mat-form-field appearance="fill" class="custom-form-field">
+      <mat-label>Policy Name</mat-label>
+      <input type="text" matInput [formControl]="policyNameControl" [matAutocomplete]="autoPolicy"
+        placeholder="Select Policy" required />
+      <mat-autocomplete #autoPolicy="matAutocomplete" [displayWith]="displayPolicy"
+        (optionSelected)="onPolicySelected($event)">
+        <mat-option *ngFor="let policy of filteredPolicies | async" [value]="policy">
+          {{ policy.policyName }}
+        </mat-option>
+      </mat-autocomplete>
+      @if(policyNameControl.hasError('required')){
+      <mat-error>
+        Policy Name is required
+      </mat-error>
+      }
+
+    </mat-form-field>
+    }
+    @else {
+    <mat-form-field appearance="fill" class="custom-form-field">
+      <mat-label>Username</mat-label>
+      <input matInput [formControl]="userControl" [matAutocomplete]="autoUser">
+      <mat-autocomplete #autoUser="matAutocomplete" [displayWith]="displayUser"
+        (optionSelected)="onUserSelection($event)">
+        <mat-option *ngFor="let user of users$ | async" [value]="user">
+          {{ user.firstName }} {{ user.lastName }} ({{ user.username }})
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="custom-form-field">
+      <mat-label>Policy Name</mat-label>
+      <input matInput [formControl]="policyNameControl" [matAutocomplete]="autoPolicy">
+      <mat-autocomplete #autoPolicy="matAutocomplete" (optionSelected)="onPolicySelected($event)">
+        <mat-option *ngFor="let policy of filteredPolicies | async" [value]="policy">
+          {{ policy.policyName }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    }
+
   </form>
 </mat-dialog-content>
+
+
 
 <mat-dialog-actions>
   <button mat-button (click)="onCancel()">Cancel</button>

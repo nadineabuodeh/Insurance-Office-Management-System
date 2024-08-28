@@ -1,6 +1,6 @@
-*{
-font-family: 'Times New Roman', Times, serif;
-font-size: 15px;
+* {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 15px;
 }
 
 .secondary-sidebar {
@@ -12,9 +12,7 @@ font-size: 15px;
   height: 800px;
   overflow-y: auto;
   scrollbar-color: rgb(235, 229, 229) #2d445d;
-  scrollbar-width: none; 
-  /* width: 180px; */
-
+  scrollbar-width: none;
 }
 
 .search-input {
@@ -27,24 +25,24 @@ font-size: 15px;
   margin-left: 7px;
 }
 
-.search-input:focus{
+.search-input:focus {
   border-color: #1d455f;
   outline: none;
 }
 
 .customer-list {
   padding: 0;
-  height: 800px; 
+  height: 800px;
 }
 
-.btn{
+.btn {
   border-color: transparent;
   background-color: transparent;
   width: 100%;
   height: 33px;
 }
 
-.btn:hover{
+.btn:hover {
   cursor: pointer;
 }
 
@@ -70,11 +68,10 @@ font-size: 15px;
   top: 16px;
 }
 
-button{
+button {
   border: transparent;
 }
 
-/* ========== */
 .empty-table-message {
   display: flex;
   flex-direction: column;
@@ -100,10 +97,10 @@ button{
   margin-bottom: 10px;
 }
 
-.btn2{
+.btn2 {
   width: 13px;
   border: transparent;
   position: absolute;
   left: 133px;
-  top: 331.9px; 
+  top: 331.9px;
 }

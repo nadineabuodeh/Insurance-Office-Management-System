@@ -8,7 +8,7 @@ import { provideClientHydration } from '@angular/platform-browser';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatNativeDateModule, MatOptionSelectionChange } from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomerService } from './service/CustomerService/customer.service';
@@ -29,7 +29,7 @@ export const appConfig: ApplicationConfig = {
       BrowserAnimationsModule, //****************/
       MatButtonModule,
       MatDatepickerModule,
-      MatNativeDateModule,MatFormFieldModule,
+      MatNativeDateModule,MatFormFieldModule,MatOptionSelectionChange,
       MatTableModule,
       MatDialogModule,
       FormsModule, TreeModule,

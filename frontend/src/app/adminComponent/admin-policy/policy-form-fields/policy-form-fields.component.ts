@@ -22,8 +22,8 @@ import { PolicyFormComponent } from '../policy-form/policy-form.component';
     ReactiveFormsModule,
     MatDatepickerModule,
     MatButtonModule,
-    MatDialogModule ,
-    MatAutocompleteModule, 
+    MatDialogModule,
+    MatAutocompleteModule,
     MatOptionModule,],
   templateUrl: './policy-form-fields.component.html',
   styleUrl: './policy-form-fields.component.css'
@@ -45,7 +45,7 @@ export class PolicyFormFieldsComponent {
     private customerService: CustomerService,
     private insuranceService: InsuranceService,
     private dialog: MatDialog
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.customerService.getCustomers().subscribe(users => {
@@ -85,11 +85,11 @@ export class PolicyFormFieldsComponent {
       const selectedUser = this.users.find(user => user.name === value);
       this.formGroup.patchValue({ userId: selectedUser ? selectedUser.id : null });
     });
-    
+
     this.insuranceControl.valueChanges.subscribe(value => {
       const selectedInsurance = this.insurances.find(insurance => insurance.name === value);
       this.formGroup.patchValue({ insuranceId: selectedInsurance ? selectedInsurance.id : null });
-    });    
+    });
   }
 
   onCancel(): void {
@@ -111,7 +111,8 @@ export class PolicyFormFieldsComponent {
   }
 
   private _filterUsers(value: string): any[] {
-    const filterValue = value.toLowerCase();
+    const
+      filterValue = value.toLowerCase();
     return this.users.filter(user => user.name.toLowerCase().includes(filterValue));
   }
 

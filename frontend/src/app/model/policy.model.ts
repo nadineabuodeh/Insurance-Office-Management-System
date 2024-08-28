@@ -6,4 +6,5 @@ export interface Policy {
     coverageDetails: string;
     userId: number;
     insuranceId: number;
+    policyName:string
 }  

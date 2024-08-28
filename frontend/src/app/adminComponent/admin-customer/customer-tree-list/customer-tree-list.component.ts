@@ -40,7 +40,6 @@ export class CustomerTreeListComponent implements OnInit {
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
-  ////////////////////////
 
   fetchCustomers(): void {
     this.customerService.getCustomers().subscribe({
@@ -54,7 +53,7 @@ export class CustomerTreeListComponent implements OnInit {
       }
     });
   }
-  ///////////////////////
+
 
   filteredCustomers() {
     return this.customers.filter(customer =>
@@ -70,7 +69,7 @@ export class CustomerTreeListComponent implements OnInit {
   }
 
 
-  onAddButtonClick(): void { //donne
+  onAddButtonClick(): void {
     const dialogRef = this.dialog.open(CustomerFormComponent, {
       panelClass: 'custom-dialog-container',
     });

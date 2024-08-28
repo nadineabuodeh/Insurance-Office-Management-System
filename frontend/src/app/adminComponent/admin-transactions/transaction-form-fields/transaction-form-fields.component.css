@@ -1,6 +1,3 @@
-/* #EEEEEE (light gray), #201E43 (deep purple), #134870 (navy blue), and #508C9B (teal). */
-
-
 .title {
   color: #201E43;
   font-weight: bold;
@@ -8,7 +5,6 @@
 }
 
 
-/*--- first & last name div ---*/
 .name-fields-container {
   display: flex;
   gap: 16px;
@@ -22,17 +18,14 @@
   min-width: 150px;
 }
 
-/* --- inputs fields --- */
 .mat-error {
   color: #f44336;
 }
 
-/*  ------------------------------------------ */
-/* cancel & submit btns */
+
 .mat-dialog-actions {
   display: flex;
   justify-content: flex-end;
   padding: 1rem;
   align-content: end;
 }
-
