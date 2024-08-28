@@ -6,4 +6,6 @@ export interface Policy {
     coverageDetails: string;
     userId: number;
     insuranceId: number;
-}  
+    username: string; 
+    insuranceType: string; 
+}

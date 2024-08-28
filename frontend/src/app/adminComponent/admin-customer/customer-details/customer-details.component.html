@@ -61,4 +61,7 @@
   </div>
 
 </div>
+<div class="customer-policies">
+  <app-customer-policy-layout *ngIf="customer" [customerId]="customer.id"></app-customer-policy-layout>
+</div>
 }

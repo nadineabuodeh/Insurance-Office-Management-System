@@ -1,9 +1,6 @@
 <div class="policy-table-container">
-  <button class="add-search-btns" (click)="onAddPolicyClick()">
-    <img class="icons" src="./assets/add.png" alt="Add Policy" title="Create New Policy">
-    Create New Policy
-  </button>
-
+  <h1 class="policies">Policies:</h1>
+  
   <table *ngIf="dataSource.data.length > 0" mat-table [dataSource]="dataSource" class="mat-elevation-z8 styled-table">
 
     <ng-container matColumnDef="startDate">
@@ -26,26 +23,9 @@
       <td mat-cell *matCellDef="let policy">{{ policy.coverageDetails }}</td>
     </ng-container>
 
-    <ng-container matColumnDef="username">
-      <th mat-header-cell *matHeaderCellDef> User </th>
-      <td mat-cell *matCellDef="let policy">{{ policy.username }}</td>
-    </ng-container>
-  
-    <ng-container matColumnDef="insuranceType">
+    <ng-container matColumnDef="insuranceDescription">
       <th mat-header-cell *matHeaderCellDef> Insurance </th>
       <td mat-cell *matCellDef="let policy">{{ policy.insuranceType }}</td>
-    </ng-container>
-    
-    <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef> Actions </th>
-      <td mat-cell *matCellDef="let policy">
-        <button class="btns" (click)="editPolicy(policy)">
-          <img class="icons" src="./assets/pencil.png" alt="edit" title="Update Policy Information">
-        </button>
-        <button class="btns" (click)="deletePolicy(policy.id)">
-          <img class="icons" src="./assets/delete.png" alt="delete" title="Delete This Policy">
-        </button>
-      </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -54,7 +34,7 @@
 
   <div *ngIf="dataSource.data.length === 0" class="empty-table-message">
     <img src="./assets/logo.png" alt="No Policies" class="empty-icon">
-    <p class="empty-text">There Are No Policies!</p>
-    <p class="empty-subtext">Start adding new policies by clicking the "Create New Policy" button above.</p>
+    <p class="empty-text">There Are No Policies for this customer!</p>
+    <p class="empty-subtext">Start adding new policies by clicking the "Create New Policy" button in Policy side.</p>
   </div>
 </div>

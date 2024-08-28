@@ -16,7 +16,7 @@ import { Policy } from '../../../model/policy.model';
   styleUrl: './policy-layout.component.css'
 })
 export class PolicyLayoutComponent {
-  displayedColumns: string[] = ['startDate', 'endDate', 'totalAmount', 'coverageDetails', 'actions'];
+  displayedColumns: string[] = ['startDate', 'endDate', 'totalAmount', 'coverageDetails', 'username', 'insuranceType', 'actions'];
   dataSource = new MatTableDataSource<Policy>();
 
   constructor(private policyService: PolicyService, public dialog: MatDialog) {}
