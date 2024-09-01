@@ -42,3 +42,9 @@ p, li, span, a, input, button {
 .toast-error .toast-message {
     font-weight: bold;
 }
+
+img {
+    width: 100%;
+    height: auto;
+  }
+  

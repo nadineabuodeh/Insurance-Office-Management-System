@@ -40,17 +40,6 @@ export class TransactionTableComponent implements OnInit {
     });
   }
 
-  
-//   loadTransactions(): void {
-//     this.transactionService.getTransactionsByCustomerId(this.customerId).subscribe(transactions => {
-//       this.dataSource.data = transactions;
-//     }, error => {
-//       console.error('Error loading transactions:', error);
-//       this.dataSource.data = [];
-//     });
-// }
-
-
 
   onAddTransactionClick(): void {
     const dialogRef = this.dialog.open(TransactionFormComponent, {

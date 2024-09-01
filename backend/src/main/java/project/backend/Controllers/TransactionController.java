@@ -77,4 +77,6 @@ public class TransactionController {
         List<TransactionDTO> transactions = transactionService.getTransactionsByCustomerId(customerId);
         return new ResponseEntity<>(transactions, HttpStatus.OK);
     }
+
+
 }
