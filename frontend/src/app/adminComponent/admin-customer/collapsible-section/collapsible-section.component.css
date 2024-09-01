@@ -1,0 +1,33 @@
+.collapsible-container {
+  border: 1px solid #ddd;
+  margin-left: 225px;
+  margin-top: 25px;
+  border-radius: 4px;
+}
+
+.collapsible-header {
+  background-color: #f7f7f7;
+  border: none;
+  padding: 10px;
+  text-align: left;
+  width: 100%;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  position: relative;
+}
+
+.collapsible-indicator {
+  position: absolute;
+  right: 10px;
+}
+
+.collapsible-content {
+  display: none;
+  padding: 10px;
+  background-color: #f1f1f1;
+}
+
+.collapsible-content.show {
+  display: block;
+}

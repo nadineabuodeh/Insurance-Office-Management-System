@@ -56,6 +56,10 @@ export class TransactionService {
       );
   }
 
+  getTransactionsByCustomerId(customerId: number): Observable<Transaction[]> {
+    return this.http.get<Transaction[]>(`${this.baseUrl}/customer/${customerId}`, { headers: this.getAuthHeaders() });
+  }
+
   createTransaction(transaction: Transaction): Observable<Transaction> {
     transaction.createdAt = new Date().toISOString(); // Set [created at] to the current date
     const headers = this.getAuthHeaders();

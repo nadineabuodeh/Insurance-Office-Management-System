@@ -4,7 +4,7 @@
 
 }
 
-.policy-table-container {
+.transaction-table-container {
   border-radius: 10px;
   margin-left: 250px;
   max-width: 65%;
@@ -176,8 +176,7 @@ button {
 .table2 td {
   padding: 10px;
   border-bottom: 1px solid #ddd;
-  border-top: 1px solid #ddd;
-  ;
+  border-top:1px solid #ddd; ;
 }
 
 .table2 th {
@@ -218,9 +217,4 @@ button {
   font-size: 16px;
   color: #508C9B;
   margin-top: 0;
-}
-
-.policies {
-  color: #1d455f;
-  padding-left: 45px;
 }

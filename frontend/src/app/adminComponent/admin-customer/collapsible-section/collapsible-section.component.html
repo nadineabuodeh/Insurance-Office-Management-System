@@ -1,0 +1,9 @@
+<div class="collapsible-container">
+  <button class="collapsible-header" (click)="toggleCollapse()">
+    {{ header }}
+    <span class="collapsible-indicator">{{ isCollapsed ? '+' : '-' }}</span>
+  </button>
+  <div class="collapsible-content" [ngClass]="{ 'show': !isCollapsed }">
+    <ng-content></ng-content>
+  </div>
+</div>

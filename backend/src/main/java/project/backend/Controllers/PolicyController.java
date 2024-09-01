@@ -71,4 +71,6 @@ public class PolicyController {
         List<PolicyDTO> policies = policyService.getPoliciesByCustomerId(customerId);
         return new ResponseEntity<>(policies, HttpStatus.OK);
     }
+
+
 }
