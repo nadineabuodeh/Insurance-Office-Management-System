@@ -60,6 +60,8 @@ export class TransactionFormFieldsComponent {
   ngOnInit(): void {
     this.initialFormValue = this.formGroup.getRawValue();
     this.loadUsers(); this.loadPolicies();
+    // this.formGroup.get('userId')?.disable();
+    // this.formGroup.controls['userId'].disable();
 
 
 
@@ -95,6 +97,16 @@ export class TransactionFormFieldsComponent {
     this.formGroup.patchValue({
       policyId: selectedPolicy.id
     });
+
+    // Find the user associated with the selected policyy
+    const selectedUser = this.users.find(user => user.id === selectedPolicy.userId);
+    if (selectedUser) {
+      this.userControl.setValue(selectedUser, { emitEvent: false }); //auto fill the field
+      // Update the form with the selected user's id.
+      this.formGroup.patchValue({
+        userId: selectedUser.id
+      });
+    }
   }
 
   displayPolicy(policy: Policy): string {

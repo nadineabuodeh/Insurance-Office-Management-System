@@ -1,6 +1,7 @@
 package project.backend.Repositories;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,6 +16,7 @@ public interface PolicyRepository extends JpaRepository<Policy, Long> {
     "JOIN FETCH p.user u " +
     "JOIN FETCH p.insurance i " +
     "WHERE u.admin.username = :adminUsername")
+
     List<Policy> findPoliciesByAdmin(@Param("adminUsername") String adminUsername);
-    
+
 }

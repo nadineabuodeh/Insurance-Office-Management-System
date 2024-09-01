@@ -41,13 +41,12 @@ export class TransactionFormComponent {
       amount: [0, [Validators.required, Validators.min(1)]],
       endDate: ['', Validators.required],
       transactionType: ['', Validators.required],
-
       userId: [null, Validators.required],
       policyId: [null, Validators.required],
-
       policyName: [''],
       username: ['']
     });
+
 
 
     if (this.data && this.data.transaction) {
