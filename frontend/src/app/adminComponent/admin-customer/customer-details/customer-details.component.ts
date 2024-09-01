@@ -8,17 +8,21 @@ import { CustomerFormComponent } from '../customer-form/customer-form.component'
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { PolicyLayoutComponent } from "../policy-layout/policy-layout.component";
+import { CollapsibleSectionComponent } from "../collapsible-section/collapsible-section.component";
+import { TransactionTableComponent } from "../../admin-transactions/transaction-table/transaction-table.component";
+import { CustomerTransactionComponent } from "../customer-transaction/customer-transaction.component";
 
 
 @Component({
   selector: 'app-customer-details',
   standalone: true,
-  imports: [CustomerTreeListComponent, DatePipe, PolicyLayoutComponent, CommonModule],
+  imports: [CustomerTreeListComponent, DatePipe, PolicyLayoutComponent, CommonModule, CollapsibleSectionComponent, TransactionTableComponent, CustomerTransactionComponent],
   templateUrl: './customer-details.component.html',
   styleUrl: './customer-details.component.css'
 })
 export class CustomerDetailsComponent implements OnInit {
   @Input() errorMessage: string = '';
+  visible = false;
 
   customer: Customer | undefined;
   private subscriptions: Subscription = new Subscription();
@@ -60,7 +64,7 @@ export class CustomerDetailsComponent implements OnInit {
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe(); 
   }
-  // =========================================
+  // 
 
 
   deleteCustomer(id: number): void {
@@ -71,7 +75,6 @@ export class CustomerDetailsComponent implements OnInit {
       });
     }
   }
-  // =========================================
 
   editCustomer(customer: Customer): void {
     const dialogRef = this.dialog.open(CustomerFormComponent, {
@@ -106,5 +109,7 @@ export class CustomerDetailsComponent implements OnInit {
     );
   }
 
-
+  toggleCollapse(): void {
+    this.visible = !this.visible;
+  }
 }

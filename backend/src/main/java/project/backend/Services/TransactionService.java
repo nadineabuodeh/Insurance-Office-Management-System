@@ -3,6 +3,7 @@ package project.backend.Services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import project.backend.DTOs.PolicyDTO;
 import project.backend.DTOs.TransactionDTO;
 import project.backend.Repositories.PolicyRepository;
 import project.backend.Repositories.TransactionRepository;
@@ -16,6 +17,7 @@ import project.backend.models.Transaction;
 import java.util.List;
 import java.util.Optional;
 import java.time.LocalDate;
+import java.util.stream.Collectors;
 
 @Service
 public class TransactionService {
@@ -125,5 +127,15 @@ public class TransactionService {
             throw new ResourceNotFoundException("Transaction not found with ID: " + id);
         }
         transactionRepository.deleteById(id);
+    }
+
+    public List<TransactionDTO> getTransactionsByCustomerId(Long customerId) {
+        List<Transaction> transactions = transactionRepository.findByUserId(customerId);
+        if (transactions.isEmpty()) {
+            throw new ResourceNotFoundException("No transactions found for customer ID: " + customerId);
+        }
+        return transactions.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 }

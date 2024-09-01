@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpServletRequest;
+import project.backend.DTOs.PolicyDTO;
 import project.backend.DTOs.TransactionDTO;
 import project.backend.Services.TransactionService;
 import project.backend.exceptions.ResourceNotFoundException;
@@ -69,5 +70,11 @@ public class TransactionController {
         } catch (ResourceNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/customer/{customerId}")
+    public ResponseEntity<List<TransactionDTO>> getTransactionsByCustomerId(@PathVariable Long customerId) {
+        List<TransactionDTO> transactions = transactionService.getTransactionsByCustomerId(customerId);
+        return new ResponseEntity<>(transactions, HttpStatus.OK);
     }
 }

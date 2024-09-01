@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { TransactionService } from './../../../service/TransactionService/transaction.service';
@@ -15,9 +15,10 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./transaction-table.component.css']
 })
 export class TransactionTableComponent implements OnInit {
+  @Input() customerId!: number;
+  dataSource = new MatTableDataSource<Transaction>();
 
   displayedColumns: string[] = ['startDate', 'endDate', 'amount', 'transactionType', 'createdAt', 'updatedAt', 'actions'];
-  dataSource = new MatTableDataSource<Transaction>();
   searchTerm: string = '';
 
   constructor(private transactionService: TransactionService, public dialog: MatDialog) { }
@@ -26,11 +27,29 @@ export class TransactionTableComponent implements OnInit {
     this.loadTransactions();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['customerId'] && this.customerId) {
+      this.dataSource.data = [];
+      this.loadTransactions();
+    }
+  }
+
   loadTransactions(): void {
     this.transactionService.getAllTransactions().subscribe(transactions => {
       this.dataSource.data = transactions;
     });
   }
+
+  
+//   loadTransactions(): void {
+//     this.transactionService.getTransactionsByCustomerId(this.customerId).subscribe(transactions => {
+//       this.dataSource.data = transactions;
+//     }, error => {
+//       console.error('Error loading transactions:', error);
+//       this.dataSource.data = [];
+//     });
+// }
+
 
 
   onAddTransactionClick(): void {
