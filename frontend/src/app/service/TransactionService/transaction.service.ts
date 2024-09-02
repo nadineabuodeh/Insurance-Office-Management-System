@@ -54,6 +54,23 @@ export class TransactionService {
       );
   }
 
+  getTransactionsForCustomer(): Observable<Transaction[]> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<Transaction[]>(`${this.baseUrl}/my-transactions`, { headers }).pipe(
+      catchError(this.handleError<Transaction[]>('getTransactionsForCustomer', []))
+    );
+  }
+
+  getDebtTransactions(): Observable<Transaction[]> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<Transaction[]>(`${this.baseUrl}/my-debts`, { headers }).pipe(
+      tap((transactions) => {
+        console.log('Fetched Debt Transactions:', transactions);
+      }),
+      catchError(this.handleError<Transaction[]>('getDebtTransactions', []))
+    );
+  }
+
   getTransactionsByCustomerId(customerId: number): Observable<Transaction[]> {
     return this.http.get<Transaction[]>(
       `${this.baseUrl}/customer/${customerId}`,

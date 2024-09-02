@@ -3,6 +3,7 @@ package project.backend.Controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -79,4 +80,19 @@ public class TransactionController {
         return new ResponseEntity<>(transactions, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
+    @GetMapping("/my-transactions")
+    public ResponseEntity<List<TransactionDTO>> getTransactionsForCustomer(HttpServletRequest request) {
+        String jwtToken = request.getHeader("Authorization").substring(7);
+        List<TransactionDTO> transactions = transactionService.getTransactionsForCustomer(jwtToken);
+        return new ResponseEntity<>(transactions, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
+    @GetMapping("/my-debts")
+    public ResponseEntity<List<TransactionDTO>> getDebtTransactionsForCustomer(HttpServletRequest request) {
+        String jwtToken = request.getHeader("Authorization").substring(7);
+        List<TransactionDTO> transactions = transactionService.getDebtTransactionsForCustomer(jwtToken);
+        return new ResponseEntity<>(transactions, HttpStatus.OK);
+    }
 }
