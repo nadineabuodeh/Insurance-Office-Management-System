@@ -1,7 +1,7 @@
 .customer-sidebar {
   position: fixed;
-  top: 80px;
-  width: 150px;
+  top: 60px;
+  width: 200px;
   left: 0;
   height: calc(100vh - 60px);
   background-color: #EEEEEE;

@@ -31,6 +31,12 @@ export class PolicyService {
     });
   }
 
+  getPoliciesForCustomer(): Observable<Policy[]> {
+    return this.http.get<Policy[]>(`${this.apiUrl}/my-policies`, {
+      headers: this.getAuthHeaders(),
+    });
+  }
+
   getPolicyById(id: number): Observable<Policy> {
     return this.http.get<Policy>(`${this.apiUrl}/${id}`, {
       headers: this.getAuthHeaders(),

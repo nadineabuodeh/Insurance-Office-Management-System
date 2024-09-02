@@ -46,6 +46,19 @@ public class PolicyService {
                 .collect(Collectors.toList());
     }
 
+    public List<PolicyDTO> getPoliciesForCustomer(String jwtToken) {
+        String username = jwtUtils.getUserNameFromJwtToken(jwtToken);
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with username: " + username));
+
+        List<Policy> policies = policyRepository.findByUserId(user.getId());
+
+        return policies.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
     public PolicyDTO getPolicyById(Long id) {
         Policy policy = policyRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Policy not found with ID: " + id));

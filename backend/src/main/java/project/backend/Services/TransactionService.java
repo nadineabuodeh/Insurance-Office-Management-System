@@ -11,6 +11,7 @@ import project.backend.SecurityConfiguration.security.jwt.JwtUtils;
 import project.backend.exceptions.ResourceNotFoundException;
 import project.backend.models.Policy;
 import project.backend.models.Transaction;
+import project.backend.models.TransactionType;
 
 import java.util.List;
 import java.util.Optional;
@@ -88,6 +89,19 @@ public class TransactionService {
                 .toList();
     }
 
+    public List<TransactionDTO> getTransactionsForCustomer(String jwtToken) {
+        String username = jwtUtils.getUserNameFromJwtToken(jwtToken);
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with username: " + username));
+
+        List<Transaction> transactions = transactionRepository.findByUserId(user.getId());
+
+        return transactions.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
     public TransactionDTO getTransactionById(Long id) {
         Transaction transaction = transactionRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Transaction not found with ID: " + id));
@@ -130,6 +144,19 @@ public class TransactionService {
         if (transactions.isEmpty()) {
             throw new ResourceNotFoundException("No transactions found for customer ID: " + customerId);
         }
+        return transactions.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<TransactionDTO> getDebtTransactionsForCustomer(String jwtToken) {
+        String username = jwtUtils.getUserNameFromJwtToken(jwtToken);
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with username: " + username));
+
+        List<Transaction> transactions = transactionRepository.findByUserIdAndTransactionType(user.getId(), TransactionType.DEBT);
+
         return transactions.stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
