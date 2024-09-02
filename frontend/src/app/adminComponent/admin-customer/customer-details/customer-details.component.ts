@@ -73,7 +73,6 @@ export class CustomerDetailsComponent implements OnInit {
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
-  //
 
   deleteCustomer(id: number): void {
     if (confirm('Are you sure you want to delete this customer?')) {

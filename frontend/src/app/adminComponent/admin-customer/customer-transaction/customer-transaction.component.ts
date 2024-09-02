@@ -5,7 +5,7 @@ import {
 } from '../../../service/TransactionService/transaction.service';
 import { TransactionTableColComponent } from '../../admin-transactions/transaction-table-col/transaction-table-col.component';
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-customer-transaction',

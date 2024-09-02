@@ -39,7 +39,7 @@ export class InsuranceTableComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.loadInsurances(); // This refreshes the table data after adding a new insurance
+        this.loadInsurances();
       }
     });
   }
@@ -68,4 +68,5 @@ export class InsuranceTableComponent implements OnInit {
       }
     });
   }
+  
 }
