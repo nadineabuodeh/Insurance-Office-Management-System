@@ -7,10 +7,10 @@ import { AuthService } from '../../service/auth.service';
   standalone: true,
   imports: [],
   templateUrl: './splash-screen.component.html',
-  styleUrl: './splash-screen.component.css'
+  styleUrl: './splash-screen.component.css',
 })
 export class SplashScreenComponent {
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     setTimeout(() => {

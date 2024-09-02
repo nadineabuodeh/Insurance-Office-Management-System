@@ -9,41 +9,45 @@ import { Policy } from '../../../model/policy.model';
 @Component({
   selector: 'app-policy-layout',
   standalone: true,
-  imports: [CommonModule,
-    MatTableModule
-  ],
+  imports: [CommonModule, MatTableModule],
   templateUrl: './policy-layout.component.html',
-  styleUrl: './policy-layout.component.css'
+  styleUrl: './policy-layout.component.css',
 })
 export class PolicyLayoutComponent {
-
-  displayedColumns: string[] = ['startDate', 'endDate', 'policyName', 'totalAmount', 'coverageDetails', 'username', 'insuranceType', 'actions'];
+  displayedColumns: string[] = [
+    'startDate',
+    'endDate',
+    'policyName',
+    'totalAmount',
+    'coverageDetails',
+    'username',
+    'insuranceType',
+    'actions',
+  ];
   dataSource = new MatTableDataSource<Policy>();
 
-  constructor(private policyService: PolicyService, public dialog: MatDialog) { }
+  constructor(private policyService: PolicyService, public dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.loadPolicies();
   }
 
-
-
   loadPolicies(): void {
     this.policyService.getAllPolicies().subscribe({
       next: (policies: Policy[]) => {
         this.dataSource.data = policies;
-      }
+      },
     });
   }
 
   onAddPolicyClick(): void {
     const dialogRef = this.dialog.open(PolicyFormComponent, {
-      panelClass: 'custom-dialog-container'
+      panelClass: 'custom-dialog-container',
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.loadPolicies();  // Reload policies after adding
+        this.loadPolicies(); // Reload policies after adding
       }
     });
   }
@@ -51,12 +55,12 @@ export class PolicyLayoutComponent {
   editPolicy(policy: Policy): void {
     const dialogRef = this.dialog.open(PolicyFormComponent, {
       panelClass: 'custom-dialog-container',
-      data: { policy }
+      data: { policy },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.loadPolicies();  // Reload policies after editing
+        this.loadPolicies(); // Reload policies after editing
       }
     });
   }
@@ -64,7 +68,7 @@ export class PolicyLayoutComponent {
   deletePolicy(id: number): void {
     if (confirm('Are you sure you want to delete this policy?')) {
       this.policyService.deletePolicy(id).subscribe(() => {
-        this.loadPolicies();  // Reload policies after deleting
+        this.loadPolicies(); // Reload policies after deleting
       });
     }
   }

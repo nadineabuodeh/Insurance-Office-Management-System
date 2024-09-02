@@ -1,11 +1,23 @@
 import { CommonModule } from '@angular/common';
-import { TransactionService, Transaction } from '../../../service/TransactionService/transaction.service';
+import {
+  TransactionService,
+  Transaction,
+} from '../../../service/TransactionService/transaction.service';
 import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatDialogRef, MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  MatDialogRef,
+  MatDialog,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Subscription } from 'rxjs';
@@ -14,15 +26,19 @@ import { TransactionFormFieldsComponent } from '../transaction-form-fields/trans
 @Component({
   selector: 'app-transaction-form',
   standalone: true,
-  imports: [CommonModule,
+  imports: [
+    CommonModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatDatepickerModule, MatFormFieldModule,
-    MatNativeDateModule, TransactionFormFieldsComponent],
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatNativeDateModule,
+    TransactionFormFieldsComponent,
+  ],
   templateUrl: './transaction-form.component.html',
-  styleUrls: ['./transaction-form.component.css']
+  styleUrls: ['./transaction-form.component.css'],
 })
 export class TransactionFormComponent {
   transactionForm: FormGroup;
@@ -44,10 +60,8 @@ export class TransactionFormComponent {
       userId: [null, Validators.required],
       policyId: [null, Validators.required],
       policyName: [''],
-      username: ['']
+      username: [''],
     });
-
-
 
     if (this.data && this.data.transaction) {
       this.isEditMode = true;
@@ -56,13 +70,10 @@ export class TransactionFormComponent {
     this.dialogRef.disableClose = true;
   }
 
-
-
   ngOnInit() {
     if (this.isEditMode) {
       this.transactionForm.patchValue(this.data.transaction);
     }
-
   }
 
   ngOnDestroy(): void {
@@ -70,8 +81,6 @@ export class TransactionFormComponent {
   }
 
   onSubmit() {
-
-
     if (this.transactionForm.valid) {
       const transactionData: Transaction = this.transactionForm.value;
 
@@ -81,7 +90,7 @@ export class TransactionFormComponent {
         this.createTransaction(transactionData);
       }
     } else {
-      console.log("form invalid")
+      console.log('form invalid');
     }
   }
 
@@ -93,21 +102,23 @@ export class TransactionFormComponent {
         },
         error: (error) => {
           console.error('Error creating transaction:', error);
-        }
+        },
       })
     );
   }
 
   updateTransaction(transaction: Transaction) {
     this.subscription.add(
-      this.transactionService.updateTransaction(transaction.id, transaction).subscribe({
-        next: (response) => {
-          this.dialogRef.close(response);
-        },
-        error: (error) => {
-          console.error('Error updating transaction:', error);
-        }
-      })
+      this.transactionService
+        .updateTransaction(transaction.id, transaction)
+        .subscribe({
+          next: (response) => {
+            this.dialogRef.close(response);
+          },
+          error: (error) => {
+            console.error('Error updating transaction:', error);
+          },
+        })
     );
   }
 

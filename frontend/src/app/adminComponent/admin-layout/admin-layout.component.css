@@ -1,11 +1,11 @@
 .admin-layout {
-    display: flex;
-  }
+  display: flex;
+}
 
-  .admin-content {
-    margin-top: 60px;
-    margin-left: 250px;
-    padding: 20px;
-    overflow-y: auto;
-    background-color: #EEEEEE;
-  }
+.admin-content {
+  margin-top: 60px;
+  margin-left: 250px;
+  padding: 20px;
+  overflow-y: auto;
+  background-color: #eeeeee;
+}

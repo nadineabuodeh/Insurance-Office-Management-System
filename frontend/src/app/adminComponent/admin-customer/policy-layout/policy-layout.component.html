@@ -1,6 +1,5 @@
 <br><br>
 <div class="policy-table-container">
-  <h2 class="policies">Policies:</h2>
 
   <table *ngIf="dataSource.data.length > 0" mat-table [dataSource]="dataSource" class="mat-elevation-z8 styled-table">
 
@@ -35,7 +34,8 @@
 
   <div *ngIf="dataSource.data.length === 0" class="empty-table-message">
     <img src="./assets/logo.png" alt="No Policies" class="empty-icon">
-    <p class="empty-text">There Are No Policies for this customer!</p>
-    <p class="empty-subtext">Start adding new policies by clicking the "Create New Policy" button in Policy side.</p>
+    <p class="empty-text">There Are No Policies <br> for this customer!</p>
+    <p class="empty-subtext">Start adding new policies by clicking the <br> "Create New Policy" button in Policy side.
+    </p>
   </div>
 </div>

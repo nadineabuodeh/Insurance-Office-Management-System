@@ -52,7 +52,7 @@ public class AuthController {
             String jwt = jwtUtils.generateJwtToken(authentication);
 
             System.out.println("Generated JWT Token: " + jwt);
-            
+
             UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
             List<String> roles = userDetails.getAuthorities().stream()
                     .map(item -> item.getAuthority())

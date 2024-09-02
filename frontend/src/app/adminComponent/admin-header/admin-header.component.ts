@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [],
   templateUrl: './admin-header.component.html',
-  styleUrl: './admin-header.component.css'
+  styleUrl: './admin-header.component.css',
 })
 export class AdminHeaderComponent {
   constructor(private router: Router, private authService: AuthService) {}
@@ -15,5 +15,4 @@ export class AdminHeaderComponent {
   logout(): void {
     this.authService.logout();
   }
-  
 }

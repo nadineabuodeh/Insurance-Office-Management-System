@@ -7,15 +7,19 @@ import { Policy } from '../../../model/policy.model';
 @Component({
   selector: 'app-customer-policy-layout',
   standalone: true,
-  imports: [CommonModule, 
-    MatTableModule
-  ],
+  imports: [CommonModule, MatTableModule],
   templateUrl: './policy-layout.component.html',
-  styleUrl: './policy-layout.component.css'
+  styleUrl: './policy-layout.component.css',
 })
 export class PolicyLayoutComponent {
   @Input() customerId!: number;
-  displayedColumns: string[] = ['startDate', 'endDate', 'totalAmount', 'coverageDetails', 'insuranceDescription'];
+  displayedColumns: string[] = [
+    'startDate',
+    'endDate',
+    'totalAmount',
+    'coverageDetails',
+    'insuranceDescription',
+  ];
   dataSource = new MatTableDataSource<Policy>();
 
   constructor(private policyService: PolicyService) {}
@@ -28,11 +32,14 @@ export class PolicyLayoutComponent {
   }
 
   loadPolicies(): void {
-    this.policyService.getPoliciesByCustomerId(this.customerId).subscribe(policies => {
-      this.dataSource.data = policies;
-    }, error => {
-      console.error('Error loading policies:', error);
-      this.dataSource.data = [];
-    });
+    this.policyService.getPoliciesByCustomerId(this.customerId).subscribe(
+      (policies) => {
+        this.dataSource.data = policies;
+      },
+      (error) => {
+        console.error('Error loading policies:', error);
+        this.dataSource.data = [];
+      }
+    );
   }
 }

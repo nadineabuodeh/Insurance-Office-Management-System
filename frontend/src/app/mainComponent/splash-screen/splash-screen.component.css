@@ -4,7 +4,7 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #EEEEEE;
+  background-color: #eeeeee;
 }
 
 .logo {
@@ -16,11 +16,15 @@
   width: 80%;
   height: 4px;
   margin-top: 20px;
-  background-color: #134B70;
+  background-color: #134b70;
   animation: loading 2s infinite;
 }
 
 @keyframes loading {
-  0% { width: 0; }
-  100% { width: 50%; }
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 50%;
+  }
 }

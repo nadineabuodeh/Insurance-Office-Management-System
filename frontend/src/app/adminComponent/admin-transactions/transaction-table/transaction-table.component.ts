@@ -10,18 +10,34 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-transaction-table',
   standalone: true,
-  imports: [FormsModule, MatTableModule, MatDialogModule, TransactionTableColComponent],
+  imports: [
+    FormsModule,
+    MatTableModule,
+    MatDialogModule,
+    TransactionTableColComponent,
+  ],
   templateUrl: './transaction-table.component.html',
-  styleUrls: ['./transaction-table.component.css']
+  styleUrls: ['./transaction-table.component.css'],
 })
 export class TransactionTableComponent implements OnInit {
   @Input() customerId!: number;
   dataSource = new MatTableDataSource<Transaction>();
 
-  displayedColumns: string[] = ['startDate', 'endDate', 'amount', 'transactionType', 'createdAt', 'updatedAt', 'actions'];
+  displayedColumns: string[] = [
+    'startDate',
+    'endDate',
+    'amount',
+    'transactionType',
+    'createdAt',
+    'updatedAt',
+    'actions',
+  ];
   searchTerm: string = '';
 
-  constructor(private transactionService: TransactionService, public dialog: MatDialog) { }
+  constructor(
+    private transactionService: TransactionService,
+    public dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.loadTransactions();
@@ -35,18 +51,17 @@ export class TransactionTableComponent implements OnInit {
   }
 
   loadTransactions(): void {
-    this.transactionService.getAllTransactions().subscribe(transactions => {
+    this.transactionService.getAllTransactions().subscribe((transactions) => {
       this.dataSource.data = transactions;
     });
   }
 
-
   onAddTransactionClick(): void {
     const dialogRef = this.dialog.open(TransactionFormComponent, {
-      panelClass: 'custom-dialog-container'
+      panelClass: 'custom-dialog-container',
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.loadTransactions();
       }
@@ -56,10 +71,10 @@ export class TransactionTableComponent implements OnInit {
   editTransaction(transaction: Transaction): void {
     const dialogRef = this.dialog.open(TransactionFormComponent, {
       panelClass: 'custom-dialog-container',
-      data: { transaction }
+      data: { transaction },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.loadTransactions();
       }

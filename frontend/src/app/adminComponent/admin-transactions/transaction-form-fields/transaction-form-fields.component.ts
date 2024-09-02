@@ -1,7 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
-import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import {
+  MatAutocompleteModule,
+  MatAutocompleteSelectedEvent,
+} from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatOptionModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -10,7 +13,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { Observable, startWith, map } from 'rxjs';
-import { Customer, CustomerService } from '../../../service/CustomerService/customer.service';
+import {
+  Customer,
+  CustomerService,
+} from '../../../service/CustomerService/customer.service';
 import { PolicyService } from '../../../service/policy.service';
 import { Policy } from '../../../model/policy.model';
 
@@ -27,13 +33,12 @@ import { Policy } from '../../../model/policy.model';
     MatDialogModule,
     MatOptionModule,
     MatSelectModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
   ],
   templateUrl: './transaction-form-fields.component.html',
-  styleUrls: ['./transaction-form-fields.component.css']
+  styleUrls: ['./transaction-form-fields.component.css'],
 })
 export class TransactionFormFieldsComponent {
-
   @Input() formGroup!: FormGroup;
   @Input() isEditMode: boolean = false;
   @Input() customerName: string = '';
@@ -43,68 +48,63 @@ export class TransactionFormFieldsComponent {
   private users: Customer[] = [];
   private usersLoaded: boolean = false;
 
-
   policyNameControl = new FormControl('');
   policies: Policy[] = [];
   filteredPolicies: Observable<Policy[]> | undefined;
   private policiesLoaded: boolean = false;
 
-
   transactionTypes: string[] = ['DEPOSIT', 'WITHDRAWAL', 'TRANSFER', 'DEBT'];
 
   private initialFormValue: any;
 
-  constructor(private dialog: MatDialog, private customerService: CustomerService, private policyService: PolicyService
-  ) { }
+  constructor(
+    private dialog: MatDialog,
+    private customerService: CustomerService,
+    private policyService: PolicyService
+  ) {}
 
   ngOnInit(): void {
     this.initialFormValue = this.formGroup.getRawValue();
-    this.loadUsers(); this.loadPolicies();
+    this.loadUsers();
+    this.loadPolicies();
     // this.formGroup.get('userId')?.disable();
     // this.formGroup.controls['userId'].disable();
 
-
-
     this.users$ = this.userControl.valueChanges.pipe(
       startWith(''),
-      map(value => this.filterUsers(value))
+      map((value) => this.filterUsers(value))
     );
 
     this.filteredPolicies = this.policyNameControl.valueChanges.pipe(
       startWith(''),
-      map(value => this.filterPolicies(value ?? ''))
+      map((value) => this.filterPolicies(value ?? ''))
     );
-
   }
 
-
   private filterPolicies(value: any): Policy[] {
-
-
     const filterValue = (typeof value === 'string' ? value : '').toLowerCase();
 
-    return this.policies.filter(policy => {
+    return this.policies.filter((policy) => {
       const policyName = policy.policyName ?? '';
       return policyName.toLowerCase().includes(filterValue);
-
-
     });
-
   }
 
   onPolicySelected(event: MatAutocompleteSelectedEvent): void {
     const selectedPolicy = event.option.value as Policy;
     this.formGroup.patchValue({
-      policyId: selectedPolicy.id
+      policyId: selectedPolicy.id,
     });
 
     // Find the user associated with the selected policyy
-    const selectedUser = this.users.find(user => user.id === selectedPolicy.userId);
+    const selectedUser = this.users.find(
+      (user) => user.id === selectedPolicy.userId
+    );
     if (selectedUser) {
       this.userControl.setValue(selectedUser, { emitEvent: false }); //auto fill the field
       // Update the form with the selected user's id.
       this.formGroup.patchValue({
-        userId: selectedUser.id
+        userId: selectedUser.id,
       });
     }
   }
@@ -113,17 +113,17 @@ export class TransactionFormFieldsComponent {
     return policy ? policy.policyName : '';
   }
 
-
   private filterUsers(value: any): Customer[] {
-    const filterValue = (value && typeof value === 'string') ? value.toLowerCase() : '';
-    return this.users.filter(user => user.username.toLowerCase().includes(filterValue));
+    const filterValue =
+      value && typeof value === 'string' ? value.toLowerCase() : '';
+    return this.users.filter((user) =>
+      user.username.toLowerCase().includes(filterValue)
+    );
   }
-
 
   displayUser(user: Customer): string {
     return user ? `${user.firstName} ${user.lastName} (${user.username})` : '';
   }
-
 
   private loadPolicies(): void {
     this.policyService.getAllPolicies().subscribe({
@@ -136,7 +136,7 @@ export class TransactionFormFieldsComponent {
         this.policies = [];
         this.policiesLoaded = true;
         this.setInitialValuesIfNeeded();
-      }
+      },
     });
   }
   private loadUsers(): void {
@@ -150,7 +150,7 @@ export class TransactionFormFieldsComponent {
         this.users = [];
         this.usersLoaded = true;
         this.setInitialValuesIfNeeded();
-      }
+      },
     });
   }
 
@@ -159,19 +159,23 @@ export class TransactionFormFieldsComponent {
       const userId = this.formGroup.get('userId')?.value;
       const policyId = this.formGroup.get('policyId')?.value;
 
-      const selectedUser = this.users.find(user => user.id === userId);
-      const selectedPolicy = this.policies.find(policy => policy.id === policyId);
+      const selectedUser = this.users.find((user) => user.id === userId);
+      const selectedPolicy = this.policies.find(
+        (policy) => policy.id === policyId
+      );
 
       this.userControl.setValue(selectedUser || null, { emitEvent: false });
-      this.policyNameControl.setValue(selectedPolicy ? selectedPolicy.policyName : '', { emitEvent: false });
+      this.policyNameControl.setValue(
+        selectedPolicy ? selectedPolicy.policyName : '',
+        { emitEvent: false }
+      );
     }
   }
-
 
   onUserSelection(event: MatAutocompleteSelectedEvent): void {
     const selectedUser = event.option.value as Customer;
     this.formGroup.patchValue({
-      userId: selectedUser.id
+      userId: selectedUser.id,
     });
   }
 

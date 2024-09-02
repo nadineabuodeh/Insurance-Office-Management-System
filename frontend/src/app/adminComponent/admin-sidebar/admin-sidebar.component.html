@@ -11,8 +11,7 @@
             [ngClass]="{'active-link': activeRoute === 'customer'}">Customer</button>
         </li>
         <li>
-          <button (click)="navigateTo('policy')"
-            [ngClass]="{'active-link': activeRoute === 'policy'}">Policy</button>
+          <button (click)="navigateTo('policy')" [ngClass]="{'active-link': activeRoute === 'policy'}">Policy</button>
         </li>
         <li>
           <button (click)="navigateTo('insurance')"
@@ -22,24 +21,16 @@
           <button (click)="navigateTo('transactions')"
             [ngClass]="{'active-link': activeRoute === 'transactions'}">Transactions & Debts</button>
         </li>
-        <li>
-          <button (click)="navigateTo('notifications')"
-            [ngClass]="{'active-link': activeRoute === 'notifications'}">Notifications</button>
-        </li>
-        <li>
-          <button (click)="navigateTo('reports')"
-            [ngClass]="{'active-link': activeRoute === 'reports'}">Reports</button>
-        </li>
       </ul>
     </nav>
   </aside>
 
   @if (activeRoute === 'customer' || activeRoute === 'customer/:id' ) {
-    <div class="content">
-      <div>
-        <app-customer-tree-list (customerSelected)="onCustomerSelected($event)"></app-customer-tree-list>
-      </div>
+  <div class="content">
+    <div>
+      <app-customer-tree-list (customerSelected)="onCustomerSelected($event)"></app-customer-tree-list>
     </div>
+  </div>
   }
 
 </div>

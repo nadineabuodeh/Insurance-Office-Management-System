@@ -20,45 +20,40 @@ public class AdminUserInitializer implements CommandLineRunner {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-
     public void run(String... args) throws Exception {
         createAdminUser("1234567",
-                "Admin",                        
-                "User",                        
-                "asal",                         
+                "Admin",
+                "User",
+                "asal",
                 "0597279600",
-                "asal@example.com",             
-                new Date(),                     
-                ERole.ROLE_ADMIN,              
-                "asalPassword"                  
-        );
+                "asal@example.com",
+                new Date(),
+                ERole.ROLE_ADMIN,
+                "asalPassword");
 
         createAdminUser("6543217",
-                "Arab",                         
-                "Company",                     
-                "arabcompany",                  
+                "Arab",
+                "Company",
+                "arabcompany",
                 "0599316050",
-                "arabcompany@example.com",      
-                new Date(),                     
-                ERole.ROLE_ADMIN,              
-                "arabCompanyPassword"           
-        );
+                "arabcompany@example.com",
+                new Date(),
+                ERole.ROLE_ADMIN,
+                "arabCompanyPassword");
 
         createAdminUser("7894567",
-                "International",                
-                "User",                        
-                "international",                
+                "International",
+                "User",
+                "international",
                 "0599316669",
-                "international@example.com",    
-                new Date(),                     
-                ERole.ROLE_ADMIN,              
-                "internationalPassword"       
-        );
+                "international@example.com",
+                new Date(),
+                ERole.ROLE_ADMIN,
+                "internationalPassword");
     }
 
-
-
-    private void createAdminUser(String idNumber, String firstName, String lastName, String username, String phoneNumber, String email, Date birthDate, ERole role, String password) {
+    private void createAdminUser(String idNumber, String firstName, String lastName, String username,
+            String phoneNumber, String email, Date birthDate, ERole role, String password) {
         if (username == null || username.trim().isEmpty()) {
             System.out.println("Username CAN NOT be blank");
             return;
@@ -75,8 +70,9 @@ public class AdminUserInitializer implements CommandLineRunner {
         }
 
         if (!userRepository.existsByUsername(username)) {
-            User admin = new User(idNumber, firstName, lastName, phoneNumber, birthDate, username, email, passwordEncoder.encode(password), role);
-           System.out.println("pppp:   "+passwordEncoder.encode(password));
+            User admin = new User(idNumber, firstName, lastName, phoneNumber, birthDate, username, email,
+                    passwordEncoder.encode(password), role);
+            System.out.println("pppp:   " + passwordEncoder.encode(password));
 
             userRepository.save(admin);
             System.out.println("Admin user " + username + " created");
@@ -85,5 +81,3 @@ public class AdminUserInitializer implements CommandLineRunner {
         }
     }
 }
-
-

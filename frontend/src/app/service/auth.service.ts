@@ -7,17 +7,18 @@ import { catchError, tap, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private baseUrl = 'http://localhost:8080/api/auth';
 
-  constructor(private http: HttpClient , private router: Router) { }
+  constructor(private http: HttpClient, private router: Router) {}
 
   login(loginRequest: LoginRequest): Observable<JwtResponse> {
-    return this.http.post<JwtResponse>(`${this.baseUrl}/signin`, loginRequest)
+    return this.http
+      .post<JwtResponse>(`${this.baseUrl}/signin`, loginRequest)
       .pipe(
-        tap(response => {
+        tap((response) => {
           console.log('Full Backend Response:', response);
           if (response && response.accessToken) {
             console.log('JWT Token:', response.accessToken);
@@ -29,7 +30,7 @@ export class AuthService {
         }),
         catchError(this.handleError)
       );
-  }  
+  }
 
   saveToken(token: string, role: string): void {
     const now = new Date();
@@ -44,17 +45,17 @@ export class AuthService {
   logout(): void {
     const tokenBeforeLogout = localStorage.getItem('authToken');
     console.log('Token before logout:', tokenBeforeLogout);
-  
+
     localStorage.removeItem('authToken');
     localStorage.removeItem('tokenExpiration');
     localStorage.removeItem('userRole');
-  
+
     const tokenAfterLogout = localStorage.getItem('authToken');
     console.log('Token after logout:', tokenAfterLogout);
-  
+
     this.router.navigate(['/login']);
-  }  
-  
+  }
+
   isTokenExpired(): boolean {
     const expiration = localStorage.getItem('tokenExpiration');
     if (expiration) {
@@ -73,7 +74,7 @@ export class AuthService {
   getUserRole(): string | null {
     return localStorage.getItem('userRole');
   }
-  
+
   private handleError(error: HttpErrorResponse) {
     let errorMessage = '';
     if (error.status === 401) {
