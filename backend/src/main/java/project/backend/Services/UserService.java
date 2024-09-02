@@ -99,7 +99,6 @@ public class UserService {
 
         User user = convertToEntity(userDTO);
 
-
         String generatedPassword = generateRandomPassword();
         logger.info("Original password: {}", generatedPassword);
         user.setPassword(passwordEncoder.encode(generatedPassword));
@@ -148,11 +147,11 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-
     public List<UserDTO> getAllUsersByAdmin(String adminUsername) {
         List<User> userList = userRepository.findAllByAdminUsername(adminUsername);
         userList.forEach(user -> logger.info("Fetched User: {}", user));
-        List<UserDTO> userDTOList = modelMapper.map(userList, new TypeToken<List<UserDTO>>() {}.getType());
+        List<UserDTO> userDTOList = modelMapper.map(userList, new TypeToken<List<UserDTO>>() {
+        }.getType());
         userDTOList.forEach(userDTO -> logger.info("Mapped UserDTO: {}", userDTO));
         return userDTOList;
     }

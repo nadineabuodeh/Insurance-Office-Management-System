@@ -12,11 +12,11 @@
       <button type="submit" class="login-button">Login</button>
     </form>
   </div>
-  
+
   @if (errorMessage) {
-    <div class="toast-notification">
-      <span>{{ errorMessage }}</span>
-      <button (click)="closeToast()">×</button>
-    </div>
+  <div class="toast-notification">
+    <span>{{ errorMessage }}</span>
+    <button (click)="closeToast()">×</button>
+  </div>
   }
 </div>

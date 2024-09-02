@@ -23,4 +23,3 @@ public enum ERole {
     throw new IllegalArgumentException("Unknown enum value: " + value);
   }
 }
-

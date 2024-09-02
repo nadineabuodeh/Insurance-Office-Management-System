@@ -7,9 +7,8 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './collapsible-section.component.html',
-  styleUrl: './collapsible-section.component.css'
+  styleUrl: './collapsible-section.component.css',
 })
-
 export class CollapsibleSectionComponent {
   @Input() header: string = 'Collapsible Header';
   isCollapsed: boolean = true;
@@ -18,4 +17,3 @@ export class CollapsibleSectionComponent {
     this.isCollapsed = !this.isCollapsed;
   }
 }
-

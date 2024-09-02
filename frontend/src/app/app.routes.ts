@@ -6,8 +6,6 @@ import { CustomerDashboardComponent } from './customerComponent/customer-dashboa
 import { adminGuard } from './service/admin.guard';
 import { customerGuard } from './service/customer.guard';
 import { UnauthorizedComponent } from './mainComponent/unauthorized/unauthorized.component';
-import { AdminNotificationsComponent } from './adminComponent/admin-notifications/admin-notifications.component';
-import { AdminReportsComponent } from './adminComponent/admin-reports/admin-reports.component';
 import { AdminLayoutComponent } from './adminComponent/admin-layout/admin-layout.component';
 import { CustomerLayoutComponent } from './customerComponent/customer-layout/customer-layout.component';
 import { CustomerPoliciesComponent } from './customerComponent/customer-policies/customer-policies.component';
@@ -35,11 +33,8 @@ export const routes: Routes = [
       { path: 'policy', component: PolicyLayoutComponent },
       { path: 'insurance', component: InsuranceTableComponent },
       { path: 'transactions', component: TransactionTableComponent },
-      { path: 'notifications', component: AdminNotificationsComponent },
-      { path: 'reports', component: AdminReportsComponent },
-      { path: '**', redirectTo: 'dashboard' }
-      
-    ]
+      { path: '**', redirectTo: 'dashboard' },
+    ],
   },
   {
     path: 'customer',
@@ -52,10 +47,10 @@ export const routes: Routes = [
       { path: 'payment-history', component: CustomerPaymentHistoryComponent },
       { path: 'debts', component: CustomerDebtsComponent },
       { path: 'notifications', component: CustomerNotificationsComponent },
-    ]
+    ],
   },
 
   { path: 'unauthorized', component: UnauthorizedComponent },
 
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' },
 ];

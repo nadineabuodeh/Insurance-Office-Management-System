@@ -76,8 +76,7 @@
       <input type="text" matInput [formControl]="userControl" [matAutocomplete]="autoUser" placeholder="Select User"
         required />
 
-      <mat-autocomplete #autoUser="matAutocomplete" [displayWith]="displayUser"
-        (optionSelected)="($event)">
+      <mat-autocomplete #autoUser="matAutocomplete" [displayWith]="displayUser" (optionSelected)="($event)">
         <textarea *ngFor="let user of users$ | async" [value]="user">
           {{ user.firstName }} {{ user.lastName }} ({{ user.username }})
         </textarea>
@@ -105,8 +104,7 @@
     <mat-form-field appearance="fill" class="custom-form-field">
       <mat-label>Username</mat-label>
       <input matInput [formControl]="userControl" [matAutocomplete]="autoUser">
-      <mat-autocomplete #autoUser="matAutocomplete" [displayWith]="displayUser"
-        (optionSelected)="($event)">
+      <mat-autocomplete #autoUser="matAutocomplete" [displayWith]="displayUser" (optionSelected)="($event)">
         <textarea *ngFor="let user of users$ | async" [value]="user">
           {{ user.firstName }} {{ user.lastName }} ({{ user.username }})
         </textarea>

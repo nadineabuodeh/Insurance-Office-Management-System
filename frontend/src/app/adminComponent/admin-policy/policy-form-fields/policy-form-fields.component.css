@@ -1,16 +1,15 @@
 .title {
-    color: #201E43;
-    font-weight: bold;
-    font-family: Georgia, 'Times New Roman', Times, serif;
-  }
-  
-  .custom-form-field {
-    width: 100%;
-    margin-bottom: 1rem;
-  }
-  p {
-    color: red;
-    font-weight: bold;
-    font-size: larger;
-  }
-  
+  color: #201e43;
+  font-weight: bold;
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
+
+.custom-form-field {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+p {
+  color: red;
+  font-weight: bold;
+  font-size: larger;
+}

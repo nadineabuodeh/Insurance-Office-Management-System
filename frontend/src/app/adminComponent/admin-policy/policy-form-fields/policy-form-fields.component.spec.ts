@@ -8,9 +8,8 @@ describe('PolicyFormFieldsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PolicyFormFieldsComponent]
-    })
-    .compileComponents();
+      imports: [PolicyFormFieldsComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(PolicyFormFieldsComponent);
     component = fixture.componentInstance;

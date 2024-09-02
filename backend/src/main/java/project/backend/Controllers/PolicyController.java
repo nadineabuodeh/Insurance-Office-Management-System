@@ -72,5 +72,4 @@ public class PolicyController {
         return new ResponseEntity<>(policies, HttpStatus.OK);
     }
 
-
 }

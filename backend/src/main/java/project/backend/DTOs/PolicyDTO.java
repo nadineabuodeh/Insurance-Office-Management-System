@@ -18,7 +18,7 @@ public class PolicyDTO {
     }
 
     public PolicyDTO(Long id, LocalDate startDate, LocalDate endDate, Double totalAmount, String coverageDetails,
-                     Long userId, Long insuranceId, String policyName) {
+            Long userId, Long insuranceId, String policyName) {
         this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;

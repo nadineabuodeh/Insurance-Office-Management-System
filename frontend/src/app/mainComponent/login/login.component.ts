@@ -10,29 +10,29 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [FormsModule, CommonModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrl: './login.component.css',
 })
 export class LoginComponent {
   loginRequest: LoginRequest = {
     username: '',
-    password: ''
+    password: '',
   };
   errorMessage: string | null = null;
   toastTimeout: any;
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router) {}
 
   onSubmit(): void {
     this.authService.login(this.loginRequest).subscribe({
       next: (response) => {
         const token = response.accessToken;
-        const role = response.roles[0]; 
-        this.authService.saveToken(token, role); 
+        const role = response.roles[0];
+        this.authService.saveToken(token, role);
         this.redirectBasedOnRole();
       },
       error: (error: Error) => {
         this.showToast(error.message);
-      }
+      },
     });
   }
 

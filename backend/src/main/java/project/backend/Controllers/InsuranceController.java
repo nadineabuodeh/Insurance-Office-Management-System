@@ -42,12 +42,13 @@ public class InsuranceController {
         String jwtToken = request.getHeader("Authorization").substring(7);
         InsuranceDTO insuranceDTO = insuranceService.getInsuranceById(id, jwtToken);
         return insuranceDTO != null ? new ResponseEntity<>(insuranceDTO, HttpStatus.OK)
-                                    : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
-    public ResponseEntity<InsuranceDTO> createInsurance(@RequestBody InsuranceDTO insuranceDTO, HttpServletRequest request) {
+    public ResponseEntity<InsuranceDTO> createInsurance(@RequestBody InsuranceDTO insuranceDTO,
+            HttpServletRequest request) {
         String jwtToken = request.getHeader("Authorization").substring(7);
         InsuranceDTO createdInsurance = insuranceService.saveInsurance(insuranceDTO, jwtToken);
         return new ResponseEntity<>(createdInsurance, HttpStatus.CREATED);
@@ -55,7 +56,8 @@ public class InsuranceController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<InsuranceDTO> updateInsurance(@PathVariable Long id, @RequestBody InsuranceDTO insuranceDTO, HttpServletRequest request) {
+    public ResponseEntity<InsuranceDTO> updateInsurance(@PathVariable Long id, @RequestBody InsuranceDTO insuranceDTO,
+            HttpServletRequest request) {
         String jwtToken = request.getHeader("Authorization").substring(7);
         InsuranceDTO updatedInsurance = insuranceService.updateInsurance(id, insuranceDTO, jwtToken);
         return new ResponseEntity<>(updatedInsurance, HttpStatus.OK);

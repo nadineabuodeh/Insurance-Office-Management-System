@@ -1,8 +1,9 @@
 .collapsible-container {
   border: 1px solid #ddd;
-  margin-left: 225px;
+  margin-left: 160px;
   margin-top: 25px;
   border-radius: 4px;
+  width: 800px;
 }
 
 .collapsible-header {
@@ -15,6 +16,7 @@
   font-size: 16px;
   font-weight: bold;
   position: relative;
+  color: #134b70;
 }
 
 .collapsible-indicator {
@@ -24,7 +26,7 @@
 
 .collapsible-content {
   display: none;
-  padding: 10px;
+  padding-bottom: 30px;
   background-color: #f1f1f1;
 }
 

@@ -15,7 +15,7 @@ public class InsuranceDTO {
         this.id = id;
         this.insuranceType = insuranceType.name();
         this.description = description;
-        this.adminId = adminId;  
+        this.adminId = adminId;
     }
 
     public Long getId() {

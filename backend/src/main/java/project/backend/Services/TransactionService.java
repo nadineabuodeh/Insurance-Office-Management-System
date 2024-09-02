@@ -1,9 +1,7 @@
 package project.backend.Services;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import project.backend.DTOs.PolicyDTO;
 import project.backend.DTOs.TransactionDTO;
 import project.backend.Repositories.PolicyRepository;
 import project.backend.Repositories.TransactionRepository;
@@ -34,7 +32,6 @@ public class TransactionService {
     @Autowired
     private PolicyRepository policyRepository;
 
-
     private TransactionDTO convertToDTO(Transaction transaction) {
         return new TransactionDTO(
                 transaction.getId(),
@@ -47,8 +44,7 @@ public class TransactionService {
                 transaction.getTransactionType(),
                 transaction.getCreatedAt(),
                 transaction.getUpdatedAt(),
-                transaction.getPolicy() != null ? transaction.getPolicy().getId() : null
-        );
+                transaction.getPolicy() != null ? transaction.getPolicy().getId() : null);
     }
 
     private Transaction convertToEntity(TransactionDTO dto) {
@@ -88,8 +84,8 @@ public class TransactionService {
         String username = jwtUtils.getUserNameFromJwtToken(jwtToken);
         List<Transaction> transactions = transactionRepository.findTransactionsByAdmin(username);
         return transactions.stream()
-                           .map(this::convertToDTO)
-                           .toList();
+                .map(this::convertToDTO)
+                .toList();
     }
 
     public TransactionDTO getTransactionById(Long id) {
@@ -138,7 +134,5 @@ public class TransactionService {
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
-
-
 
 }

@@ -15,15 +15,16 @@ import { MatOptionModule } from '@angular/material/core';
   imports: [
     CommonModule,
     MatFormFieldModule,
-    MatInputModule, ReactiveFormsModule,
+    MatInputModule,
+    ReactiveFormsModule,
     MatDatepickerModule,
-    MatButtonModule, MatDialogModule,
+    MatButtonModule,
+    MatDialogModule,
     MatSelectModule,
     MatOptionModule,
-    
   ],
   templateUrl: './insurance-form-fields.component.html',
-  styleUrl: './insurance-form-fields.component.css'
+  styleUrl: './insurance-form-fields.component.css',
 })
 export class InsuranceFormFieldsComponent {
   @Input() formGroup!: FormGroup;

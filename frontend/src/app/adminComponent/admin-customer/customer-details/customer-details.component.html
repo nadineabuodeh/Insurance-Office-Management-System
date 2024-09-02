@@ -1,80 +1,57 @@
 @if (customer) {
 <div class="customer-details-container">
 
-
-
   <div class="container">
-
     <h3 id="header">{{ customer.firstName }} {{ customer.lastName }} Details</h3>
-
     <button class="btns" (click)="deleteCustomer(customer.id)">
       <img class="icons" src="./assets/delete.png" alt="delete" title="Delete This Customer">
     </button>
-
     <button class="btns" (click)="editCustomer(customer)">
       <img class="icons" src="./assets/pencil.png" alt="edit" title="Update Customer's Information">
     </button>
-
   </div>
-
 
   <div class="customer-info">
     <div class="info-item">
       <label>First Name:</label>
       <span>{{ customer.firstName }}</span>
     </div>
-
     <div class="info-item">
       <label>Last Name:</label>
       <span>{{ customer.lastName }}</span>
     </div>
-
     <div class="info-item">
       <label>Username:</label>
       <span>{{ customer.username }}</span>
     </div>
-
     <div class="info-item">
       <label>ID Number:</label>
       <span>{{ customer.idNumber }}</span>
     </div>
-
     <div class="info-item">
       <label>Phone Number:</label>
       <span>{{ customer.phoneNumber }}</span>
     </div>
-
     <div class="info-item">
       <label>Email:</label>
       <span>{{ customer.email }}</span>
     </div>
-
-
     <div class="info-item">
       <label>Birth Date:</label>
       <span>{{ customer.birthDate | date: 'MMMM d, y' }}</span>
     </div>
-
-
-
   </div>
 
 </div>
 
-
-<!-- <div class="customer-policies">
-  <app-customer-policy-layout *ngIf="customer" [customerId]="customer.id"></app-customer-policy-layout>
-</div> -->
-<!-- <app-collapsible-section header="Customer Policies"> -->
+<app-collapsible-section header="Customer Policies">
   <div class="customer-policies">
     <app-customer-policy-layout *ngIf="customer" [customerId]="customer.id"></app-customer-policy-layout>
   </div>
-<!-- </app-collapsible-section> -->
-
-<!-- <app-collapsible-section header="Customer Transactions"> -->
+</app-collapsible-section>
+<app-collapsible-section header="Customer Transactions">
   <div class="customer-policies">
     <app-customer-transaction *ngIf="customer" [customerId]="customer.id"></app-customer-transaction>
   </div>
-<!-- </app-collapsible-section> -->
-
+</app-collapsible-section>
 }
