@@ -14,6 +14,7 @@ import { TransactionTableComponent } from './adminComponent/admin-transactions/t
 import { PolicyCustomerComponent } from './customerComponent/customer-policies/policy-layout.component';
 import { TransactionCustomerTableComponent } from './customerComponent/customer-payment-history/transaction-table/transaction-table.component';
 import { TransactionDebtTableComponent } from './customerComponent/customer-debts/transaction-debt-table/transaction-table.component';
+import { CustomerInfoComponent } from './customerComponent/customer-info/customer-details.component';
 
 export const routes: Routes = [
   { path: '', component: SplashScreenComponent },
@@ -38,10 +39,11 @@ export const routes: Routes = [
     component: CustomerLayoutComponent,
     canActivate: [customerGuard],
     children: [
+      { path: 'info', component: CustomerInfoComponent },
       { path: 'policies', component: PolicyCustomerComponent },
       { path: 'payment-history', component: TransactionCustomerTableComponent },
       { path: 'debts', component: TransactionDebtTableComponent },
-      { path: '**', redirectTo: 'policies' },
+      { path: '**', redirectTo: 'info' },
     ],
   },
 

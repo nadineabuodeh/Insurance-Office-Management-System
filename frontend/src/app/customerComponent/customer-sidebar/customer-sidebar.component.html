@@ -2,6 +2,9 @@
     <nav>
       <ul>
         <li>
+          <button (click)="navigateTo('info')" [ngClass]="{'active-link': activeRoute === 'info'}">Info</button>
+        </li>
+        <li>
           <button (click)="navigateTo('policies')" [ngClass]="{'active-link': activeRoute === 'policies'}">Policies</button>
         </li>
         <li>

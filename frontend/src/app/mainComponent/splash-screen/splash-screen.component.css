@@ -1,3 +1,7 @@
+* {
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
+
 .splash-screen {
   display: flex;
   flex-direction: column;
@@ -5,6 +9,7 @@
   align-items: center;
   height: 100vh;
   background-color: #eeeeee;
+  font-family: Georgia, "Times New Roman", Times, serif;
 }
 
 .logo {
