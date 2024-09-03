@@ -18,10 +18,10 @@ import java.util.List;
 })
 public class User {
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Transaction> transactions;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Policy> policies;
 
     @OneToMany(mappedBy = "admin")

@@ -131,12 +131,15 @@ public class UserService {
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + id));
 
+        userDTO.setId(id);
+        System.out.println("id: " + userDTO.getId());
         String existingPassword = existingUser.getPassword();
         User userToUpdate = convertToEntity(userDTO);
         userToUpdate.setId(id);
         userToUpdate.setPassword(existingPassword);
 
         User updatedUser = userRepository.save(userToUpdate);
+        System.out.println("updated user: "+updatedUser.getId());
         return convertToDTO(updatedUser);
     }
 

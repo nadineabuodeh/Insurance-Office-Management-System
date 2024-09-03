@@ -18,6 +18,7 @@ public class Policy {
     private String coverageDetails;
     private String policyName;
 
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -26,7 +27,7 @@ public class Policy {
     @JoinColumn(name = "insurance_id")
     private Insurance insurance;
 
-    @OneToMany(mappedBy = "policy")
+    @OneToMany(mappedBy = "policy", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Transaction> transactions;
 
     private LocalDate createdAt;
@@ -127,4 +128,5 @@ public class Policy {
     public void setUpdatedAt(LocalDate updatedAt) {
         this.updatedAt = updatedAt;
     }
+
 }

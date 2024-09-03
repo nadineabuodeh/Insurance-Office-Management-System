@@ -18,4 +18,6 @@ public interface PolicyRepository extends JpaRepository<Policy, Long> {
 
     List<Policy> findPoliciesByAdmin(@Param("adminUsername") String adminUsername);
 
+    Policy findByPolicyName(String name);
+
 }

@@ -19,7 +19,7 @@ import {
 } from '../../../service/CustomerService/customer.service';
 import { PolicyService } from '../../../service/policy.service';
 import { Policy } from '../../../model/policy.model';
-
+import { TransactionService } from '../../../service/TransactionService/transaction.service';
 @Component({
   selector: 'app-transaction-form-fields',
   standalone: true,
@@ -57,6 +57,13 @@ export class TransactionFormFieldsComponent {
 
   private initialFormValue: any;
 
+  constructor(private dialog: MatDialog, private customerService: CustomerService, private policyService: PolicyService, private transactionService: TransactionService
+  ) { }
+
+  ngOnInit(): void {
+    this.initialFormValue = this.formGroup.getRawValue();
+    this.loadUsers(); this.loadPolicies();
+   
   constructor(
     private dialog: MatDialog,
     private customerService: CustomerService,
@@ -67,8 +74,7 @@ export class TransactionFormFieldsComponent {
     this.initialFormValue = this.formGroup.getRawValue();
     this.loadUsers();
     this.loadPolicies();
-    // this.formGroup.get('userId')?.disable();
-    // this.formGroup.controls['userId'].disable();
+  
 
     this.users$ = this.userControl.valueChanges.pipe(
       startWith(''),
@@ -79,6 +85,7 @@ export class TransactionFormFieldsComponent {
       startWith(''),
       map((value) => this.filterPolicies(value ?? ''))
     );
+
   }
 
   private filterPolicies(value: any): Policy[] {
@@ -90,24 +97,31 @@ export class TransactionFormFieldsComponent {
     });
   }
 
-  onPolicySelected(event: MatAutocompleteSelectedEvent): void {
+
+onPolicySelected(event: MatAutocompleteSelectedEvent): void {
     const selectedPolicy = event.option.value as Policy;
+    this.policyNameControl.setValue(event.option.value);
+    this.policyNameControl.setValue(selectedPolicy.policyName);
     this.formGroup.patchValue({
-      policyId: selectedPolicy.id,
+      policyId: selectedPolicy.id
     });
 
-    // Find the user associated with the selected policyy
-    const selectedUser = this.users.find(
-      (user) => user.id === selectedPolicy.userId
-    );
-    if (selectedUser) {
-      this.userControl.setValue(selectedUser, { emitEvent: false }); //auto fill the field
-      // Update the form with the selected user's id.
+    this.policyService.getUserIdByPolicyId(selectedPolicy.id).subscribe(userId => {
+      console.log("user id: " + userId)
+      console.log("Selected policy -> " + selectedPolicy.id)
       this.formGroup.patchValue({
-        userId: selectedUser.id,
+        userId: userId
       });
-    }
+
+      const user = this.users.find(u => u.id === userId) || null;
+      console.log("user ->" + user?.firstName)
+      this.userControl.setValue(user, { emitEvent: false });
+    }, error => {
+      console.error('Error fetching user ID by policy ID:', error);
+    });
   }
+
+
 
   displayPolicy(policy: Policy): string {
     return policy ? policy.policyName : '';

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpServletRequest;
 import project.backend.DTOs.TransactionDTO;
+import project.backend.SecurityConfiguration.models.User;
 import project.backend.Services.TransactionService;
 import project.backend.exceptions.ResourceNotFoundException;
 
@@ -87,6 +88,7 @@ public class TransactionController {
         List<TransactionDTO> transactions = transactionService.getTransactionsForCustomer(jwtToken);
         return new ResponseEntity<>(transactions, HttpStatus.OK);
     }
+
 
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")
     @GetMapping("/my-debts")

@@ -15,6 +15,9 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { PolicyFormFieldsComponent } from '../policy-form-fields/policy-form-fields.component';
 import { Policy } from '../../../model/policy.model';
+import { Observable, switchMap, catchError, map, of, take, tap } from 'rxjs';
+import { endDateAfterStartDateValidator } from '../../../validators/date-validator';
+
 
 @Component({
   selector: 'app-policy-form',
@@ -51,8 +54,13 @@ export class PolicyFormComponent implements OnInit {
       totalAmount: ['', [Validators.required, Validators.min(0)]],
       coverageDetails: ['', Validators.required],
       userId: ['', Validators.required],
+      insuranceId: ['', Validators.required]
+    // });
+    }, {
+      validator: endDateAfterStartDateValidator() 
       insuranceId: ['', Validators.required],
     });
+
 
     this.dialogRef.disableClose = true;
   }

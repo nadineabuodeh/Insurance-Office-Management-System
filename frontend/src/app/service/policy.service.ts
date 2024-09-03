@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Policy } from '../model/policy.model';
+import { Customer } from './CustomerService/customer.service';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,7 @@ import { Policy } from '../model/policy.model';
 export class PolicyService {
   private apiUrl = 'http://localhost:8080/policies';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   private getAuthHeaders(): HttpHeaders {
     const token = localStorage.getItem('authToken');
@@ -60,4 +61,10 @@ export class PolicyService {
       headers: this.getAuthHeaders(),
     });
   }
+
+  //
+  getUserIdByPolicyId(policyId: number): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/user/${policyId}`, { headers: this.getAuthHeaders() });
+  }
+
 }

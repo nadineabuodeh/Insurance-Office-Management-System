@@ -54,6 +54,7 @@ export class CustomerDetailsComponent implements OnInit {
               next: (data: Customer) => {
                 if (data) {
                   this.customer = data;
+                  this.customer = data;
                 } else {
                   this.errorMessage = 'no customer found with this ID.';
                 }
@@ -70,11 +71,14 @@ export class CustomerDetailsComponent implements OnInit {
     );
   }
 
+
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
 
+
   deleteCustomer(id: number): void {
+
     if (confirm('Are you sure you want to delete this customer?')) {
       this.customerService.deleteCustomer(id).subscribe(() => {
         this.location.back();
@@ -82,8 +86,80 @@ export class CustomerDetailsComponent implements OnInit {
     }
   }
 
+  // editCustomer(customer: Customer): void {
+  //   const dialogRef = this.dialog.open(CustomerFormComponent, {
+  //     panelClass: 'custom-dialog-container',
+  //     data: { customer }
+  //   });
+
+  //   this.subscriptions.add(
+  //     dialogRef.afterClosed().subscribe(result => {
+  //       if (result) {
+  //         this.subscriptions.add(
+  //           this.customerService.updateCustomer(customer.id, result).subscribe(() => {
+  //             this.subscriptions.add(
+  //               this.route.paramMap.subscribe(params => { // Refresh customer data after update
+  //                 const id = params.get('id');
+  //                 if (id) {
+  //                   this.customerService.getCustomerById(Number(id)).subscribe({
+  //                     next: (data: Customer) => {
+  //                       this.customer = data;
+  //                     },
+  //                     error: (err) => {
+  //                       console.error('Error fetching customer details:', err);
+  //                     }
+  //                   });
+  //                 }
+  //               })
+  //             );
+  //           })
+  //         );
+  //       }
+  //     })
+  //   );
+  // }
+
   editCustomer(customer: Customer): void {
+    console.log('editCustomer called with:', customer);
+
     const dialogRef = this.dialog.open(CustomerFormComponent, {
+        panelClass: 'custom-dialog-container',
+        data: { customer }
+    });
+
+    this.subscriptions.add(
+        dialogRef.afterClosed().subscribe(result => {
+            console.log('Dialog closed with result:', result);
+            if (result) {
+                console.log('Updating customer with id:', customer.id, 'and data:', result);
+                this.subscriptions.add(
+                    this.customerService.updateCustomer(customer.id, result).subscribe(() => {
+                        console.log('Customer updated successfully');
+                        this.subscriptions.add(
+                            this.route.paramMap.subscribe(params => {
+                                const id = params.get('id');
+                                console.log('Route param id:', id);
+                                if (id) {
+                                    this.customerService.getCustomerById(Number(id)).subscribe({
+                                        next: (data: Customer) => {
+                                            console.log('Fetched customer data:', data);
+                                            this.customer = data;
+                                        },
+                                        error: (err) => {
+                                            console.error('Error fetching customer details:', err);
+                                        }
+                                    });
+                                }
+                            })
+                        );
+                    }, error => {
+                        console.error('Error updating customer:', error);
+                    })
+                );
+            }
+        }, error => {
+            console.error('Error after dialog closed:', error);
+        })
       panelClass: 'custom-dialog-container',
       data: { customer },
     });
@@ -120,7 +196,8 @@ export class CustomerDetailsComponent implements OnInit {
         }
       })
     );
-  }
+}
+
 
   toggleCollapse(): void {
     this.visible = !this.visible;

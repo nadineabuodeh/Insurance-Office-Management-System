@@ -34,6 +34,7 @@ export class CustomerService {
     });
   }
 
+
   getCustomers(): Observable<Customer[]> {
     const headers = this.getAuthHeaders();
     return this.http.get<Customer[]>(this.baseUrl, { headers }).pipe(
@@ -88,11 +89,10 @@ export class CustomerService {
     );
   }
 
-  updateCustomer(id: number, updatedCustomer: Customer): Observable<Customer> {
+ updateCustomer(id: number, updatedCustomer: Customer): Observable<Customer> {
     const headers = this.getAuthHeaders();
-    updatedCustomer.role = 'ROLE_CUSTOMER';
-    return this.http
-      .put<Customer>(`${this.baseUrl}/${id}`, updatedCustomer, { headers })
+    updatedCustomer.role = 'ROLE_CUSTOMER';// Specify the role as customer
+    return this.http.put<Customer>(`${this.baseUrl}/${id}`, updatedCustomer, { headers })
       .pipe(
         tap(() => this.customersChanged.next()),
         catchError(this.handleError<Customer>('updateCustomer'))
