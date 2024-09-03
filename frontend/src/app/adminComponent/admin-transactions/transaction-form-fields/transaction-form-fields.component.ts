@@ -60,15 +60,16 @@ export class TransactionFormFieldsComponent {
   constructor(private dialog: MatDialog, private customerService: CustomerService, private policyService: PolicyService, private transactionService: TransactionService
   ) { }
 
-  ngOnInit(): void {
-    this.initialFormValue = this.formGroup.getRawValue();
-    this.loadUsers(); this.loadPolicies();
+  // ngOnInit(): void {
+  //   this.initialFormValue = this.formGroup.getRawValue();
+  //   this.loadUsers(); this.loadPolicies();
+  // }
    
-  constructor(
-    private dialog: MatDialog,
-    private customerService: CustomerService,
-    private policyService: PolicyService
-  ) {}
+  // constructor(
+  //   private dialog: MatDialog,
+  //   private customerService: CustomerService,
+  //   private policyService: PolicyService
+  // ) {}
 
   ngOnInit(): void {
     this.initialFormValue = this.formGroup.getRawValue();

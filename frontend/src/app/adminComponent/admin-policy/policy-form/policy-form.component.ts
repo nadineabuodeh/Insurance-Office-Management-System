@@ -58,7 +58,6 @@ export class PolicyFormComponent implements OnInit {
     // });
     }, {
       validator: endDateAfterStartDateValidator() 
-      insuranceId: ['', Validators.required],
     });
 
 

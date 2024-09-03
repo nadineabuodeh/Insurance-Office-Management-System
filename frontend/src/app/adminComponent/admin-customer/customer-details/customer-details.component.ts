@@ -42,7 +42,7 @@ export class CustomerDetailsComponent implements OnInit {
     private customerService: CustomerService,
     public dialog: MatDialog,
     private location: Location
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.subscriptions.add(
@@ -123,80 +123,45 @@ export class CustomerDetailsComponent implements OnInit {
     console.log('editCustomer called with:', customer);
 
     const dialogRef = this.dialog.open(CustomerFormComponent, {
-        panelClass: 'custom-dialog-container',
-        data: { customer }
-    });
-
-    this.subscriptions.add(
-        dialogRef.afterClosed().subscribe(result => {
-            console.log('Dialog closed with result:', result);
-            if (result) {
-                console.log('Updating customer with id:', customer.id, 'and data:', result);
-                this.subscriptions.add(
-                    this.customerService.updateCustomer(customer.id, result).subscribe(() => {
-                        console.log('Customer updated successfully');
-                        this.subscriptions.add(
-                            this.route.paramMap.subscribe(params => {
-                                const id = params.get('id');
-                                console.log('Route param id:', id);
-                                if (id) {
-                                    this.customerService.getCustomerById(Number(id)).subscribe({
-                                        next: (data: Customer) => {
-                                            console.log('Fetched customer data:', data);
-                                            this.customer = data;
-                                        },
-                                        error: (err) => {
-                                            console.error('Error fetching customer details:', err);
-                                        }
-                                    });
-                                }
-                            })
-                        );
-                    }, error => {
-                        console.error('Error updating customer:', error);
-                    })
-                );
-            }
-        }, error => {
-            console.error('Error after dialog closed:', error);
-        })
       panelClass: 'custom-dialog-container',
-      data: { customer },
+      data: { customer }
     });
 
     this.subscriptions.add(
-      dialogRef.afterClosed().subscribe((result) => {
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('Dialog closed with result:', result);
         if (result) {
+          console.log('Updating customer with id:', customer.id, 'and data:', result);
           this.subscriptions.add(
-            this.customerService
-              .updateCustomer(customer.id, result)
-              .subscribe(() => {
-                this.subscriptions.add(
-                  this.route.paramMap.subscribe((params) => {
-                    const id = params.get('id');
-                    if (id) {
-                      this.customerService
-                        .getCustomerById(Number(id))
-                        .subscribe({
-                          next: (data: Customer) => {
-                            this.customer = data;
-                          },
-                          error: (err) => {
-                            console.error(
-                              'Error fetching customer details:',
-                              err
-                            );
-                          },
-                        });
-                    }
-                  })
-                );
-              })
+            this.customerService.updateCustomer(customer.id, result).subscribe(() => {
+              console.log('Customer updated successfully');
+              this.subscriptions.add(
+                this.route.paramMap.subscribe(params => {
+                  const id = params.get('id');
+                  console.log('Route param id:', id);
+                  if (id) {
+                    this.customerService.getCustomerById(Number(id)).subscribe({
+                      next: (data: Customer) => {
+                        console.log('Fetched customer data:', data);
+                        this.customer = data;
+                      },
+                      error: (err) => {
+                        console.error('Error fetching customer details:', err);
+                      }
+                    });
+                  }
+                })
+              );
+            }, error => {
+              console.error('Error updating customer:', error);
+            })
           );
         }
+      }, error => {
+        console.error('Error after dialog closed:', error);
       })
     );
-}
+  }
 
 
   toggleCollapse(): void {

@@ -73,8 +73,7 @@ public class PolicyService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + policyDTO.getUserId()));
         Insurance insurance = insuranceRepository.findById(policyDTO.getInsuranceId())
                 .orElseThrow(() -> new ResourceNotFoundException("Insurance not found with ID: " + policyDTO.getInsuranceId()));
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Insurance not found with ID: " + policyDTO.getInsuranceId()));
+
 
         policy.setUser(user);
         policy.setInsurance(insurance);
