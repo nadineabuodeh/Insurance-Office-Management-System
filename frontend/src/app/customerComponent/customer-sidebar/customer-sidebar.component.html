@@ -2,22 +2,16 @@
     <nav>
       <ul>
         <li>
-          <button (click)="navigateTo('dashboard')" [ngClass]="{'active-link': activeRoute === 'dashboard'}">Dashboard</button>
+          <button (click)="navigateTo('info')" [ngClass]="{'active-link': activeRoute === 'info'}">Info</button>
         </li>
         <li>
           <button (click)="navigateTo('policies')" [ngClass]="{'active-link': activeRoute === 'policies'}">Policies</button>
-        </li>
-        <li>
-          <button (click)="navigateTo('payments')" [ngClass]="{'active-link': activeRoute === 'payments'}">Payments</button>
         </li>
         <li>
           <button (click)="navigateTo('payment-history')" [ngClass]="{'active-link': activeRoute === 'payment-history'}">Payment History</button>
         </li>
         <li>
           <button (click)="navigateTo('debts')" [ngClass]="{'active-link': activeRoute === 'debts'}">Debts</button>
-        </li>
-        <li>
-          <button (click)="navigateTo('notifications')" [ngClass]="{'active-link': activeRoute === 'notifications'}">Notifications</button>
         </li>
       </ul>
     </nav>

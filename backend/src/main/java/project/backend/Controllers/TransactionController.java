@@ -3,10 +3,10 @@ package project.backend.Controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpServletRequest;
-import project.backend.DTOs.PolicyDTO;
 import project.backend.DTOs.TransactionDTO;
 import project.backend.SecurityConfiguration.models.User;
 import project.backend.Services.TransactionService;
@@ -53,7 +53,8 @@ public class TransactionController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TransactionDTO> updateTransaction(@PathVariable Long id, @RequestBody TransactionDTO transactionDTO) {
+    public ResponseEntity<TransactionDTO> updateTransaction(@PathVariable Long id,
+            @RequestBody TransactionDTO transactionDTO) {
         try {
             TransactionDTO updatedTransaction = transactionService.updateTransaction(id, transactionDTO);
             return new ResponseEntity<>(updatedTransaction, HttpStatus.OK);
@@ -80,7 +81,28 @@ public class TransactionController {
         return new ResponseEntity<>(transactions, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
+    @GetMapping("/my-transactions")
+    public ResponseEntity<List<TransactionDTO>> getTransactionsForCustomer(HttpServletRequest request) {
+        String jwtToken = request.getHeader("Authorization").substring(7);
+        List<TransactionDTO> transactions = transactionService.getTransactionsForCustomer(jwtToken);
+        return new ResponseEntity<>(transactions, HttpStatus.OK);
+    }
 
 
+    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
+    @GetMapping("/my-debts")
+    public ResponseEntity<List<TransactionDTO>> getDebtTransactionsForCustomer(HttpServletRequest request) {
+        String jwtToken = request.getHeader("Authorization").substring(7);
+        List<TransactionDTO> transactions = transactionService.getDebtTransactionsForCustomer(jwtToken);
+        return new ResponseEntity<>(transactions, HttpStatus.OK);
+    }
 
+    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
+    @GetMapping("/my-deposits")
+    public ResponseEntity<List<TransactionDTO>> getDepositTransactionsForCustomer(HttpServletRequest request) {
+        String jwtToken = request.getHeader("Authorization").substring(7);
+        List<TransactionDTO> transactions = transactionService.getDepositTransactionsForCustomer(jwtToken);
+        return new ResponseEntity<>(transactions, HttpStatus.OK);
+    }
 }

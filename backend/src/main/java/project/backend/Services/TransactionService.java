@@ -3,9 +3,9 @@ package project.backend.Services;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import project.backend.DTOs.PolicyDTO;
 import project.backend.DTOs.TransactionDTO;
 import project.backend.Repositories.PolicyRepository;
 import project.backend.Repositories.TransactionRepository;
@@ -15,6 +15,7 @@ import project.backend.SecurityConfiguration.security.jwt.JwtUtils;
 import project.backend.exceptions.ResourceNotFoundException;
 import project.backend.models.Policy;
 import project.backend.models.Transaction;
+import project.backend.models.TransactionType;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,7 +38,6 @@ public class TransactionService {
     @Autowired
     private PolicyRepository policyRepository;
 
-
     private TransactionDTO convertToDTO(Transaction transaction) {
         return new TransactionDTO(
                 transaction.getId(),
@@ -50,8 +50,7 @@ public class TransactionService {
                 transaction.getTransactionType(),
                 transaction.getCreatedAt(),
                 transaction.getUpdatedAt(),
-                transaction.getPolicy() != null ? transaction.getPolicy().getId() : null
-        );
+                transaction.getPolicy() != null ? transaction.getPolicy().getId() : null);
     }
 
     private Transaction convertToEntity(TransactionDTO dto) {
@@ -93,6 +92,20 @@ public class TransactionService {
         return transactions.stream()
                 .map(this::convertToDTO)
                 .toList();
+
+    }
+
+    public List<TransactionDTO> getTransactionsForCustomer(String jwtToken) {
+        String username = jwtUtils.getUserNameFromJwtToken(jwtToken);
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with username: " + username));
+
+        List<Transaction> transactions = transactionRepository.findByUserId(user.getId());
+
+        return transactions.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
     public TransactionDTO getTransactionById(Long id) {
@@ -137,6 +150,33 @@ public class TransactionService {
         if (transactions.isEmpty()) {
             throw new ResourceNotFoundException("No transactions found for customer ID: " + customerId);
         }
+        return transactions.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+
+    public List<TransactionDTO> getDebtTransactionsForCustomer(String jwtToken) {
+        String username = jwtUtils.getUserNameFromJwtToken(jwtToken);
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with username: " + username));
+
+        List<Transaction> transactions = transactionRepository.findByUserIdAndTransactionType(user.getId(), TransactionType.DEBT);
+
+        return transactions.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<TransactionDTO> getDepositTransactionsForCustomer(String jwtToken) {
+        String username = jwtUtils.getUserNameFromJwtToken(jwtToken);
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with username: " + username));
+
+        List<Transaction> transactions = transactionRepository.findByUserIdAndTransactionType(user.getId(), TransactionType.DEPOSIT);
+
         return transactions.stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());

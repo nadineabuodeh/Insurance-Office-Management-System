@@ -18,12 +18,10 @@ public class Policy {
     private String coverageDetails;
     private String policyName;
 
-    //==============================
-//    @ManyToOne
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    //==============================
 
     @ManyToOne
     @JoinColumn(name = "insurance_id")
@@ -38,7 +36,8 @@ public class Policy {
     public Policy() {
     }
 
-    public Policy(LocalDate startDate, LocalDate endDate, Double totalAmount, String coverageDetails, User user, Insurance insurance, LocalDate createdAt, LocalDate updatedAt, String policyName) {
+    public Policy(LocalDate startDate, LocalDate endDate, Double totalAmount, String coverageDetails, User user,
+            Insurance insurance, LocalDate createdAt, LocalDate updatedAt, String policyName) {
         this.startDate = startDate;
         this.endDate = endDate;
         this.totalAmount = totalAmount;

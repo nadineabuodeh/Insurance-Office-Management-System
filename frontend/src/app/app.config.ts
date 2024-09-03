@@ -1,14 +1,25 @@
-import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
+import {
+  ApplicationConfig,
+  importProvidersFrom,
+  provideZoneChangeDetection,
+} from '@angular/core';
 import { provideRouter, RouterModule } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 
 import { routes } from './app.routes';
-import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
+import {
+  HttpClientModule,
+  provideHttpClient,
+  withFetch,
+} from '@angular/common/http';
 import { provideClientHydration } from '@angular/platform-browser';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { MatNativeDateModule, MatOptionSelectionChange } from '@angular/material/core';
+import {
+  MatNativeDateModule,
+  MatOptionSelectionChange,
+} from '@angular/material/core';
 import { MatTableModule } from '@angular/material/table';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomerService } from './service/CustomerService/customer.service';
@@ -21,23 +32,33 @@ import { TransactionService } from './service/TransactionService/transaction.ser
 import { CollapsibleSectionComponent } from './adminComponent/admin-customer/collapsible-section/collapsible-section.component';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes),
-  provideClientHydration(), HttpClientModule, provideClientHydration(),
-  provideHttpClient(), provideHttpClient(withFetch())
-    , importProvidersFrom(
+  providers: [
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideRouter(routes),
+    provideClientHydration(),
+    HttpClientModule,
+    provideClientHydration(),
+    provideHttpClient(),
+    provideHttpClient(withFetch()),
+    importProvidersFrom(
       MatFormFieldModule,
       MatInputModule,
       BrowserAnimationsModule, //****************/
       MatButtonModule,
       MatDatepickerModule,
-      MatNativeDateModule,MatFormFieldModule,MatOptionSelectionChange,
+      MatNativeDateModule,
+      MatFormFieldModule,
+      MatOptionSelectionChange,
       MatTableModule,
       MatDialogModule,
-      FormsModule, TreeModule,
+      FormsModule,
+      TreeModule,
       ReactiveFormsModule,
 
       CookieService
     ),
-    CustomerService,TransactionService,CollapsibleSectionComponent
-    ]
+    CustomerService,
+    TransactionService,
+    CollapsibleSectionComponent,
+  ],
 };

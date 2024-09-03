@@ -10,13 +10,16 @@ import { InsuranceFormComponent } from '../inurance-form/insurance-form.componen
   standalone: true,
   imports: [MatTableModule],
   templateUrl: './insurance-table.component.html',
-  styleUrl: './insurance-table.component.css'
+  styleUrl: './insurance-table.component.css',
 })
 export class InsuranceTableComponent implements OnInit {
   displayedColumns: string[] = ['insuranceType', 'description', 'actions'];
   dataSource = new MatTableDataSource<Insurance>();
 
-  constructor(private insuranceService: InsuranceService, public dialog: MatDialog) {}
+  constructor(
+    private insuranceService: InsuranceService,
+    public dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.loadInsurances();
@@ -24,19 +27,19 @@ export class InsuranceTableComponent implements OnInit {
 
   loadInsurances(): void {
     this.insuranceService.getInsurances().subscribe(
-      data => this.dataSource.data = data,
-      error => console.error('Error loading insurances:', error)
+      (data) => (this.dataSource.data = data),
+      (error) => console.error('Error loading insurances:', error)
     );
-  }  
+  }
 
   onAddButtonClick(): void {
     const dialogRef = this.dialog.open(InsuranceFormComponent, {
-      panelClass: 'custom-dialog-container'
+      panelClass: 'custom-dialog-container',
     });
-  
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {  
-        this.loadInsurances(); // This refreshes the table data after adding a new insurance
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.loadInsurances();
       }
     });
   }
@@ -45,7 +48,7 @@ export class InsuranceTableComponent implements OnInit {
     if (confirm('Are you sure you want to delete this insurance?')) {
       this.insuranceService.deleteInsurance(id).subscribe(
         () => this.loadInsurances(),
-        error => console.error('Error deleting insurance:', error)
+        (error) => console.error('Error deleting insurance:', error)
       );
     }
   }
@@ -53,16 +56,17 @@ export class InsuranceTableComponent implements OnInit {
   editInsurance(insurance: Insurance): void {
     const dialogRef = this.dialog.open(InsuranceFormComponent, {
       panelClass: 'custom-dialog-container',
-      data: { insurance }
+      data: { insurance },
     });
-  
-    dialogRef.afterClosed().subscribe(result => {
+
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.insuranceService.updateInsurance(insurance.id!, result).subscribe(
-          () => this.loadInsurances(), // This refreshes the table data after updating an insurance
-          error => console.error('Error updating insurance:', error)
+          () => this.loadInsurances(),
+          (error) => console.error('Error updating insurance:', error)
         );
       }
     });
   }
+  
 }

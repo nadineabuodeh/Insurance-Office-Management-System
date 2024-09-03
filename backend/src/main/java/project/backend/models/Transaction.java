@@ -5,7 +5,6 @@ import project.backend.SecurityConfiguration.models.User;
 
 import java.time.LocalDate;
 
-
 @Entity
 @Table(name = "transactions")
 public class Transaction {
@@ -37,7 +36,8 @@ public class Transaction {
     public Transaction() {
     }
 
-    public Transaction(Long id, LocalDate startDate, Double amount, LocalDate endDate, TransactionType transactionType, LocalDate createdAt, LocalDate updatedAt, User user, Policy policy) {
+    public Transaction(Long id, LocalDate startDate, Double amount, LocalDate endDate, TransactionType transactionType,
+            LocalDate createdAt, LocalDate updatedAt, User user, Policy policy) {
         this.id = id;
         this.startDate = startDate;
         this.amount = amount;

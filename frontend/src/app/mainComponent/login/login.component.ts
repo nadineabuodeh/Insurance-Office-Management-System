@@ -1,38 +1,64 @@
 import { Component } from '@angular/core';
-import { LoginRequest } from '../../model/login-request';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../service/auth.service';
 import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [
+    CommonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatButtonModule,
+    MatDialogModule,
+    MatSelectModule,
+    MatOptionModule,
+  ],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrl: './login.component.css',
 })
 export class LoginComponent {
-  loginRequest: LoginRequest = {
-    username: '',
-    password: ''
-  };
-  errorMessage: string | null = null;
-  toastTimeout: any;
+  loginForm: FormGroup;
+  isLoginFailed: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {
+    this.loginForm = this.fb.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required],
+    });
+  }
 
   onSubmit(): void {
-    this.authService.login(this.loginRequest).subscribe({
+    if (this.loginForm.invalid) {
+      return;
+    }
+
+    this.authService.login(this.loginForm.value).subscribe({
       next: (response) => {
         const token = response.accessToken;
-        const role = response.roles[0]; 
-        this.authService.saveToken(token, role); 
+        const role = response.roles[0];
+        this.authService.saveToken(token, role);
+        this.isLoginFailed = false;
         this.redirectBasedOnRole();
       },
-      error: (error: Error) => {
-        this.showToast(error.message);
-      }
+      error: () => {
+        this.isLoginFailed = true;
+      },
     });
   }
 
@@ -42,24 +68,6 @@ export class LoginComponent {
       this.router.navigate(['/admin/dashboard']);
     } else if (role === 'ROLE_CUSTOMER') {
       this.router.navigate(['/customer/dashboard']);
-    }
-  }
-
-  showToast(message: string): void {
-    this.errorMessage = message;
-    this.toastTimeout = setTimeout(() => {
-      this.clearToast();
-    }, 5000);
-  }
-
-  closeToast(): void {
-    this.clearToast();
-  }
-
-  clearToast(): void {
-    this.errorMessage = null;
-    if (this.toastTimeout) {
-      clearTimeout(this.toastTimeout);
     }
   }
 }

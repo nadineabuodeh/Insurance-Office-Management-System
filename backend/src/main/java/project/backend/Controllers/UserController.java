@@ -28,10 +28,10 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<List<UserDTO>> getAllUsers(HttpServletRequest request) {
-       String jwtToken = request.getHeader("Authorization").substring(7);
-       String adminUsername = jwtUtils.getUserNameFromJwtToken(jwtToken);
-       List<UserDTO> users = userService.getAllUsersByAdmin(adminUsername);
-       return new ResponseEntity<>(users, HttpStatus.OK);
+        String jwtToken = request.getHeader("Authorization").substring(7);
+        String adminUsername = jwtUtils.getUserNameFromJwtToken(jwtToken);
+        List<UserDTO> users = userService.getAllUsersByAdmin(adminUsername);
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -48,7 +48,7 @@ public class UserController {
     public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO, HttpServletRequest request) {
         try {
             String jwtToken = request.getHeader("Authorization").substring(7);
-            UserDTO createdUser = userService.createUser(userDTO, jwtToken);//]
+            UserDTO createdUser = userService.createUser(userDTO, jwtToken);// ]
             return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
         } catch (ResourceAlreadyExistsException ex) {
             return new ResponseEntity<>(null, HttpStatus.CONFLICT);
@@ -57,7 +57,6 @@ public class UserController {
         }
     }
 
-
     @PutMapping("/{id}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
         System.out.println("Received PUT request to update user with ID: " + id);
@@ -65,7 +64,7 @@ public class UserController {
 
         try {
             UserDTO updatedUser = userService.updateUser(id, userDTO);
-            System.out.println("UPDATED USER: \n"+updatedUser.toString());
+            System.out.println("UPDATED USER: \n" + updatedUser.toString());
             return new ResponseEntity<>(updatedUser, HttpStatus.OK);
         } catch (ResourceNotFoundException ex) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
@@ -74,9 +73,6 @@ public class UserController {
         }
     }
 
-
-
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         try {
@@ -84,6 +80,21 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (ResourceNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserDTO> getCustomerInfo(HttpServletRequest request) {
+        try {
+            String jwtToken = request.getHeader("Authorization").substring(7);
+            String username = jwtUtils.getUserNameFromJwtToken(jwtToken);
+
+            UserDTO userDTO = userService.getCustomerByUsername(username);
+            return new ResponseEntity<>(userDTO, HttpStatus.OK);
+        } catch (ResourceNotFoundException ex) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

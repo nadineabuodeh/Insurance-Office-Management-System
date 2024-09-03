@@ -43,7 +43,8 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<MessageResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new MessageResponse("Error: Validation failed! " + ex.getBindingResult().getFieldError().getDefaultMessage()));
+                .body(new MessageResponse(
+                        "Error: Validation failed! " + ex.getBindingResult().getFieldError().getDefaultMessage()));
     }
 
     @ExceptionHandler(Exception.class)

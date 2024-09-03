@@ -17,75 +17,79 @@ export interface Customer {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CustomerService {
   private baseUrl = 'http://localhost:8080/users';
   private customersChanged = new Subject<void>();
 
-  constructor(private http: HttpClient, private authService: AuthService) { }
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   private getAuthHeaders(): HttpHeaders {
     const token = localStorage.getItem('authToken');
 
     return new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     });
   }
 
 
-
   getCustomers(): Observable<Customer[]> {
     const headers = this.getAuthHeaders();
-    return this.http.get<Customer[]>(this.baseUrl, { headers })
-      .pipe(
-        map(customers => customers.filter(customer => customer.role === 'ROLE_CUSTOMER')), // Get Only Customers..
-        catchError(error => {
-          return throwError(() => error);
-        })
-      );
+    return this.http.get<Customer[]>(this.baseUrl, { headers }).pipe(
+      map((customers) =>
+        customers.filter((customer) => customer.role === 'ROLE_CUSTOMER')
+      ),
+      catchError((error) => {
+        return throwError(() => error);
+      })
+    );
   }
-
 
   getCustomerById(id: number): Observable<Customer> {
     const headers = this.getAuthHeaders();
-    return this.http.get<Customer>(`${this.baseUrl}/${id}`, { headers })
-      .pipe(
-        catchError(error => {
-          return throwError(() => error);
-        })
-      );
+    return this.http.get<Customer>(`${this.baseUrl}/${id}`, { headers }).pipe(
+      catchError((error) => {
+        return throwError(() => error);
+      })
+    );
+  }
+
+  getCustomerInfo(): Observable<Customer> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<Customer>(`${this.baseUrl}/me`, { headers }).pipe(
+      tap((response) => console.log('Fetched customer info:', response)),
+      catchError((error) => {
+        return throwError(() => error);
+      })
+    );
   }
 
   addCustomer(customer: Customer): Observable<Customer> {
-    customer.role = 'ROLE_CUSTOMER'; //// Set user role as customer..
-
+    customer.role = 'ROLE_CUSTOMER'; 
 
     const headers = this.getAuthHeaders();
-    return this.http.post<Customer>(this.baseUrl, customer, { headers })
-      .pipe(
-        tap(response => console.log('Backend response:', response)),
-        tap(() => this.customersChanged.next()),
-        catchError(error => {
-          return throwError(() => error);
-        })
-      );
+    return this.http.post<Customer>(this.baseUrl, customer, { headers }).pipe(
+      tap((response) => console.log('Backend response:', response)),
+      tap(() => this.customersChanged.next()),
+      catchError((error) => {
+        return throwError(() => error);
+      })
+    );
   }
 
   deleteCustomer(id: number): Observable<void> {
     const headers = this.getAuthHeaders();
-    return this.http.delete<void>(`${this.baseUrl}/${id}`, { headers })
-      .pipe(
-        tap(() => this.customersChanged.next()),
-        catchError(error => {
-          return throwError(() => error);
-        })
-      );
+    return this.http.delete<void>(`${this.baseUrl}/${id}`, { headers }).pipe(
+      tap(() => this.customersChanged.next()),
+      catchError((error) => {
+        return throwError(() => error);
+      })
+    );
   }
 
-
-  updateCustomer(id: number, updatedCustomer: Customer): Observable<Customer> {
+ updateCustomer(id: number, updatedCustomer: Customer): Observable<Customer> {
     const headers = this.getAuthHeaders();
     updatedCustomer.role = 'ROLE_CUSTOMER';// Specify the role as customer
     return this.http.put<Customer>(`${this.baseUrl}/${id}`, updatedCustomer, { headers })
@@ -103,4 +107,5 @@ export class CustomerService {
     };
   }
 
+  
 }

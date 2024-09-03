@@ -99,7 +99,6 @@ public class UserService {
 
         User user = convertToEntity(userDTO);
 
-
         String generatedPassword = generateRandomPassword();
         logger.info("Original password: {}", generatedPassword);
         user.setPassword(passwordEncoder.encode(generatedPassword));
@@ -151,7 +150,6 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-
     public List<UserDTO> getAllUsersByAdmin(String adminUsername) {
         List<User> userList = userRepository.findAllByAdminUsername(adminUsername);
         userList.forEach(user -> logger.info("Fetched User: {}", user));
@@ -160,4 +158,15 @@ public class UserService {
         userDTOList.forEach(userDTO -> logger.info("Mapped UserDTO: {}", userDTO));
         return userDTOList;
     }
+
+    public UserDTO getCustomerByUsername(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with username: " + username));
+    
+        if (!user.getRole().equals(ERole.ROLE_CUSTOMER)) {
+            throw new ResourceNotFoundException("User with username: " + username + " is not a customer");
+        }
+    
+        return convertToDTO(user);
+    }    
 }

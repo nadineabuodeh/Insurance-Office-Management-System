@@ -4,9 +4,8 @@ import { Observable } from 'rxjs';
 import { Policy } from '../model/policy.model';
 import { Customer } from './CustomerService/customer.service';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PolicyService {
   private apiUrl = 'http://localhost:8080/policies';
@@ -17,38 +16,55 @@ export class PolicyService {
     const token = localStorage.getItem('authToken');
     return new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     });
   }
 
   getAllPolicies(): Observable<Policy[]> {
-    return this.http.get<Policy[]>(this.apiUrl, { headers: this.getAuthHeaders() });
+    return this.http.get<Policy[]>(this.apiUrl, {
+      headers: this.getAuthHeaders(),
+    });
   }
 
   getPoliciesByCustomerId(customerId: number): Observable<Policy[]> {
-    return this.http.get<Policy[]>(`${this.apiUrl}/customer/${customerId}`, { headers: this.getAuthHeaders() });
+    return this.http.get<Policy[]>(`${this.apiUrl}/customer/${customerId}`, {
+      headers: this.getAuthHeaders(),
+    });
+  }
+
+  getPoliciesForCustomer(): Observable<Policy[]> {
+    return this.http.get<Policy[]>(`${this.apiUrl}/my-policies`, {
+      headers: this.getAuthHeaders(),
+    });
   }
 
   getPolicyById(id: number): Observable<Policy> {
-    return this.http.get<Policy>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() });
+    return this.http.get<Policy>(`${this.apiUrl}/${id}`, {
+      headers: this.getAuthHeaders(),
+    });
   }
 
   createPolicy(policy: Policy): Observable<Policy> {
-    return this.http.post<Policy>(this.apiUrl, policy, { headers: this.getAuthHeaders() });
+    return this.http.post<Policy>(this.apiUrl, policy, {
+      headers: this.getAuthHeaders(),
+    });
   }
 
   updatePolicy(id: number, policy: Policy): Observable<Policy> {
-    return this.http.put<Policy>(`${this.apiUrl}/${id}`, policy, { headers: this.getAuthHeaders() });
+    return this.http.put<Policy>(`${this.apiUrl}/${id}`, policy, {
+      headers: this.getAuthHeaders(),
+    });
   }
 
   deletePolicy(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() });
+    return this.http.delete<void>(`${this.apiUrl}/${id}`, {
+      headers: this.getAuthHeaders(),
+    });
   }
 
   //
   getUserIdByPolicyId(policyId: number): Observable<number> {
     return this.http.get<number>(`${this.apiUrl}/user/${policyId}`, { headers: this.getAuthHeaders() });
   }
-
 
 }

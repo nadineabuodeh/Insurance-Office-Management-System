@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import project.backend.SecurityConfiguration.models.User;
 import project.backend.SecurityConfiguration.repository.UserRepository;
 
-
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
   @Autowired

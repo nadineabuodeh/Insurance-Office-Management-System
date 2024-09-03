@@ -1,10 +1,10 @@
 * {
-  font-family: 'Times New Roman', Times, serif;
+  font-family: "Times New Roman", Times, serif;
 }
 
 .customer-details-container {
-  background-color: #EEEEEE;
-  color: #201E43;
+  background-color: #eeeeee;
+  color: #201e43;
   border-radius: 8px;
   padding: 20px;
   width: 500px;
@@ -31,13 +31,13 @@
 
 .info-item label {
   font-weight: bold;
-  color: #508C9B;
+  color: #508c9b;
   margin-right: 3px;
   width: 130px;
 }
 
 .info-item span {
-  color: #201E43;
+  color: #201e43;
   flex: 1;
 }
 
@@ -45,7 +45,7 @@
   text-align: center;
   padding: 20px;
   background-color: #134870;
-  color: #EEEEEE;
+  color: #eeeeee;
   border-radius: 8px;
 }
 
@@ -67,7 +67,7 @@
 .container {
   display: flex;
   align-items: center;
-  border-bottom: 0.1px solid #201E43;
+  border-bottom: 0.1px solid #201e43;
   margin-bottom: 20px;
   white-space: nowrap;
   overflow: hidden;
@@ -77,7 +77,7 @@
   padding-bottom: 5px;
   margin-right: 1px;
   flex-grow: 1;
-
+  color: #134b70;
 }
 
 .empty-table-message {
@@ -85,8 +85,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #EEEEEE;
-  color: #201E43;
+  background-color: #eeeeee;
+  color: #201e43;
   padding: 40px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

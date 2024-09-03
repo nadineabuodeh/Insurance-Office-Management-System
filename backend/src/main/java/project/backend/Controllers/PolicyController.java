@@ -69,6 +69,13 @@ public class PolicyController {
         return new ResponseEntity<>(policies, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
+    @GetMapping("/my-policies")
+    public ResponseEntity<List<PolicyDTO>> getPoliciesForCustomer(HttpServletRequest request) {
+        String jwtToken = request.getHeader("Authorization").substring(7);
+        List<PolicyDTO> policies = policyService.getPoliciesForCustomer(jwtToken);
+        return new ResponseEntity<>(policies, HttpStatus.OK);
+    }
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CUSTOMER')")
     @GetMapping("/user/{policyId}")

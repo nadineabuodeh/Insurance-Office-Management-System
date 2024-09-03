@@ -2,49 +2,65 @@
 @import "../node_modules/primeng/resources/primeng.min.css";
 @import "../node_modules/primeicons/primeicons.css";
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
 body {
-    background-color: #EEEEEE;
-    color: #201E43;
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
+body {
+  background-color: #eeeeee;
+  color: #201e43;
 }
 
-body, html {
-    font-family: 'Roboto', sans-serif;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    color: #201E43;
+body,
+html {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  color: #201e43;
 }
-  
-h1, h2, h3, h4, h5, h6 {
-    font-weight: 700;
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 700;
 }
-  
-p, li, span, a, input, button {
-    font-weight: 400;
+
+p,
+li,
+span,
+a,
+input,
+button {
+  font-weight: 400;
 }
 
 .ngx-toastr {
-    font-size: 16px;
+  font-size: 16px;
 }
-  
+
 .toast-top-right {
-    top: 50px;
-    right: 50px;
+  top: 50px;
+  right: 50px;
 }
-  
+
 .toast-error {
-    background-color: #f44336 !important;
-    color: #ffffff !important;
+  background-color: #f44336 !important;
+  color: #ffffff !important;
 }
-  
+
 .toast-error .toast-message {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 img {
-    width: 100%;
-    height: auto;
-  }
-  
+  width: 100%;
+  height: auto;
+}

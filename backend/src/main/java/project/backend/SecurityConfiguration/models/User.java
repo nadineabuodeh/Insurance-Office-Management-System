@@ -12,11 +12,10 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "users",
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = "username"),
-                @UniqueConstraint(columnNames = "email")
-        })
+@Table(name = "users", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "username"),
+        @UniqueConstraint(columnNames = "email")
+})
 public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
@@ -28,11 +27,9 @@ public class User {
     @OneToMany(mappedBy = "admin")
     private List<Insurance> insurancesCreated;
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
 
     private String idNumber;
     private String firstName;
@@ -67,7 +64,8 @@ public class User {
     public User() {
     }
 
-    public User(String idNumber, String firstName, String lastName, String phoneNumber, Date birthDate, String username, String email, String password, ERole role) {
+    public User(String idNumber, String firstName, String lastName, String phoneNumber, Date birthDate, String username,
+            String email, String password, ERole role) {
         this.idNumber = idNumber;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -174,7 +172,6 @@ public class User {
     public void setPolicies(List<Policy> policies) {
         this.policies = policies;
     }
-
 
     public User getAdmin() {
         return admin;

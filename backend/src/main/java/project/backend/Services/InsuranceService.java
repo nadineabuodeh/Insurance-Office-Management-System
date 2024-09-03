@@ -18,87 +18,92 @@ import project.backend.models.Insurance;
 @Service
 public class InsuranceService {
 
-    @Autowired
-    private InsuranceRepository insuranceRepository;
+        @Autowired
+        private InsuranceRepository insuranceRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+        @Autowired
+        private UserRepository userRepository;
 
-    @Autowired
-    private ModelMapper modelMapper;
+        @Autowired
+        private ModelMapper modelMapper;
 
-    @Autowired
-    private JwtUtils jwtUtils;
+        @Autowired
+        private JwtUtils jwtUtils;
 
-    public List<InsuranceDTO> getAllInsurances(String jwtToken) {
-        String adminId = jwtUtils.getUserNameFromJwtToken(jwtToken); 
-        User admin = userRepository.findByUsername(adminId)
-                .orElseThrow(() -> new ResourceNotFoundException("Admin not found with username: " + adminId));
-        
-        List<Insurance> insurances = insuranceRepository.findByAdmin(admin);
-        return insurances.stream()
-                         .map(insurance -> {
-                             InsuranceDTO dto = modelMapper.map(insurance, InsuranceDTO.class);
-                             dto.setAdminId(admin.getId());
-                             return dto;
-                         })
-                         .collect(Collectors.toList());
-    }
+        public List<InsuranceDTO> getAllInsurances(String jwtToken) {
+                String adminId = jwtUtils.getUserNameFromJwtToken(jwtToken);
+                User admin = userRepository.findByUsername(adminId)
+                                .orElseThrow(() -> new ResourceNotFoundException(
+                                                "Admin not found with username: " + adminId));
 
-    public InsuranceDTO getInsuranceById(Long id, String jwtToken) {
-        String adminId = jwtUtils.getUserNameFromJwtToken(jwtToken);
-        User admin = userRepository.findByUsername(adminId)
-                .orElseThrow(() -> new ResourceNotFoundException("Admin not found with username: " + adminId));
+                List<Insurance> insurances = insuranceRepository.findByAdmin(admin);
+                return insurances.stream()
+                                .map(insurance -> {
+                                        InsuranceDTO dto = modelMapper.map(insurance, InsuranceDTO.class);
+                                        dto.setAdminId(admin.getId());
+                                        return dto;
+                                })
+                                .collect(Collectors.toList());
+        }
 
-        Insurance insurance = insuranceRepository.findById(id)
-                .filter(ins -> ins.getAdmin().getId().equals(admin.getId()))
-                .orElseThrow(() -> new ResourceNotFoundException("Insurance not found with ID: " + id));
+        public InsuranceDTO getInsuranceById(Long id, String jwtToken) {
+                String adminId = jwtUtils.getUserNameFromJwtToken(jwtToken);
+                User admin = userRepository.findByUsername(adminId)
+                                .orElseThrow(() -> new ResourceNotFoundException(
+                                                "Admin not found with username: " + adminId));
 
-        InsuranceDTO dto = modelMapper.map(insurance, InsuranceDTO.class);
-        dto.setAdminId(admin.getId());  
-        return dto;
-    }
+                Insurance insurance = insuranceRepository.findById(id)
+                                .filter(ins -> ins.getAdmin().getId().equals(admin.getId()))
+                                .orElseThrow(() -> new ResourceNotFoundException("Insurance not found with ID: " + id));
 
-    public InsuranceDTO saveInsurance(InsuranceDTO insuranceDTO, String jwtToken) {
-        String adminId = jwtUtils.getUserNameFromJwtToken(jwtToken);  
-        User admin = userRepository.findByUsername(adminId)
-                .orElseThrow(() -> new ResourceNotFoundException("Admin not found with username: " + adminId));
+                InsuranceDTO dto = modelMapper.map(insurance, InsuranceDTO.class);
+                dto.setAdminId(admin.getId());
+                return dto;
+        }
 
-        Insurance insurance = modelMapper.map(insuranceDTO, Insurance.class);
-        insurance.setAdmin(admin);
-        insurance = insuranceRepository.save(insurance);
-        
-        InsuranceDTO savedDTO = modelMapper.map(insurance, InsuranceDTO.class);
-        savedDTO.setAdminId(admin.getId());  
-        return savedDTO;
-    }
+        public InsuranceDTO saveInsurance(InsuranceDTO insuranceDTO, String jwtToken) {
+                String adminId = jwtUtils.getUserNameFromJwtToken(jwtToken);
+                User admin = userRepository.findByUsername(adminId)
+                                .orElseThrow(() -> new ResourceNotFoundException(
+                                                "Admin not found with username: " + adminId));
 
-    public InsuranceDTO updateInsurance(Long id, InsuranceDTO insuranceDTO, String jwtToken) {
-        String adminId = jwtUtils.getUserNameFromJwtToken(jwtToken);  
-        User admin = userRepository.findByUsername(adminId)
-                .orElseThrow(() -> new ResourceNotFoundException("Admin not found with username: " + adminId));
+                Insurance insurance = modelMapper.map(insuranceDTO, Insurance.class);
+                insurance.setAdmin(admin);
+                insurance = insuranceRepository.save(insurance);
 
-        Insurance existingInsurance = insuranceRepository.findById(id)
-                .filter(ins -> ins.getAdmin().getId().equals(admin.getId()))
-                .orElseThrow(() -> new ResourceNotFoundException("Insurance not found with ID: " + id));
+                InsuranceDTO savedDTO = modelMapper.map(insurance, InsuranceDTO.class);
+                savedDTO.setAdminId(admin.getId());
+                return savedDTO;
+        }
 
-        modelMapper.map(insuranceDTO, existingInsurance);
-        Insurance updatedInsurance = insuranceRepository.save(existingInsurance);
+        public InsuranceDTO updateInsurance(Long id, InsuranceDTO insuranceDTO, String jwtToken) {
+                String adminId = jwtUtils.getUserNameFromJwtToken(jwtToken);
+                User admin = userRepository.findByUsername(adminId)
+                                .orElseThrow(() -> new ResourceNotFoundException(
+                                                "Admin not found with username: " + adminId));
 
-        InsuranceDTO updatedDTO = modelMapper.map(updatedInsurance, InsuranceDTO.class);
-        updatedDTO.setAdminId(admin.getId()); 
-        return updatedDTO;
-    }
+                Insurance existingInsurance = insuranceRepository.findById(id)
+                                .filter(ins -> ins.getAdmin().getId().equals(admin.getId()))
+                                .orElseThrow(() -> new ResourceNotFoundException("Insurance not found with ID: " + id));
 
-    public void deleteInsurance(Long id, String jwtToken) {
-        String adminId = jwtUtils.getUserNameFromJwtToken(jwtToken);  
-        User admin = userRepository.findByUsername(adminId)
-                .orElseThrow(() -> new ResourceNotFoundException("Admin not found with username: " + adminId));
+                modelMapper.map(insuranceDTO, existingInsurance);
+                Insurance updatedInsurance = insuranceRepository.save(existingInsurance);
 
-        Insurance existingInsurance = insuranceRepository.findById(id)
-                .filter(ins -> ins.getAdmin().getId().equals(admin.getId()))
-                .orElseThrow(() -> new ResourceNotFoundException("Insurance not found with ID: " + id));
+                InsuranceDTO updatedDTO = modelMapper.map(updatedInsurance, InsuranceDTO.class);
+                updatedDTO.setAdminId(admin.getId());
+                return updatedDTO;
+        }
 
-        insuranceRepository.delete(existingInsurance);
-    }
+        public void deleteInsurance(Long id, String jwtToken) {
+                String adminId = jwtUtils.getUserNameFromJwtToken(jwtToken);
+                User admin = userRepository.findByUsername(adminId)
+                                .orElseThrow(() -> new ResourceNotFoundException(
+                                                "Admin not found with username: " + adminId));
+
+                Insurance existingInsurance = insuranceRepository.findById(id)
+                                .filter(ins -> ins.getAdmin().getId().equals(admin.getId()))
+                                .orElseThrow(() -> new ResourceNotFoundException("Insurance not found with ID: " + id));
+
+                insuranceRepository.delete(existingInsurance);
+        }
 }

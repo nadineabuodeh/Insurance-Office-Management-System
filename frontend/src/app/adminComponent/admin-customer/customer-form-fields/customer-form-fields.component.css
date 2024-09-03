@@ -1,9 +1,8 @@
 .title {
-  color: #201E43;
+  color: #201e43;
   font-weight: bold;
-  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-family: Georgia, "Times New Roman", Times, serif;
 }
-
 
 .name-fields-container {
   display: flex;
@@ -21,7 +20,6 @@
 .mat-error {
   color: #f44336;
 }
-
 
 .mat-dialog-actions {
   display: flex;
