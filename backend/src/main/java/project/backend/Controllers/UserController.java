@@ -82,4 +82,19 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserDTO> getCustomerInfo(HttpServletRequest request) {
+        try {
+            String jwtToken = request.getHeader("Authorization").substring(7);
+            String username = jwtUtils.getUserNameFromJwtToken(jwtToken);
+
+            UserDTO userDTO = userService.getCustomerByUsername(username);
+            return new ResponseEntity<>(userDTO, HttpStatus.OK);
+        } catch (ResourceNotFoundException ex) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

@@ -95,4 +95,12 @@ public class TransactionController {
         List<TransactionDTO> transactions = transactionService.getDebtTransactionsForCustomer(jwtToken);
         return new ResponseEntity<>(transactions, HttpStatus.OK);
     }
+
+    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
+    @GetMapping("/my-deposits")
+    public ResponseEntity<List<TransactionDTO>> getDepositTransactionsForCustomer(HttpServletRequest request) {
+        String jwtToken = request.getHeader("Authorization").substring(7);
+        List<TransactionDTO> transactions = transactionService.getDepositTransactionsForCustomer(jwtToken);
+        return new ResponseEntity<>(transactions, HttpStatus.OK);
+    }
 }

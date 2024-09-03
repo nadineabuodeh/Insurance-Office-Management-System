@@ -53,7 +53,7 @@ export class TransactionFormFieldsComponent {
   filteredPolicies: Observable<Policy[]> | undefined;
   private policiesLoaded: boolean = false;
 
-  transactionTypes: string[] = ['DEPOSIT', 'WITHDRAWAL', 'TRANSFER', 'DEBT'];
+  transactionTypes: string[] = ['DEPOSIT', 'DEBT'];
 
   private initialFormValue: any;
 

@@ -162,4 +162,17 @@ public class TransactionService {
                 .collect(Collectors.toList());
     }
 
+    public List<TransactionDTO> getDepositTransactionsForCustomer(String jwtToken) {
+        String username = jwtUtils.getUserNameFromJwtToken(jwtToken);
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with username: " + username));
+
+        List<Transaction> transactions = transactionRepository.findByUserIdAndTransactionType(user.getId(), TransactionType.DEPOSIT);
+
+        return transactions.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
 }

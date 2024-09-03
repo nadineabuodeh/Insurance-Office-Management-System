@@ -26,7 +26,6 @@ export class TransactionCustomerTableComponent implements OnInit {
     'startDate',
     'endDate',
     'amount',
-    'transactionType',
     'createdAt',
     'updatedAt'
   ];
@@ -49,7 +48,7 @@ export class TransactionCustomerTableComponent implements OnInit {
   }
 
   loadTransactions(): void {
-    this.transactionService.getTransactionsForCustomer().subscribe((transactions) => {
+    this.transactionService.getDepositTransactions().subscribe((transactions) => {
       this.dataSource.data = transactions;
     });
   }

@@ -71,6 +71,16 @@ export class TransactionService {
     );
   }
 
+  getDepositTransactions(): Observable<Transaction[]> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<Transaction[]>(`${this.baseUrl}/my-deposits`, { headers }).pipe(
+      tap((transactions) => {
+        console.log('Fetched Debt Transactions:', transactions);
+      }),
+      catchError(this.handleError<Transaction[]>('getDebtTransactions', []))
+    );
+  }
+
   getTransactionsByCustomerId(customerId: number): Observable<Transaction[]> {
     return this.http.get<Transaction[]>(
       `${this.baseUrl}/customer/${customerId}`,
