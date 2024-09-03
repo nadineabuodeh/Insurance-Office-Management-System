@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Policy } from '../model/policy.model';
+import { Customer } from './CustomerService/customer.service';
 
 
 @Injectable({
@@ -10,7 +11,7 @@ import { Policy } from '../model/policy.model';
 export class PolicyService {
   private apiUrl = 'http://localhost:8080/policies';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   private getAuthHeaders(): HttpHeaders {
     const token = localStorage.getItem('authToken');
@@ -27,7 +28,7 @@ export class PolicyService {
   getPoliciesByCustomerId(customerId: number): Observable<Policy[]> {
     return this.http.get<Policy[]>(`${this.apiUrl}/customer/${customerId}`, { headers: this.getAuthHeaders() });
   }
-  
+
   getPolicyById(id: number): Observable<Policy> {
     return this.http.get<Policy>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() });
   }
@@ -43,4 +44,11 @@ export class PolicyService {
   deletePolicy(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() });
   }
+
+  //
+  getUserIdByPolicyId(policyId: number): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/user/${policyId}`, { headers: this.getAuthHeaders() });
+  }
+
+
 }

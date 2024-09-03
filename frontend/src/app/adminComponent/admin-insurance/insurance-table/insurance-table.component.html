@@ -19,7 +19,7 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef> Actions </th>
         <td mat-cell *matCellDef="let insurance">
-          <button class="btns" (click)="deleteInsurance(insurance.id)">
+          <button class="btns" (click)="deleteInsurance(insurance.id)" disabled>
             <img class="icons" src="./assets/delete.png" alt="delete" title="Delete This Insurance">
           </button>
           <button class="btns" (click)="editInsurance(insurance)">

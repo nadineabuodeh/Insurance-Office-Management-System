@@ -132,12 +132,15 @@ public class UserService {
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + id));
 
+        userDTO.setId(id);
+        System.out.println("id: " + userDTO.getId());
         String existingPassword = existingUser.getPassword();
         User userToUpdate = convertToEntity(userDTO);
         userToUpdate.setId(id);
         userToUpdate.setPassword(existingPassword);
 
         User updatedUser = userRepository.save(userToUpdate);
+        System.out.println("updated user: "+updatedUser.getId());
         return convertToDTO(updatedUser);
     }
 
@@ -152,7 +155,8 @@ public class UserService {
     public List<UserDTO> getAllUsersByAdmin(String adminUsername) {
         List<User> userList = userRepository.findAllByAdminUsername(adminUsername);
         userList.forEach(user -> logger.info("Fetched User: {}", user));
-        List<UserDTO> userDTOList = modelMapper.map(userList, new TypeToken<List<UserDTO>>() {}.getType());
+        List<UserDTO> userDTOList = modelMapper.map(userList, new TypeToken<List<UserDTO>>() {
+        }.getType());
         userDTOList.forEach(userDTO -> logger.info("Mapped UserDTO: {}", userDTO));
         return userDTOList;
     }

@@ -29,3 +29,16 @@
   padding: 1rem;
   align-content: end;
 }
+
+.custom-form-field label {
+  font-size: 18px;
+  color: #201E43;
+  display: block;
+  margin-top: 6px;
+  margin-left: 4px;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.custom-form-field label:hover {
+  color: #5d58b8
+}

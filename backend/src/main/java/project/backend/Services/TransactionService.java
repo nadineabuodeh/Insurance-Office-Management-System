@@ -1,6 +1,8 @@
 package project.backend.Services;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import project.backend.DTOs.PolicyDTO;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class TransactionService {
+    private static final Logger logger = LoggerFactory.getLogger(TransactionService.class);
 
     @Autowired
     private TransactionRepository transactionRepository;
@@ -88,8 +91,8 @@ public class TransactionService {
         String username = jwtUtils.getUserNameFromJwtToken(jwtToken);
         List<Transaction> transactions = transactionRepository.findTransactionsByAdmin(username);
         return transactions.stream()
-                           .map(this::convertToDTO)
-                           .toList();
+                .map(this::convertToDTO)
+                .toList();
     }
 
     public TransactionDTO getTransactionById(Long id) {
@@ -138,7 +141,5 @@ public class TransactionService {
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
-
-
 
 }

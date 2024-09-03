@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpServletRequest;
 import project.backend.DTOs.PolicyDTO;
 import project.backend.DTOs.TransactionDTO;
+import project.backend.SecurityConfiguration.models.User;
 import project.backend.Services.TransactionService;
 import project.backend.exceptions.ResourceNotFoundException;
 
@@ -50,6 +51,7 @@ public class TransactionController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+
     @PutMapping("/{id}")
     public ResponseEntity<TransactionDTO> updateTransaction(@PathVariable Long id, @RequestBody TransactionDTO transactionDTO) {
         try {
@@ -77,6 +79,8 @@ public class TransactionController {
         List<TransactionDTO> transactions = transactionService.getTransactionsByCustomerId(customerId);
         return new ResponseEntity<>(transactions, HttpStatus.OK);
     }
+
+
 
 
 }

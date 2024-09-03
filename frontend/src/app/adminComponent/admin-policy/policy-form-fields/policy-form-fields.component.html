@@ -18,13 +18,16 @@
       <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
       <mat-datepicker #endDatePicker></mat-datepicker>
       <mat-error *ngIf="formGroup.get('endDate')?.hasError('required')">End Date is required</mat-error>
-      <mat-error *ngIf="formGroup.get('endDate')?.hasError('endDateBeforeStartDate')">End Date must be after Start
-        Date</mat-error>
+
+      @if (formGroup.get('endDate')?.hasError('endDateBeforeStartDate')) {
+      <mat-error>
+        End date must be after the start date.
+      </mat-error>}
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="custom-form-field">
       <mat-label>Policy Name</mat-label>
-      <textarea matInput formControlName="policyName"></textarea>
+      <input matInput formControlName="policyName">
       @if(formGroup.get('policyName')?.hasError('required')){
       <mat-error>
         Policy Name is required

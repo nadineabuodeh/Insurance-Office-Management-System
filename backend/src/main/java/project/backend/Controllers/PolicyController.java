@@ -2,28 +2,25 @@ package project.backend.Controllers;
 
 import java.util.List;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpServletRequest;
 import project.backend.DTOs.PolicyDTO;
+import project.backend.SecurityConfiguration.models.User;
 import project.backend.Services.PolicyService;
+import project.backend.exceptions.ResourceNotFoundException;
+import project.backend.models.Policy;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/policies")
 public class PolicyController {
+    Logger logger = org.slf4j.LoggerFactory.getLogger(PolicyController.class);
 
     @Autowired
     private PolicyService policyService;
@@ -70,6 +67,19 @@ public class PolicyController {
     public ResponseEntity<List<PolicyDTO>> getPoliciesByCustomerId(@PathVariable Long customerId) {
         List<PolicyDTO> policies = policyService.getPoliciesByCustomerId(customerId);
         return new ResponseEntity<>(policies, HttpStatus.OK);
+    }
+
+
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CUSTOMER')")
+    @GetMapping("/user/{policyId}")
+    public ResponseEntity<Long> getUserIdByPolicyId(@PathVariable Long policyId) {
+        try {
+            Long userId = policyService.getUserIdByPolicyId(policyId);
+            System.out.println("userId: " + userId);
+            return new ResponseEntity<>(userId, HttpStatus.OK);
+        } catch (ResourceNotFoundException ex) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
 

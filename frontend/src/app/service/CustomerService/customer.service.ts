@@ -21,7 +21,7 @@ export interface Customer {
 })
 export class CustomerService {
   private baseUrl = 'http://localhost:8080/users';
-  private customersChanged = new Subject<void>(); 
+  private customersChanged = new Subject<void>();
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
@@ -33,7 +33,6 @@ export class CustomerService {
       'Authorization': `Bearer ${token}`
     });
   }
-  // ==================================================================
 
 
 
@@ -58,7 +57,6 @@ export class CustomerService {
         })
       );
   }
-  // ==================================================================
 
   addCustomer(customer: Customer): Observable<Customer> {
     customer.role = 'ROLE_CUSTOMER'; //// Set user role as customer..
@@ -89,7 +87,7 @@ export class CustomerService {
 
   updateCustomer(id: number, updatedCustomer: Customer): Observable<Customer> {
     const headers = this.getAuthHeaders();
-    updatedCustomer.role = 'ROLE_CUSTOMER';// Specify the role as a customer
+    updatedCustomer.role = 'ROLE_CUSTOMER';// Specify the role as customer
     return this.http.put<Customer>(`${this.baseUrl}/${id}`, updatedCustomer, { headers })
       .pipe(
         tap(() => this.customersChanged.next()),

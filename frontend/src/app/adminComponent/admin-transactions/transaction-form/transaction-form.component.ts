@@ -10,6 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Subscription } from 'rxjs';
 import { TransactionFormFieldsComponent } from '../transaction-form-fields/transaction-form-fields.component';
+import { endDateAfterStartDateValidator } from '../../../validators/date-validator';
 
 @Component({
   selector: 'app-transaction-form',
@@ -45,6 +46,9 @@ export class TransactionFormComponent {
       policyId: [null, Validators.required],
       policyName: [''],
       username: ['']
+    // });
+    }, {
+      validator: endDateAfterStartDateValidator() 
     });
 
 
@@ -114,4 +118,6 @@ export class TransactionFormComponent {
   onCancel() {
     this.dialogRef.close();
   }
+
+
 }

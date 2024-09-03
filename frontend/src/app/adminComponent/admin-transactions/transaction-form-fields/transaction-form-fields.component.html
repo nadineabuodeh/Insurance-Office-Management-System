@@ -22,6 +22,11 @@
       @if (formGroup.get('endDate')?.hasError('required')) {
       <mat-error>End Date is required</mat-error>
       }
+      @if (formGroup.get('endDate')?.hasError('endDateBeforeStartDate')) {
+      <mat-error>
+        End date must be after the start date.
+      </mat-error>}
+
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="custom-form-field">
@@ -71,30 +76,18 @@
     </mat-form-field>
 
 
-    <mat-form-field appearance="fill" class="custom-form-field">
-      <mat-label>Select User</mat-label>
-      <input type="text" matInput [formControl]="userControl" [matAutocomplete]="autoUser" placeholder="Select User"
-        required />
-
-      <mat-autocomplete #autoUser="matAutocomplete" [displayWith]="displayUser"
-        (optionSelected)="($event)">
-        <textarea *ngFor="let user of users$ | async" [value]="user">
-          {{ user.firstName }} {{ user.lastName }} ({{ user.username }})
-        </textarea>
-      </mat-autocomplete>
-      @if(formGroup.get('userId')?.hasError('required')){ <mat-error>
-        customer name is required
-      </mat-error>}
-    </mat-form-field>
-
-
+    <div class="custom-form-field">
+      <label> Selected User: {{ userControl.value ? displayUser(userControl.value) : 'No user selected!' }}</label>
+    </div>
 
     }
+    <!-- edit mode -->
     @else {
     <mat-form-field appearance="fill" class="custom-form-field">
       <mat-label>Policy Name</mat-label>
       <input matInput [formControl]="policyNameControl" [matAutocomplete]="autoPolicy">
-      <mat-autocomplete #autoPolicy="matAutocomplete" (optionSelected)="onPolicySelected($event)">
+      <mat-autocomplete #autoPolicy="matAutocomplete"
+        (optionSelected)="onPolicySelected($event)">
         <mat-option *ngFor="let policy of filteredPolicies | async" [value]="policy">
           {{ policy.policyName }}
         </mat-option>
@@ -102,18 +95,9 @@
     </mat-form-field>
 
 
-    <mat-form-field appearance="fill" class="custom-form-field">
-      <mat-label>Username</mat-label>
-      <input matInput [formControl]="userControl" [matAutocomplete]="autoUser">
-      <mat-autocomplete #autoUser="matAutocomplete" [displayWith]="displayUser"
-        (optionSelected)="($event)">
-        <textarea *ngFor="let user of users$ | async" [value]="user">
-          {{ user.firstName }} {{ user.lastName }} ({{ user.username }})
-        </textarea>
-      </mat-autocomplete>
-    </mat-form-field>
-
-
+    <div class="custom-form-field">
+      <label> Selected User: {{ userControl.value ? displayUser(userControl.value) : 'No user selected!' }}</label>
+    </div>
 
     }
 
