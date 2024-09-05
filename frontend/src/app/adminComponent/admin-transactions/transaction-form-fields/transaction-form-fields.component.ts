@@ -60,22 +60,12 @@ export class TransactionFormFieldsComponent {
   constructor(private dialog: MatDialog, private customerService: CustomerService, private policyService: PolicyService, private transactionService: TransactionService
   ) { }
 
-  // ngOnInit(): void {
-  //   this.initialFormValue = this.formGroup.getRawValue();
-  //   this.loadUsers(); this.loadPolicies();
-  // }
-   
-  // constructor(
-  //   private dialog: MatDialog,
-  //   private customerService: CustomerService,
-  //   private policyService: PolicyService
-  // ) {}
 
   ngOnInit(): void {
     this.initialFormValue = this.formGroup.getRawValue();
     this.loadUsers();
     this.loadPolicies();
-  
+
 
     this.users$ = this.userControl.valueChanges.pipe(
       startWith(''),
@@ -99,10 +89,13 @@ export class TransactionFormFieldsComponent {
   }
 
 
-onPolicySelected(event: MatAutocompleteSelectedEvent): void {
+  onPolicySelected(event: MatAutocompleteSelectedEvent): void {
     const selectedPolicy = event.option.value as Policy;
-    this.policyNameControl.setValue(event.option.value);
-    this.policyNameControl.setValue(selectedPolicy.policyName);
+    if (!this.isEditMode) {
+      this.policyNameControl.setValue(event.option.value);
+    } else {
+      this.policyNameControl.setValue(selectedPolicy.policyName);
+    }
     this.formGroup.patchValue({
       policyId: selectedPolicy.id
     });

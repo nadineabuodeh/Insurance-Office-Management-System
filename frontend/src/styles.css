@@ -64,3 +64,10 @@ img {
   width: 100%;
   height: auto;
 }
+
+
+.mat-sort-header-arrow {
+  color: #fff !important;
+  opacity: 0.8 !important;
+  }
+

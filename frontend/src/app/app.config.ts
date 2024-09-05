@@ -30,6 +30,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TreeModule } from 'primeng/tree';
 import { TransactionService } from './service/TransactionService/transaction.service';
 import { CollapsibleSectionComponent } from './adminComponent/admin-customer/collapsible-section/collapsible-section.component';
+import { MatSortModule ,MatSort} from '@angular/material/sort';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -44,7 +45,7 @@ export const appConfig: ApplicationConfig = {
       MatFormFieldModule,
       MatInputModule,
       BrowserAnimationsModule, //****************/
-      MatButtonModule,
+      MatButtonModule,MatSortModule,MatSort,
       MatDatepickerModule,
       MatNativeDateModule,
       MatFormFieldModule,
