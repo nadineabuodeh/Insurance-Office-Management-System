@@ -1,20 +1,40 @@
 import { Component, ViewChild } from '@angular/core';
 import { PolicyFormComponent } from '../policy-form/policy-form.component';
-import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { CommonModule } from '@angular/common';
+
+import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { PolicyService } from '../../../service/policy.service';
 import { Policy } from '../../../model/policy.model';
-import { MatSort, MatSortModule } from '@angular/material/sort';
+
+import { MatDialogModule, MatDialog } from "@angular/material/dialog";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
+import { MatSelectModule } from "@angular/material/select";
+import { MatSortModule, MatSort } from "@angular/material/sort";
+import { MatTableModule, MatTableDataSource } from "@angular/material/table";
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-policy-layout',
   standalone: true,
-  imports: [CommonModule, MatSortModule, MatTableModule],
+  imports: [
+    CommonModule, MatSortModule, MatTableModule, FormsModule,
+    MatTableModule, DatePipe, CurrencyPipe,
+    MatDialogModule, CommonModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatSortModule, MatSort],
   templateUrl: './policy-layout.component.html',
   styleUrl: './policy-layout.component.css',
 })
 export class PolicyLayoutComponent {
+  sortDirection: 'asc' | 'desc' = 'asc';
+  selectedColumn: string = 'insuranceType';
+  showFilter: boolean = false;
+
+  filterValue: string = '';
+  selectedPolicyName: string = '';
+  selectedInsuranceType: string = '';
+  selectedUserName: string = '';
+
+
+
   displayedColumns: string[] = [
     'startDate',
     'endDate',
@@ -25,22 +45,133 @@ export class PolicyLayoutComponent {
     'insuranceType',
     'actions',
   ];
+
+  columnOptions: string[] = ['policyName', 'insuranceType', 'username', 'totalAmount'];
+
   dataSource = new MatTableDataSource<Policy>();
-  @ViewChild(MatSort) sort!: MatSort;  // ViewChild for MatSort
 
   constructor(private policyService: PolicyService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.loadPolicies();
   }
-  ngAfterViewInit() {
-    if (this.sort) {
-      this.dataSource.sort = this.sort;
-    }
-    else {
-      console.log("policyy sort fails")
-    }
+
+
+  toggleFilter() {
+    this.showFilter = !this.showFilter;
   }
+
+
+  get filterIcon(): string {
+    return this.dataSource.data.length === 0
+      ? './assets/no-filter.png'
+      : './assets/filter-icon.png';
+  }
+
+  clearFilter() {
+    const amountInput = document.querySelector('.filter-input') as HTMLInputElement;
+    if (amountInput) {
+      amountInput.value = '';
+    }
+    this.selectedPolicyName = '';
+    this.selectedInsuranceType = '';
+    this.selectedUserName = ''; this.dataSource.filter = '';
+    this.dataSource.filterPredicate = (data: Policy, filter: string) => true;
+    this.loadPolicies();
+  }
+
+
+
+  applyFilter() {
+    if (this.selectedColumn === 'policyName') {
+      this.dataSource.filterPredicate = (data: Policy, filter: string) => {
+
+
+        const PolicyNameLower = data.policyName.toLowerCase();
+        const filterLower = filter.toLowerCase();
+
+        const result = PolicyNameLower === filterLower || filterLower === '';
+        return result;
+      };
+      this.dataSource.filter = this.selectedPolicyName.trim().toLowerCase();
+    } else {
+      this.dataSource.filterPredicate = (data: Policy, filter: string) => {
+
+
+        const dataStr = (data as any)[this.selectedColumn]?.toString().toLowerCase();
+
+        const result = dataStr?.indexOf(filter.toLowerCase()) !== -1;
+        return result;
+      };
+      this.dataSource.filter = this.selectedPolicyName.trim().toLowerCase();
+    }
+
+
+    if (this.selectedColumn === 'username') {
+      this.dataSource.filterPredicate = (data: Policy, filter: string) => {
+
+
+        const userNameLower = data.username.toLowerCase();
+        const filterLower = filter.toLowerCase();
+
+        const result = userNameLower === filterLower || filterLower === '';
+        return result;
+      };
+      this.dataSource.filter = this.selectedUserName.trim().toLowerCase();
+    } else {
+      this.dataSource.filterPredicate = (data: Policy, filter: string) => {
+
+
+        const dataStr = (data as any)[this.selectedColumn]?.toString().toLowerCase();
+
+        const result = dataStr?.indexOf(filter.toLowerCase()) !== -1;
+        return result;
+      };
+      this.dataSource.filter = this.selectedUserName.trim().toLowerCase();
+    }
+
+
+    if (this.selectedColumn === 'insuranceType') {
+      this.dataSource.filterPredicate = (data: Policy, filter: string) => {
+
+
+        const insuranceTypeLower = data.insuranceType.toLowerCase();
+        const filterLower = filter.toLowerCase();
+
+        const result = insuranceTypeLower === filterLower || filterLower === '';
+        return result;
+      };
+      this.dataSource.filter = this.selectedInsuranceType.trim().toLowerCase();
+    } else {
+      this.dataSource.filterPredicate = (data: Policy, filter: string) => {
+
+
+        const dataStr = (data as any)[this.selectedColumn]?.toString().toLowerCase();
+
+        const result = dataStr?.indexOf(filter.toLowerCase()) !== -1;
+        return result;
+      };
+      this.dataSource.filter = this.selectedInsuranceType.trim().toLowerCase();
+    }
+
+
+  }
+
+
+
+  AmountFilter(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const filterValue = input ? input.value : '';
+
+    this.dataSource.filterPredicate = (data: Policy, filter: string) => {
+      const columnValue = data[this.selectedColumn as keyof Policy];
+      return columnValue?.toString().toLowerCase().includes(filter.toLowerCase()) || false;
+    };
+
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+
   loadPolicies(): void {
     this.policyService.getAllPolicies().subscribe({
       next: (policies: Policy[]) => {
@@ -106,13 +237,13 @@ export class PolicyLayoutComponent {
         default:
           return 0;
       }
-    });}
+    });
+  }
 
-    sortDirection: 'asc' | 'desc' = 'asc';
-  }
-  
-  function compare(a: number | string, b: number | string, isAsc: boolean): number {
-    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
-  }
+}
+
+function compare(a: number | string, b: number | string, isAsc: boolean): number {
+  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+}
 
 

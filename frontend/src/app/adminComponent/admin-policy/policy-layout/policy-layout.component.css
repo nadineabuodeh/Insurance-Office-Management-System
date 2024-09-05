@@ -215,3 +215,81 @@ button {
   color: #508c9b;
   margin-top: 0;
 }
+
+
+.filter {
+  margin-right: 25px;
+  margin-left: 15px;
+  margin-top: 18px;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+
+.filter-container {
+  font-family: 'Times New Roman', Times, serif;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 20px;
+
+}
+
+.filter,
+.filter-select {
+
+  font-family: 'Times New Roman', Times, serif;
+  width: 100%;
+  max-width: 425px;
+}
+
+.filter-input {
+  width: 100%;
+}
+
+
+
+mat-option {
+  font-family: 'Times New Roman', Times, serif;
+}
+
+mat-select {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: large;
+
+}
+
+@media (min-width: 768px) {
+
+  .filter,
+  .filter-select {
+    width: calc(50% - 10px);
+  }
+}
+
+#clear {
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+#refresh {
+  position: absolute;
+  max-width: 35px;
+}
+
+.refresh-btn {
+  position: absolute;
+  top: 145px;
+  background-color: transparent;
+  margin-left: 1px;
+  max-width: 35px;
+}
+
+.add-search-btns.no-data {
+  color: rgb(78, 70, 70);
+}
+
+.filter-icon {
+  margin-left: 1px;
+  max-width: 25px;
+  margin-right: 5px;
+
+}
