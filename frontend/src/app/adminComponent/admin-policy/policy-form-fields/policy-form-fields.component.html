@@ -4,6 +4,20 @@
 
 <mat-dialog-content>
   <form [formGroup]="formGroup">
+    <div class="switch-container">
+      <mat-slide-toggle id="switch" formControlName="installmentsEnabled"></mat-slide-toggle>
+      <span class="switch-label">Installment</span>
+    </div>
+
+    @if ( formGroup.get('installmentsEnabled')?.value ) {
+    <mat-form-field appearance="fill" class="custom-form-field">
+      <mat-label>Number Of Payments</mat-label>
+      <input matInput formControlName="numberOfPayments" type="number" />
+      @if (formGroup.get('numberOfPayments')?.hasError('required')) {
+      <mat-error> Number of Payments is required </mat-error>
+      }
+    </mat-form-field>
+    }
     <mat-form-field appearance="fill" class="custom-form-field">
       <mat-label>Start Date</mat-label>
       <input matInput [matDatepicker]="startDatePicker" formControlName="startDate" />

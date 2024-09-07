@@ -54,10 +54,12 @@ export class PolicyFormComponent implements OnInit {
       totalAmount: ['', [Validators.required, Validators.min(0)]],
       coverageDetails: ['', Validators.required],
       userId: ['', Validators.required],
-      insuranceId: ['', Validators.required]
-    // });
-    }, {
+      insuranceId: ['', Validators.required],
+      installmentsEnabled: [false]
+
+        }, {
       validator: endDateAfterStartDateValidator() 
+      
     });
 
 

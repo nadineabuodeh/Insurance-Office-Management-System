@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatOptionModule } from '@angular/material/core';
@@ -8,6 +9,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+
 import { map, Observable, startWith } from 'rxjs';
 import { CustomerService } from '../../../service/CustomerService/customer.service';
 import { InsuranceService } from '../../../service/insurance.service';
@@ -25,6 +28,7 @@ import { InsuranceService } from '../../../service/insurance.service';
     MatDialogModule,
     MatAutocompleteModule,
     MatOptionModule,
+    MatSlideToggleModule
   ],
   templateUrl: './policy-form-fields.component.html',
   styleUrl: './policy-form-fields.component.css',
@@ -41,6 +45,8 @@ export class PolicyFormFieldsComponent {
 
   users: any[] = [];
   insurances: any[] = [];
+
+
 
   constructor(
     private customerService: CustomerService,
