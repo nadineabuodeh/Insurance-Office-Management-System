@@ -54,15 +54,16 @@ export class PolicyFormComponent implements OnInit {
       totalAmount: ['', [Validators.required, Validators.min(0)]],
       coverageDetails: ['', Validators.required],
       userId: ['', Validators.required],
-      insuranceId: ['', Validators.required]
-    // });
+      insuranceId: ['', Validators.required],
+      installmentsEnabled: [false],
+      numberOfPayments: [{ value: '', disabled: true }, Validators.required],
     }, {
-      validator: endDateAfterStartDateValidator() 
+      validator: endDateAfterStartDateValidator()
+
     });
-
-
     this.dialogRef.disableClose = true;
   }
+
 
   ngOnInit() {
     if (this.data && this.data.policy) {
@@ -73,6 +74,15 @@ export class PolicyFormComponent implements OnInit {
     this.policyService.getAllPolicies().subscribe((policies) => {
       this.existingPolicies = policies;
     });
+
+    this.policyForm.get('installmentsEnabled')?.valueChanges.subscribe(enabled => {
+      const numberOfPaymentsControl = this.policyForm.get('numberOfPayments');
+      if (enabled) {
+        numberOfPaymentsControl?.enable();
+      } else {
+        numberOfPaymentsControl?.disable();
+      }
+    });
   }
 
   onSubmit() {
@@ -80,8 +90,7 @@ export class PolicyFormComponent implements OnInit {
       const policyData: Policy = this.policyForm.value;
 
       if (this.isEditMode) {
-        this.policyService
-          .updatePolicy(policyData.id, policyData)
+        this.policyService.updatePolicy(policyData.id, policyData)
           .subscribe(() => {
             this.dialogRef.close(policyData);
           });
@@ -93,13 +102,47 @@ export class PolicyFormComponent implements OnInit {
         if (isDuplicate) {
           this.policyForm.get('policyName')?.setErrors({ duplicate: true });
         } else {
-          this.policyService
-            .createPolicy(policyData)
+          this.policyService.createPolicy(policyData)
             .subscribe((createdPolicy) => {
-              this.dialogRef.close(createdPolicy);
+
+              if (this.policyForm.value.installmentsEnabled) {
+                this.policyForm.patchValue({ id: createdPolicy.id });
+                console.log("installment enabled with policy id ->" + createdPolicy.id)
+                this.onGenerateTransactions();
+
+              } else {
+
+                this.dialogRef.close(createdPolicy);
+              }
+            }, error => {
+              console.error('Error creating policy:', error);
             });
         }
       }
     }
   }
+
+
+
+  onGenerateTransactions() {
+    if (this.policyForm.valid && this.policyForm.value.installmentsEnabled) {
+      const policyId = this.policyForm.value.id;
+      const numberOfPayments = this.policyForm.value.numberOfPayments;
+
+      if (policyId) {
+        this.policyService.generateTransactions(policyId, numberOfPayments)
+
+          .subscribe({
+            next: (response) => {
+              this.dialogRef.close(this.policyForm.value);
+            },
+            error: (error) => {
+            }
+          });
+      } else {
+        console.error('Policy ID is not available.');
+      }
+    }
+  }
+
 }

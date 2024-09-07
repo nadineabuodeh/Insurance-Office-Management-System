@@ -1,5 +1,8 @@
 package project.backend.Services;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,12 +14,15 @@ import org.springframework.stereotype.Service;
 import project.backend.DTOs.PolicyDTO;
 import project.backend.Repositories.InsuranceRepository;
 import project.backend.Repositories.PolicyRepository;
+import project.backend.Repositories.TransactionRepository;
 import project.backend.SecurityConfiguration.models.User;
 import project.backend.SecurityConfiguration.repository.UserRepository;
 import project.backend.SecurityConfiguration.security.jwt.JwtUtils;
 import project.backend.exceptions.ResourceNotFoundException;
 import project.backend.models.Policy;
 import project.backend.models.Insurance;
+import project.backend.models.Transaction;
+import project.backend.models.TransactionType;
 
 @Service
 public class PolicyService {
@@ -33,10 +39,38 @@ public class PolicyService {
     private InsuranceRepository insuranceRepository;
 
     @Autowired
+    private TransactionRepository transactionRepository; // Add TransactionRepository
+
+
+    @Autowired
     private ModelMapper modelMapper;
 
     @Autowired
     private JwtUtils jwtUtils;
+
+
+    public Policy convertToEntity(PolicyDTO policyDTO) {
+        Policy policy = modelMapper.map(policyDTO, Policy.class);
+
+        User user = userRepository.findById(policyDTO.getUserId())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + policyDTO.getUserId()));
+        Insurance insurance = insuranceRepository.findById(policyDTO.getInsuranceId())
+                .orElseThrow(() -> new ResourceNotFoundException("Insurance not found with ID: " + policyDTO.getInsuranceId()));
+
+        policy.setUser(user);
+        policy.setInsurance(insurance);
+
+        return policy;
+    }
+
+
+    private PolicyDTO convertToDTO(Policy policy) {
+        PolicyDTO policyDTO = modelMapper.map(policy, PolicyDTO.class);
+        policyDTO.setUsername(policy.getUser().getUsername());
+        policyDTO.setInsuranceType(policy.getInsurance().getInsuranceType().name());
+        return policyDTO;
+    }
+
 
     public List<PolicyDTO> getAllPolicies(String jwtToken) {
         String adminUsername = jwtUtils.getUserNameFromJwtToken(jwtToken);
@@ -91,13 +125,6 @@ public class PolicyService {
         return convertToDTO(updatedPolicy);
     }
 
-    private PolicyDTO convertToDTO(Policy policy) {
-        PolicyDTO policyDTO = modelMapper.map(policy, PolicyDTO.class);
-        policyDTO.setUsername(policy.getUser().getUsername());
-        policyDTO.setInsuranceType(policy.getInsurance().getInsuranceType().name());
-        return policyDTO;
-    }
-
     public void deletePolicy(Long id) {
         if (!policyRepository.existsById(id)) {
             throw new ResourceNotFoundException("Policy not found with ID: " + id);
@@ -121,6 +148,47 @@ public class PolicyService {
                 .orElseThrow(() -> new ResourceNotFoundException("Policy not found with id " + policyId));
         return policy.getUser().getId();
 
+    }
+
+   // Generates a list of transactions for the given policy by dividing the total amount into equal payments based on the # of payments.,
+    public void generateTransactions(PolicyDTO policyDTO, int numberOfPayments) {
+        Policy policy = convertToEntity(policyDTO);
+
+        List<Transaction> transactions = new ArrayList<>();
+        double amountPerPayment = policy.getTotalAmount() / numberOfPayments;
+
+        LocalDate startDate = policy.getStartDate();
+        LocalDate endDate = policy.getEndDate();
+        long daysBetween = ChronoUnit.DAYS.between(startDate, endDate);
+        long interval = daysBetween / numberOfPayments;
+
+
+        User user = policy.getUser();
+        logger.debug("User ID: {}", user.getId());
+
+        for (int i = 0; i < numberOfPayments; i++) {
+            LocalDate paymentDate = startDate.plusDays(i * interval);
+
+            if (i == numberOfPayments - 1) { // Making sure the date of the last payment is set to the end date
+                paymentDate = endDate;
+            }
+
+            Transaction transaction = new Transaction(
+                    null,
+                    paymentDate, // (startDate)
+                    amountPerPayment,
+                    paymentDate, // (endDate)
+                    TransactionType.DEBT,
+                    LocalDate.now(), // (createdAt)
+                    LocalDate.now(), // (updatedAt)
+                    user,
+                    policy
+            );
+
+            transactions.add(transaction);
+        }
+
+        transactionRepository.saveAll(transactions);
     }
 
 

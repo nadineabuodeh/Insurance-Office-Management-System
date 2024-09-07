@@ -6,10 +6,12 @@ html,
 body {
   height: 100%;
 }
+
 body {
   margin: 0;
   font-family: Georgia, "Times New Roman", Times, serif;
 }
+
 body {
   background-color: #eeeeee;
   color: #201e43;
@@ -69,5 +71,5 @@ img {
 .mat-sort-header-arrow {
   color: #fff !important;
   opacity: 0.8 !important;
-  }
+}
 
