@@ -23,10 +23,13 @@ public class TransactionDTO {
 
     private Long policyId;
 
-    public TransactionDTO(Long id, Long userId, LocalDate startDate, Double amount, LocalDate endDate,
+    private String username;
+
+    public TransactionDTO(Long id, Long userId, String username, LocalDate startDate, Double amount, LocalDate endDate,
             TransactionType transactionType, LocalDate createdAt, LocalDate updatedAt, Long policyId) {
         this.id = id;
         this.userId = userId;
+        this.username = username;
         this.startDate = startDate;
         this.amount = amount;
         this.endDate = endDate;
@@ -111,4 +114,11 @@ public class TransactionDTO {
         this.updatedAt = updatedAt;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 }

@@ -46,6 +46,18 @@ export class TransactionService {
     );
   }
 
+  getUpcomingTransactions(): Observable<Transaction[]> {
+    const headers = this.getAuthHeaders();
+    return this.http
+      .get<Transaction[]>(`${this.baseUrl}/upcoming`, { headers })
+      .pipe(
+        tap((transactions) => {
+          console.log('Fetched Upcoming Transactions:', transactions);
+        }),
+        catchError(this.handleError<Transaction[]>('getUpcomingTransactions', []))
+      );
+  }
+
   getTransactionById(id: number): Observable<Transaction> {
     const headers = this.getAuthHeaders();
     return this.http
