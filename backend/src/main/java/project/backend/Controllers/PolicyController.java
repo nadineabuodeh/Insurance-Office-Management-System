@@ -11,10 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpServletRequest;
 import project.backend.DTOs.PolicyDTO;
-import project.backend.SecurityConfiguration.models.User;
 import project.backend.Services.PolicyService;
 import project.backend.exceptions.ResourceNotFoundException;
-import project.backend.models.Policy;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController

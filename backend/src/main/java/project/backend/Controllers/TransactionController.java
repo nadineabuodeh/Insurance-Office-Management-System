@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpServletRequest;
 import project.backend.DTOs.TransactionDTO;
-import project.backend.SecurityConfiguration.models.User;
 import project.backend.Services.TransactionService;
 import project.backend.exceptions.ResourceNotFoundException;
 
@@ -103,6 +102,14 @@ public class TransactionController {
     public ResponseEntity<List<TransactionDTO>> getDepositTransactionsForCustomer(HttpServletRequest request) {
         String jwtToken = request.getHeader("Authorization").substring(7);
         List<TransactionDTO> transactions = transactionService.getDepositTransactionsForCustomer(jwtToken);
+        return new ResponseEntity<>(transactions, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/upcoming")
+    public ResponseEntity<List<TransactionDTO>> getUpcomingTransactions(HttpServletRequest request) {
+        String jwtToken = request.getHeader("Authorization").substring(7);
+        List<TransactionDTO> transactions = transactionService.getUpcomingTransactions(jwtToken);
         return new ResponseEntity<>(transactions, HttpStatus.OK);
     }
 }

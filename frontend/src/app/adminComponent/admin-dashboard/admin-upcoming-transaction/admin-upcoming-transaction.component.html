@@ -1,0 +1,71 @@
+<br><br>
+<div class="transaction-table-container">
+
+
+  @if (dataSource.data.length > 0) {
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 styled-table">
+    <ng-container matColumnDef="startDate">
+      <th mat-header-cell *matHeaderCellDef> Start Date </th>
+      <td mat-cell *matCellDef="let transaction">
+        <app-transaction-table-col [transaction]="transaction" column="startDate"></app-transaction-table-col>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="amount">
+      <th mat-header-cell *matHeaderCellDef> Amount </th>
+      <td mat-cell *matCellDef="let transaction">
+        <app-transaction-table-col [transaction]="transaction" column="amount"></app-transaction-table-col>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="endDate">
+      <th mat-header-cell *matHeaderCellDef> End Date </th>
+      <td mat-cell *matCellDef="let transaction">
+        <app-transaction-table-col [transaction]="transaction" column="endDate"></app-transaction-table-col>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="transactionType">
+      <th mat-header-cell *matHeaderCellDef> Transaction Type </th>
+      <td mat-cell *matCellDef="let transaction">
+        <app-transaction-table-col [transaction]="transaction" column="transactionType"></app-transaction-table-col>
+      </td>
+    </ng-container>  
+    
+    <ng-container matColumnDef="username">
+      <th mat-header-cell *matHeaderCellDef> Username </th>
+      <td mat-cell *matCellDef="let transaction">
+        <app-transaction-table-col [transaction]="transaction" column="username"></app-transaction-table-col>
+      </td>
+    </ng-container>  
+
+    <ng-container matColumnDef="createdAt">
+      <th mat-header-cell *matHeaderCellDef> Created At </th>
+      <td mat-cell *matCellDef="let transaction">
+        <app-transaction-table-col [transaction]="transaction" column="createdAt"></app-transaction-table-col>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="updatedAt">
+      <th mat-header-cell *matHeaderCellDef> Updated At </th>
+      <td mat-cell *matCellDef="let transaction">
+        <app-transaction-table-col [transaction]="transaction" column="updatedAt"></app-transaction-table-col>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  }@else {
+
+  <div class="empty-table-message">
+    <img src="./assets/logo.png" alt="No Transactions" class="empty-icon">
+    <p class="empty-text">There Are No Upcoming Transactions!</p>
+  </div>
+
+  }
+
+</div>

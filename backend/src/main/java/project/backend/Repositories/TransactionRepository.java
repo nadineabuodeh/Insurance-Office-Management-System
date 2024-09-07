@@ -21,4 +21,14 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     List<Transaction> findByUserId(Long userId);
 
     List<Transaction> findByUserIdAndTransactionType(Long userId, TransactionType transactionType);
+
+    @Query("SELECT t FROM Transaction t " +
+            "JOIN t.policy p " +
+            "JOIN p.user u " +
+            "JOIN p.insurance i " +
+            "WHERE i.admin.username = :adminUsername " +
+            "AND t.endDate >= CURRENT_DATE " +
+            "AND t.transactionType = project.backend.models.TransactionType.DEBT " + 
+            "ORDER BY t.endDate ASC")
+    List<Transaction> findUpcomingTransactionsByAdmin(@Param("adminUsername") String adminUsername);
 }
