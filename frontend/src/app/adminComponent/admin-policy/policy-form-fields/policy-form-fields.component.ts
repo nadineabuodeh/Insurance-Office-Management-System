@@ -34,6 +34,7 @@ import { InsuranceService } from '../../../service/insurance.service';
   styleUrl: './policy-form-fields.component.css',
 })
 export class PolicyFormFieldsComponent {
+
   @Input() formGroup!: FormGroup;
   @Input() isEditMode: boolean = false;
 
@@ -84,7 +85,6 @@ export class PolicyFormFieldsComponent {
         selectedInsurance ? selectedInsurance.name : ''
       );
 
-      // Disable the controls in edit mode
       this.userControl.disable();
       this.insuranceControl.disable();
     }

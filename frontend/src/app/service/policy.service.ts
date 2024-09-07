@@ -61,10 +61,16 @@ export class PolicyService {
       headers: this.getAuthHeaders(),
     });
   }
-
-  //
+  
   getUserIdByPolicyId(policyId: number): Observable<number> {
     return this.http.get<number>(`${this.apiUrl}/user/${policyId}`, { headers: this.getAuthHeaders() });
+  }
+  
+  generateTransactions(policyId: number, numberOfPayments: number): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/${policyId}/generateTransactions`, null, {
+      headers: this.getAuthHeaders(),
+      params: { numberOfPayments: numberOfPayments.toString() }
+    });
   }
 
 }

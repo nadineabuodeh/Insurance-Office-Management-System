@@ -90,4 +90,19 @@ public class PolicyController {
     }
 
 
+    @PostMapping("/{policyId}/generateTransactions")
+    public void generateTransactions(@PathVariable Long policyId, @RequestParam int numberOfPayments) {
+
+        PolicyDTO policyDTO = policyService.getPolicyById(policyId);
+
+        if (policyDTO == null) {
+            throw new ResourceNotFoundException("Policy not found with ID: " + policyId);
+        }
+
+        logger.info("Policy details: {}", policyDTO);
+
+        policyService.generateTransactions(policyDTO, numberOfPayments);
+    }
+
+
 }
