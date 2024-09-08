@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Policy } from '../model/policy.model';
@@ -44,9 +44,16 @@ export class PolicyService {
     });
   }
 
-  createPolicy(policy: Policy): Observable<Policy> {
+
+  createPolicy(policy: Policy, numberOfPayments?: number): Observable<Policy> {
+    let params = new HttpParams();
+    if (numberOfPayments !== undefined) {
+      params = params.set('numberOfPayments', numberOfPayments.toString());
+    }
+
     return this.http.post<Policy>(this.apiUrl, policy, {
       headers: this.getAuthHeaders(),
+      params: params
     });
   }
 
@@ -61,16 +68,11 @@ export class PolicyService {
       headers: this.getAuthHeaders(),
     });
   }
-  
+
   getUserIdByPolicyId(policyId: number): Observable<number> {
     return this.http.get<number>(`${this.apiUrl}/user/${policyId}`, { headers: this.getAuthHeaders() });
   }
-  
-  generateTransactions(policyId: number, numberOfPayments: number): Observable<void> {
-    return this.http.post<void>(`${this.apiUrl}/${policyId}/generateTransactions`, null, {
-      headers: this.getAuthHeaders(),
-      params: { numberOfPayments: numberOfPayments.toString() }
-    });
-  }
+
+
 
 }
