@@ -14,6 +14,7 @@ import project.backend.SecurityConfiguration.repository.UserRepository;
 import project.backend.SecurityConfiguration.security.jwt.JwtUtils;
 import project.backend.exceptions.ResourceAlreadyExistsException;
 import project.backend.exceptions.ResourceNotFoundException;
+import project.backend.models.EmailDetails;
 
 import java.util.List;
 
@@ -34,6 +35,10 @@ public class UserService {
 
     @Autowired
     private JwtUtils jwtUtils;
+
+
+    @Autowired
+    private EmailService emailService;
 
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private static final int PASSWORD_LENGTH = 8;
@@ -112,6 +117,21 @@ public class UserService {
         UserDTO resultDTO = convertToDTO(savedUser);
         resultDTO.setPassword(generatedPassword);
 
+        emailService.sendEmail(EmailDetails.builder()
+                .messageBody("Welcome to InsuranceNexus, " + savedUser.getFirstName() + "! We're excited to have you with us. "
+                        + "Your account has been created successfully. Please find your login details below:\n\n"
+                        + "Username: " + savedUser.getUsername() + "\n"
+                        + "Password: " + generatedPassword + "\n\n"
+                        + "Thank you for choosing InsuranceNexus to safeguard your future!\n\n"
+                        + "Best regards,\n"
+                        + "InsuranceNexus Team")
+
+
+                .recipient(savedUser.getEmail())
+                .subject("Welcome to InsuranceNexus!")
+                .build()
+        );
+
         return resultDTO;
     }
 
@@ -139,7 +159,7 @@ public class UserService {
         userToUpdate.setPassword(existingPassword);
 
         User updatedUser = userRepository.save(userToUpdate);
-        System.out.println("updated user: "+updatedUser.getId());
+        System.out.println("updated user: " + updatedUser.getId());
         return convertToDTO(updatedUser);
     }
 
@@ -162,11 +182,11 @@ public class UserService {
     public UserDTO getCustomerByUsername(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with username: " + username));
-    
+
         if (!user.getRole().equals(ERole.ROLE_CUSTOMER)) {
             throw new ResourceNotFoundException("User with username: " + username + " is not a customer");
         }
-    
+
         return convertToDTO(user);
-    }    
+    }
 }
