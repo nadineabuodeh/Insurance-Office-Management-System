@@ -150,7 +150,7 @@ public class PolicyService {
 
     }
 
-   // Generates a list of transactions for the given policy by dividing the total amount into equal payments based on the # of payments.,
+    // Generates a list of transactions for the given policy by dividing the total amount into equal payments based on the # of payments.,
     public void generateTransactions(PolicyDTO policyDTO, int numberOfPayments) {
         Policy policy = convertToEntity(policyDTO);
 
@@ -162,7 +162,6 @@ public class PolicyService {
         long daysBetween = ChronoUnit.DAYS.between(startDate, endDate);
         long interval = daysBetween / numberOfPayments;
 
-
         User user = policy.getUser();
         logger.debug("User ID: {}", user.getId());
 
@@ -172,7 +171,6 @@ public class PolicyService {
             if (i == numberOfPayments - 1) { // Making sure the date of the last payment is set to the end date
                 paymentDate = endDate;
             }
-
             Transaction transaction = new Transaction(
                     null,
                     paymentDate, // (startDate)
@@ -184,10 +182,8 @@ public class PolicyService {
                     user,
                     policy
             );
-
             transactions.add(transaction);
         }
-
         transactionRepository.saveAll(transactions);
     }
 
