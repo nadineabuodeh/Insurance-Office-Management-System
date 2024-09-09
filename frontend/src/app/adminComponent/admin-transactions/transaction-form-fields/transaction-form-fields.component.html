@@ -85,7 +85,7 @@
     @else {
     <mat-form-field appearance="fill" class="custom-form-field">
       <mat-label>Policy Name</mat-label>
-      <input matInput [formControl]="policyNameControl" [matAutocomplete]="autoPolicy">
+      <input matInput formControlName="policyName" [disabled]="isEditMode" [matAutocomplete]="autoPolicy">
       <mat-autocomplete #autoPolicy="matAutocomplete"
         (optionSelected)="onPolicySelected($event)">
         <mat-option *ngFor="let policy of filteredPolicies | async" [value]="policy">

@@ -59,43 +59,25 @@ export class InsuranceFormComponent {
 
   onSubmit(): void {
     if (this.insuranceForm.valid) {
-      const insuranceData: Insurance = this.insuranceForm.value;
-      console.log('Submitting form with data:', insuranceData);
+        const insuranceData: Insurance = this.insuranceForm.getRawValue(); // Get form data
 
-      this.insuranceService.getInsurances().subscribe(
-        (existingInsurances) => {
-          const hasSameType = existingInsurances.some(
-            (ins) => ins.insuranceType === insuranceData.insuranceType
-          );
-
-          if (hasSameType && !this.isEditMode) {
-            alert(
-              `You have already added an insurance of type ${insuranceData.insuranceType}.`
-            );
-          } else {
-            if (this.isEditMode) {
-              this.insuranceService
-                .updateInsurance(this.data.insurance.id!, insuranceData)
-                .subscribe(
-                  () => {
+        if (this.isEditMode) {
+            this.insuranceService.updateInsurance(this.data.insurance.id!, insuranceData).subscribe(
+                () => {
                     console.log('Insurance updated successfully');
                     this.dialogRef.close(insuranceData);
-                  },
-                  (error) => console.error('Error updating insurance:', error)
-                );
-            } else {
-              this.insuranceService.addInsurance(insuranceData).subscribe(
+                },
+                (error) => console.error('Error updating insurance:', error)
+            );
+        } else {
+            this.insuranceService.addInsurance(insuranceData).subscribe(
                 (newInsurance) => {
-                  console.log('Insurance added successfully:', newInsurance);
-                  this.dialogRef.close(newInsurance);
+                    console.log('Insurance added successfully:', newInsurance);
+                    this.dialogRef.close(newInsurance);
                 },
                 (error) => console.error('Error adding insurance:', error)
-              );
-            }
-          }
-        },
-        (error) => console.error('Error fetching insurances:', error)
-      );
+            );
+        }
     }
   }
 

@@ -39,6 +39,10 @@ export class InsuranceFormFieldsComponent {
 
   ngOnInit(): void {
     this.initialFormValue = this.formGroup.getRawValue();
+    
+    if (this.isEditMode) {
+        this.formGroup.get('insuranceType')?.disable();
+    }
   }
 
   onCancel(): void {

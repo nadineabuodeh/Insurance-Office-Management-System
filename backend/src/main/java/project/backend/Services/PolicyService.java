@@ -43,13 +43,11 @@ public class PolicyService {
     @Autowired
     private TransactionRepository transactionRepository; // Add TransactionRepository
 
-
     @Autowired
     private ModelMapper modelMapper;
 
     @Autowired
     private JwtUtils jwtUtils;
-
 
     public Policy convertToEntity(PolicyDTO policyDTO) {
         Policy policy = modelMapper.map(policyDTO, Policy.class);
@@ -57,14 +55,14 @@ public class PolicyService {
         User user = userRepository.findById(policyDTO.getUserId())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + policyDTO.getUserId()));
         Insurance insurance = insuranceRepository.findById(policyDTO.getInsuranceId())
-                .orElseThrow(() -> new ResourceNotFoundException("Insurance not found with ID: " + policyDTO.getInsuranceId()));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Insurance not found with ID: " + policyDTO.getInsuranceId()));
 
         policy.setUser(user);
         policy.setInsurance(insurance);
 
         return policy;
     }
-
 
     private PolicyDTO convertToDTO(Policy policy) {
         PolicyDTO policyDTO = modelMapper.map(policy, PolicyDTO.class);
@@ -73,7 +71,6 @@ public class PolicyService {
         return policyDTO;
     }
 
-
     public List<PolicyDTO> getAllPolicies(String jwtToken) {
         String adminUsername = jwtUtils.getUserNameFromJwtToken(jwtToken);
         List<Policy> policies = policyRepository.findPoliciesByAdmin(adminUsername);
@@ -81,7 +78,6 @@ public class PolicyService {
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
-
 
     public List<PolicyDTO> getPoliciesForCustomer(String jwtToken) {
         String username = jwtUtils.getUserNameFromJwtToken(jwtToken);
@@ -108,8 +104,8 @@ public class PolicyService {
         User user = userRepository.findById(policyDTO.getUserId())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + policyDTO.getUserId()));
         Insurance insurance = insuranceRepository.findById(policyDTO.getInsuranceId())
-                .orElseThrow(() -> new ResourceNotFoundException("Insurance not found with ID: " + policyDTO.getInsuranceId()));
-
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Insurance not found with ID: " + policyDTO.getInsuranceId()));
 
         policy.setUser(user);
         policy.setInsurance(insurance);
@@ -121,11 +117,22 @@ public class PolicyService {
     public PolicyDTO updatePolicy(Long id, PolicyDTO policyDTO) {
         Policy existingPolicy = policyRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Policy not found with ID: " + id));
-
-        modelMapper.map(policyDTO, existingPolicy);
+    
+        policyDTO.setStartDate(existingPolicy.getStartDate());
+        policyDTO.setEndDate(existingPolicy.getEndDate());
+        policyDTO.setTotalAmount(existingPolicy.getTotalAmount());
+        policyDTO.setUserId(existingPolicy.getUser().getId());
+    
+        Insurance insurance = insuranceRepository.findById(policyDTO.getInsuranceId())
+                .orElseThrow(() -> new ResourceNotFoundException("Insurance not found with ID: " + policyDTO.getInsuranceId()));
+        existingPolicy.setInsurance(insurance);
+        
+        existingPolicy.setCoverageDetails(policyDTO.getCoverageDetails());
+        existingPolicy.setPolicyName(policyDTO.getPolicyName());
+    
         Policy updatedPolicy = policyRepository.save(existingPolicy);
         return convertToDTO(updatedPolicy);
-    }
+    }    
 
     public void deletePolicy(Long id) {
         if (!policyRepository.existsById(id)) {
@@ -144,7 +151,6 @@ public class PolicyService {
                 .collect(Collectors.toList());
     }
 
-
     public Long getUserIdByPolicyId(Long policyId) {
         Policy policy = policyRepository.findById(policyId)
                 .orElseThrow(() -> new ResourceNotFoundException("Policy not found with id " + policyId));
@@ -152,7 +158,9 @@ public class PolicyService {
 
     }
 
-    // Generates a list of transactions for the given policy by dividing the total amount into equal payments based on the # of payments.,
+    // Generates a list of transactions for the given policy by dividing the total
+    // amount into equal payments based on the # of payments.,
+
     public void generateTransactions(PolicyDTO policyDTO, int numberOfPayments) {
         Policy policy = convertToEntity(policyDTO);
 
@@ -196,8 +204,8 @@ public class PolicyService {
                     LocalDate.now(), // (createdAt)
                     LocalDate.now(), // (updatedAt)
                     user,
-                    policy
-            );
+                    policy);
+
             transactions.add(transaction);
         }
         transactionRepository.saveAll(transactions);

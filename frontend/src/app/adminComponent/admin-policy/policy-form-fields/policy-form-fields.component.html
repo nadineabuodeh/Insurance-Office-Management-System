@@ -80,6 +80,7 @@
       <mat-error *ngIf="formGroup.get('userId')?.hasError('required')">User is required</mat-error>
     </mat-form-field>
 
+
     <mat-form-field appearance="fill" class="custom-form-field">
       <mat-label>Select Insurance</mat-label>
       <input type="text" matInput [formControl]="insuranceControl" [matAutocomplete]="autoInsurance" required />

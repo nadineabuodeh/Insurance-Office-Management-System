@@ -79,20 +79,19 @@ public class InsuranceService {
         public InsuranceDTO updateInsurance(Long id, InsuranceDTO insuranceDTO, String jwtToken) {
                 String adminId = jwtUtils.getUserNameFromJwtToken(jwtToken);
                 User admin = userRepository.findByUsername(adminId)
-                                .orElseThrow(() -> new ResourceNotFoundException(
-                                                "Admin not found with username: " + adminId));
-
+                                .orElseThrow(() -> new ResourceNotFoundException("Admin not found with username: " + adminId));
+            
                 Insurance existingInsurance = insuranceRepository.findById(id)
                                 .filter(ins -> ins.getAdmin().getId().equals(admin.getId()))
                                 .orElseThrow(() -> new ResourceNotFoundException("Insurance not found with ID: " + id));
-
-                modelMapper.map(insuranceDTO, existingInsurance);
+            
+                existingInsurance.setDescription(insuranceDTO.getDescription());
                 Insurance updatedInsurance = insuranceRepository.save(existingInsurance);
-
+            
                 InsuranceDTO updatedDTO = modelMapper.map(updatedInsurance, InsuranceDTO.class);
                 updatedDTO.setAdminId(admin.getId());
                 return updatedDTO;
-        }
+            }            
 
         public void deleteInsurance(Long id, String jwtToken) {
                 String adminId = jwtUtils.getUserNameFromJwtToken(jwtToken);
