@@ -40,8 +40,12 @@ public class PolicyController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
-    public ResponseEntity<PolicyDTO> createPolicy(@RequestBody PolicyDTO policyDTO) {
+    public ResponseEntity<PolicyDTO> createPolicy(@RequestBody PolicyDTO policyDTO, @RequestParam(required = false) Integer numberOfPayments) {
         PolicyDTO createdPolicy = policyService.savePolicy(policyDTO);
+
+        if (numberOfPayments != null && numberOfPayments > 0) {
+            policyService.generateTransactions(createdPolicy, numberOfPayments);
+        }
         return new ResponseEntity<>(createdPolicy, HttpStatus.CREATED);
     }
 
@@ -85,21 +89,6 @@ public class PolicyController {
         } catch (ResourceNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-    }
-
-
-    @PostMapping("/{policyId}/generateTransactions")
-    public void generateTransactions(@PathVariable Long policyId, @RequestParam int numberOfPayments) {
-
-        PolicyDTO policyDTO = policyService.getPolicyById(policyId);
-
-        if (policyDTO == null) {
-            throw new ResourceNotFoundException("Policy not found with ID: " + policyId);
-        }
-
-        logger.info("Policy details: {}", policyDTO);
-
-        policyService.generateTransactions(policyDTO, numberOfPayments);
     }
 
 

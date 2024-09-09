@@ -90,6 +90,7 @@ export class PolicyFormComponent implements OnInit {
     });
   }
 
+
   onSubmit() {
     if (this.policyForm.valid) {
       const policyData: Policy = this.policyForm.value;
@@ -107,16 +108,15 @@ export class PolicyFormComponent implements OnInit {
         if (isDuplicate) {
           this.policyForm.get('policyName')?.setErrors({ duplicate: true });
         } else {
-          this.policyService.createPolicy(policyData)
+          const numberOfPayments = this.policyForm.value.installmentsEnabled ? this.policyForm.value.numberOfPayments : undefined;
+          console.log("numberOfPayments->" + numberOfPayments)
+          this.policyService.createPolicy(policyData, numberOfPayments)
             .subscribe((createdPolicy) => {
-
               if (this.policyForm.value.installmentsEnabled) {
                 this.policyForm.patchValue({ id: createdPolicy.id });
-                console.log("installment enabled with policy id ->" + createdPolicy.id)
-                this.onGenerateTransactions();
-
+                console.log("Installment enabled with policy id ->" + createdPolicy.id);
+                this.dialogRef.close(createdPolicy);
               } else {
-
                 this.dialogRef.close(createdPolicy);
               }
             }, error => {
@@ -127,27 +127,5 @@ export class PolicyFormComponent implements OnInit {
     }
   }
 
-
-
-  onGenerateTransactions() {
-    if (this.policyForm.valid && this.policyForm.value.installmentsEnabled) {
-      const policyId = this.policyForm.value.id;
-      const numberOfPayments = this.policyForm.value.numberOfPayments;
-
-      if (policyId) {
-        this.policyService.generateTransactions(policyId, numberOfPayments)
-
-          .subscribe({
-            next: (response) => {
-              this.dialogRef.close(this.policyForm.value);
-            },
-            error: (error) => {
-            }
-          });
-      } else {
-        console.error('Policy ID is not available.');
-      }
-    }
-  }
 
 }

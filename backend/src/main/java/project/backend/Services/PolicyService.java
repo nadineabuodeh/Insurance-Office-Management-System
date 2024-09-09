@@ -1,5 +1,7 @@
 package project.backend.Services;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -158,11 +160,17 @@ public class PolicyService {
 
     // Generates a list of transactions for the given policy by dividing the total
     // amount into equal payments based on the # of payments.,
+
     public void generateTransactions(PolicyDTO policyDTO, int numberOfPayments) {
         Policy policy = convertToEntity(policyDTO);
 
         List<Transaction> transactions = new ArrayList<>();
-        double amountPerPayment = policy.getTotalAmount() / numberOfPayments;
+        double totalAmount = policy.getTotalAmount();
+        double amountPerPayment = totalAmount / numberOfPayments;
+
+        // Calculate the remainder (Aguras)
+        double payment = Math.floor(amountPerPayment);
+        double remainder = totalAmount - (payment * numberOfPayments);
 
         LocalDate startDate = policy.getStartDate();
         LocalDate endDate = policy.getEndDate();
@@ -179,10 +187,18 @@ public class PolicyService {
                 paymentDate = endDate;
             }
 
+            double paymentAmount;
+            if (i == 0) {
+                paymentAmount = payment + remainder; // Adding the remainder to the first payment
+
+            } else {
+                paymentAmount = payment;
+            }
+
             Transaction transaction = new Transaction(
                     null,
                     paymentDate, // (startDate)
-                    amountPerPayment,
+                    paymentAmount,
                     paymentDate, // (endDate)
                     TransactionType.DEBT,
                     LocalDate.now(), // (createdAt)
@@ -192,7 +208,6 @@ public class PolicyService {
 
             transactions.add(transaction);
         }
-
         transactionRepository.saveAll(transactions);
     }
 
