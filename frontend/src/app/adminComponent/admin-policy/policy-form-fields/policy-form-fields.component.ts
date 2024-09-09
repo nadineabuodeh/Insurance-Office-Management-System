@@ -28,13 +28,12 @@ import { InsuranceService } from '../../../service/insurance.service';
     MatDialogModule,
     MatAutocompleteModule,
     MatOptionModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
   ],
   templateUrl: './policy-form-fields.component.html',
   styleUrl: './policy-form-fields.component.css',
 })
 export class PolicyFormFieldsComponent {
-
   @Input() formGroup!: FormGroup;
   @Input() isEditMode: boolean = false;
 
@@ -46,8 +45,6 @@ export class PolicyFormFieldsComponent {
 
   users: any[] = [];
   insurances: any[] = [];
-
-
 
   constructor(
     private customerService: CustomerService,
@@ -67,7 +64,7 @@ export class PolicyFormFieldsComponent {
     this.insuranceService.getInsurances().subscribe((insurances) => {
       this.insurances = insurances.map((insurance) => ({
         id: insurance.id,
-        name: `${insurance.insuranceType} (${insurance.description})`,
+        name: `${insurance.insuranceType}`,
       }));
       this.initializeInsuranceControl();
     });
@@ -86,7 +83,6 @@ export class PolicyFormFieldsComponent {
       );
 
       this.userControl.disable();
-      this.insuranceControl.disable();
     }
 
     this.userControl.valueChanges.subscribe((value) => {

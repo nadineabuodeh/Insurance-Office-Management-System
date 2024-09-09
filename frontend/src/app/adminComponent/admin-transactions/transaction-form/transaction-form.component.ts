@@ -76,8 +76,11 @@ export class TransactionFormComponent {
   ngOnInit() {
     if (this.isEditMode) {
       this.transactionForm.patchValue(this.data.transaction);
+      
+      this.transactionForm.get('policyId')?.disable();  
+      this.transactionForm.get('policyName')?.disable();
     }
-  }
+  } 
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();

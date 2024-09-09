@@ -2,6 +2,7 @@ package project.backend.Services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import project.backend.DTOs.TransactionDTO;
 import project.backend.Repositories.PolicyRepository;
 import project.backend.Repositories.TransactionRepository;
@@ -124,15 +125,16 @@ public class TransactionService {
     public TransactionDTO updateTransaction(Long id, TransactionDTO transactionDTO) {
         Transaction existingTransaction = transactionRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Transaction not found with ID: " + id));
-
-        Transaction transaction = convertToEntity(transactionDTO);
-        transaction.setId(id);
-        transaction.setCreatedAt(existingTransaction.getCreatedAt());
-        transaction.setUpdatedAt(LocalDate.now());
-
-        Transaction updatedTransaction = transactionRepository.save(transaction);
+    
+        existingTransaction.setStartDate(transactionDTO.getStartDate());
+        existingTransaction.setAmount(transactionDTO.getAmount());
+        existingTransaction.setEndDate(transactionDTO.getEndDate());
+        existingTransaction.setTransactionType(transactionDTO.getTransactionType());
+        existingTransaction.setUpdatedAt(LocalDate.now());
+    
+        Transaction updatedTransaction = transactionRepository.save(existingTransaction);
         return convertToDTO(updatedTransaction);
-    }
+    }    
 
     public void deleteTransaction(Long id) {
         if (!transactionRepository.existsById(id)) {

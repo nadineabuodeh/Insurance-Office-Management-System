@@ -69,6 +69,11 @@ export class PolicyFormComponent implements OnInit {
     if (this.data && this.data.policy) {
       this.policyForm.patchValue(this.data.policy);
       this.isEditMode = true;
+
+      this.policyForm.get('startDate')?.disable();
+      this.policyForm.get('endDate')?.disable();
+      this.policyForm.get('totalAmount')?.disable();
+      this.policyForm.get('userId')?.disable();
     }
 
     this.policyService.getAllPolicies().subscribe((policies) => {
