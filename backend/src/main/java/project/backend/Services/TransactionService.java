@@ -10,6 +10,7 @@ import project.backend.SecurityConfiguration.models.User;
 import project.backend.SecurityConfiguration.repository.UserRepository;
 import project.backend.SecurityConfiguration.security.jwt.JwtUtils;
 import project.backend.exceptions.ResourceNotFoundException;
+import project.backend.models.EmailDetails;
 import project.backend.models.Policy;
 import project.backend.models.Transaction;
 import project.backend.models.TransactionType;
@@ -35,19 +36,21 @@ public class TransactionService {
     @Autowired
     private PolicyRepository policyRepository;
 
+    @Autowired
+    private EmailService emailService;
+
     private TransactionDTO convertToDTO(Transaction transaction) {
         return new TransactionDTO(
                 transaction.getId(),
                 transaction.getUser() != null ? transaction.getUser().getId() : null,
-                transaction.getUser() != null ? transaction.getUser().getUsername() : null, // Include username
+                transaction.getUser() != null ? transaction.getUser().getUsername() : null,
                 transaction.getStartDate(),
                 transaction.getAmount(),
                 transaction.getEndDate(),
                 transaction.getTransactionType(),
                 transaction.getCreatedAt(),
                 transaction.getUpdatedAt(),
-                transaction.getPolicy() != null ? transaction.getPolicy().getId() : null
-        );
+                transaction.getPolicy() != null ? transaction.getPolicy().getId() : null);
     }
 
     private Transaction convertToEntity(TransactionDTO dto) {
@@ -119,22 +122,79 @@ public class TransactionService {
         transaction.setUpdatedAt(now);
 
         Transaction savedTransaction = transactionRepository.save(transaction);
+
+        String emailBody = "Dear " + transaction.getUser().getFirstName() + ",\n\n"
+                + "We hope this email finds you well. This is to inform you that a new transaction has been successfully created in your account at InsuranceNexus.\n\n"
+                + "Here are the details of the transaction:\n"
+                + "Policy name: " + savedTransaction.getPolicy().getPolicyName() + "\n\n"
+                + "Transaction Type: " + savedTransaction.getTransactionType() + "\n"
+                + "Amount: " + savedTransaction.getAmount() + " ₪ \n"
+                + "Start Date: " + savedTransaction.getStartDate() + "\n"
+                + "End Date: " + savedTransaction.getEndDate() + "\n\n"
+                + "Thank you for choosing InsuranceNexus for your insurance needs.\n\n"
+                + "Best regards,\n"
+                + "InsuranceNexus Team";
+
+        emailService.sendEmail(EmailDetails.builder()
+                .messageBody(emailBody)
+                .recipient(transaction.getUser().getEmail())
+                .subject("New Transaction Created")
+                .build());
+
         return convertToDTO(savedTransaction);
     }
 
     public TransactionDTO updateTransaction(Long id, TransactionDTO transactionDTO) {
         Transaction existingTransaction = transactionRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Transaction not found with ID: " + id));
-    
+
+        TransactionType oldTransactionType = existingTransaction.getTransactionType();
+
         existingTransaction.setStartDate(transactionDTO.getStartDate());
         existingTransaction.setAmount(transactionDTO.getAmount());
         existingTransaction.setEndDate(transactionDTO.getEndDate());
         existingTransaction.setTransactionType(transactionDTO.getTransactionType());
         existingTransaction.setUpdatedAt(LocalDate.now());
-    
+
         Transaction updatedTransaction = transactionRepository.save(existingTransaction);
+        if (oldTransactionType != TransactionType.DEPOSIT
+                && updatedTransaction.getTransactionType() == TransactionType.DEPOSIT) {
+            String depositEmailBody = "Dear " + updatedTransaction.getUser().getFirstName() + ",\n\n"
+                    + "We are pleased to inform you that your payment for the following transaction has been successfully processed:\n\n"
+                    + "Policy Name: " + updatedTransaction.getPolicy().getPolicyName() + "\n"
+                    + "Amount Paid: " + updatedTransaction.getAmount() + " ₪ \n"
+                    + "Payment Date: " + updatedTransaction.getUpdatedAt() + "\n\n"
+                    + "Thank you for your payment! If you have any questions or concerns, please do not hesitate to contact us.\n\n"
+                    + "Best regards,\n"
+                    + "InsuranceNexus Team";
+
+            emailService.sendEmail(EmailDetails.builder()
+                    .messageBody(depositEmailBody)
+                    .recipient(updatedTransaction.getUser().getEmail())
+                    .subject("Payment Confirmation for Transaction")
+                    .build());
+        } else {
+            String emailBody = "Dear " + updatedTransaction.getUser().getFirstName() + ",\n\n"
+                    + "This is to inform you that one of your transactions has been updated. "
+                    + "Please find the updated transaction details below:\n\n"
+                    + "Policy Name: " + updatedTransaction.getPolicy().getPolicyName() + "\n"
+                    + "Updated Transaction Type: " + updatedTransaction.getTransactionType() + "\n"
+                    + "Updated Amount: " + updatedTransaction.getAmount() + " ₪ \n"
+                    + "Updated Start Date: " + updatedTransaction.getStartDate() + "\n"
+                    + "Updated End Date: " + updatedTransaction.getEndDate() + "\n\n"
+                    + "If you have any questions regarding this update, feel free to contact us.\n\n"
+                    + "Best regards,\n"
+                    + "InsuranceNexus Team";
+
+            emailService.sendEmail(EmailDetails.builder()
+                    .messageBody(emailBody)
+                    .recipient(updatedTransaction.getUser().getEmail())
+                    .subject("Transaction Update Notification")
+                    .build());
+        }
+
         return convertToDTO(updatedTransaction);
-    }    
+    }
 
     public void deleteTransaction(Long id) {
         if (!transactionRepository.existsById(id)) {
@@ -184,13 +244,13 @@ public class TransactionService {
     public List<TransactionDTO> getUpcomingTransactions(String jwtToken) {
         String adminUsername = jwtUtils.getUserNameFromJwtToken(jwtToken);
         List<Transaction> transactions = transactionRepository.findUpcomingTransactionsByAdmin(adminUsername);
-    
+
         List<TransactionDTO> upcomingTransactions = transactions.stream()
-            .sorted(Comparator.comparing(Transaction::getEndDate))
-            .limit(10)
-            .map(this::convertToDTO)
-            .collect(Collectors.toList());
-    
+                .sorted(Comparator.comparing(Transaction::getEndDate))
+                .limit(10)
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+
         return upcomingTransactions;
     }
 }
