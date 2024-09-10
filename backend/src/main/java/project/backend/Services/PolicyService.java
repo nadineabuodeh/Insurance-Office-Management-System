@@ -1,7 +1,5 @@
 package project.backend.Services;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -22,6 +20,7 @@ import project.backend.SecurityConfiguration.repository.UserRepository;
 import project.backend.SecurityConfiguration.security.jwt.JwtUtils;
 import project.backend.exceptions.ResourceNotFoundException;
 import project.backend.models.Policy;
+import project.backend.models.EmailDetails;
 import project.backend.models.Insurance;
 import project.backend.models.Transaction;
 import project.backend.models.TransactionType;
@@ -41,13 +40,16 @@ public class PolicyService {
     private InsuranceRepository insuranceRepository;
 
     @Autowired
-    private TransactionRepository transactionRepository; // Add TransactionRepository
+    private TransactionRepository transactionRepository;
 
     @Autowired
     private ModelMapper modelMapper;
 
     @Autowired
     private JwtUtils jwtUtils;
+
+    @Autowired
+    private EmailService emailService;
 
     public Policy convertToEntity(PolicyDTO policyDTO) {
         Policy policy = modelMapper.map(policyDTO, Policy.class);
@@ -180,6 +182,8 @@ public class PolicyService {
         User user = policy.getUser();
         logger.debug("User ID: {}", user.getId());
 
+        StringBuilder transactionDetails = new StringBuilder();
+
         for (int i = 0; i < numberOfPayments; i++) {
             LocalDate paymentDate = startDate.plusDays(i * interval);
 
@@ -207,8 +211,26 @@ public class PolicyService {
                     policy);
 
             transactions.add(transaction);
+
+            transactionDetails.append("Payment ").append(i + 1).append(":\n")
+                    .append("Amount: ").append(paymentAmount).append(" ₪\n")
+                    .append("Payment Date: ").append(paymentDate).append("\n\n");
         }
         transactionRepository.saveAll(transactions);
+
+        String emailBody = "Dear " + user.getFirstName() + ",\n\n"
+                + "We are pleased to inform you that your new policy has been created with multiple payment installments. "
+                + "Below are the details of the transactions for your policy: " + policy.getPolicyName() + "\n\n"
+                + transactionDetails.toString()
+                + "If you have any questions, feel free to reach out to us.\n\n"
+                + "Best regards,\n"
+                + "InsuranceNexus Team";
+        
+        emailService.sendEmail(EmailDetails.builder()
+                .messageBody(emailBody)
+                .recipient(user.getEmail())
+                .subject("Installment Payment Schedule for Your Policy")
+                .build());
     }
 
 }
