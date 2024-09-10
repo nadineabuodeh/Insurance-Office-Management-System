@@ -37,7 +37,6 @@ public class UserService {
     @Autowired
     private JwtUtils jwtUtils;
 
-
     @Autowired
     private EmailService emailService;
 
@@ -119,6 +118,7 @@ public class UserService {
         resultDTO.setPassword(generatedPassword);
 
         emailService.sendEmail(EmailDetails.builder()
+
                 .recipient(savedUser.getEmail())
                 .subject("Welcome to InsuranceNexus!")
                 .messageBody(
@@ -136,10 +136,10 @@ public class UserService {
                                 "</html>"
                 )
 
+
                 .recipient(savedUser.getEmail())
                 .subject("Welcome to InsuranceNexus!")
-                .build()
-        );
+                .build());
 
         return resultDTO;
     }

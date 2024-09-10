@@ -1,7 +1,5 @@
 package project.backend.Services;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -22,7 +20,11 @@ import project.backend.SecurityConfiguration.models.User;
 import project.backend.SecurityConfiguration.repository.UserRepository;
 import project.backend.SecurityConfiguration.security.jwt.JwtUtils;
 import project.backend.exceptions.ResourceNotFoundException;
-import project.backend.models.*;
+import project.backend.models.Policy;
+import project.backend.models.EmailDetails;
+import project.backend.models.Insurance;
+import project.backend.models.Transaction;
+import project.backend.models.TransactionType;
 
 @Service
 public class PolicyService {
@@ -39,7 +41,7 @@ public class PolicyService {
     private InsuranceRepository insuranceRepository;
 
     @Autowired
-    private TransactionRepository transactionRepository; // Add TransactionRepository
+    private TransactionRepository transactionRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -141,39 +143,6 @@ public class PolicyService {
         return convertToDTO(policy);
     }
 
-//    public PolicyDTO savePolicy(PolicyDTO policyDTO) {
-//        Policy policy = modelMapper.map(policyDTO, Policy.class);
-//
-//        User user = userRepository.findById(policyDTO.getUserId())
-//                .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + policyDTO.getUserId()));
-//        Insurance insurance = insuranceRepository.findById(policyDTO.getInsuranceId())
-//                .orElseThrow(() -> new ResourceNotFoundException(
-//                        "Insurance not found with ID: " + policyDTO.getInsuranceId()));
-//
-//        policy.setUser(user);
-//        policy.setInsurance(insurance);
-//
-//        policy = policyRepository.save(policy);
-//
-//        String messageBody = "Dear " + user.getFirstName() + " " + user.getLastName() + ",\n\n" +
-//                "Your policy has been successfully created with the following details:\n" +
-//                "Start Date: " + policy.getStartDate().toString() + "\n" +
-//                "End Date: " + policy.getEndDate().toString() + "\n" +
-//                "Total Amount: " + policy.getTotalAmount() + "\n" +
-//                "Insurance Type: " + insurance.getInsuranceType().name() + "\n\n" +
-//                "Thank you for choosing InsuranceNexus!";
-//
-//        emailService.sendEmail(EmailDetails.builder()
-//                .recipient(user.getEmail())
-//                .subject("Welcome to InsuranceNexus!")
-//
-//                .messageBody(messageBody)
-//                .build()
-//        );
-//
-//
-//        return convertToDTO(policy);
-//    }
 
     public PolicyDTO updatePolicy(Long id, PolicyDTO policyDTO) {
         Policy existingPolicy = policyRepository.findById(id)
@@ -222,7 +191,7 @@ public class PolicyService {
     // Generates a list of transactions for the given policy by dividing the total
     // amount into equal payments based on the # of payments.,
 
-    public void generateTransactions(PolicyDTO policyDTO, int numberOfPayments) {
+    public void generateTransactions(PolicyDTO policyDTO, int numberOfPayments) throws MessagingException {
         Policy policy = convertToEntity(policyDTO);
 
         List<Transaction> transactions = new ArrayList<>();
@@ -240,6 +209,8 @@ public class PolicyService {
 
         User user = policy.getUser();
         logger.debug("User ID: {}", user.getId());
+
+        StringBuilder transactionDetails = new StringBuilder();
 
         for (int i = 0; i < numberOfPayments; i++) {
             LocalDate paymentDate = startDate.plusDays(i * interval);
@@ -268,8 +239,26 @@ public class PolicyService {
                     policy);
 
             transactions.add(transaction);
+
+            transactionDetails.append("Payment ").append(i + 1).append(":\n")
+                    .append("Amount: ").append(paymentAmount).append(" ₪\n")
+                    .append("Payment Date: ").append(paymentDate).append("\n\n");
         }
         transactionRepository.saveAll(transactions);
+
+        String emailBody = "Dear " + user.getFirstName() + ",\n\n"
+                + "We are pleased to inform you that your new policy has been created with multiple payment installments. "
+                + "Below are the details of the transactions for your policy: " + policy.getPolicyName() + "\n\n"
+                + transactionDetails.toString()
+                + "If you have any questions, feel free to reach out to us.\n\n"
+                + "Best regards,\n"
+                + "InsuranceNexus Team";
+        
+        emailService.sendEmail(EmailDetails.builder()
+                .messageBody(emailBody)
+                .recipient(user.getEmail())
+                .subject("Installment Payment Schedule for Your Policy")
+                .build());
     }
 
 }
