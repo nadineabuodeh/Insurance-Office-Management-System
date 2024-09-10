@@ -1,5 +1,6 @@
 package project.backend.Controllers;
 
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,6 +55,8 @@ public class UserController {
             return new ResponseEntity<>(null, HttpStatus.CONFLICT);
         } catch (IllegalArgumentException ex) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
         }
     }
 

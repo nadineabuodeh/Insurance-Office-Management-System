@@ -2,6 +2,7 @@ package project.backend.Controllers;
 
 import java.util.List;
 
+import jakarta.mail.MessagingException;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,7 +41,7 @@ public class PolicyController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
-    public ResponseEntity<PolicyDTO> createPolicy(@RequestBody PolicyDTO policyDTO, @RequestParam(required = false) Integer numberOfPayments) {
+    public ResponseEntity<PolicyDTO> createPolicy(@RequestBody PolicyDTO policyDTO, @RequestParam(required = false) Integer numberOfPayments) throws MessagingException {
         PolicyDTO createdPolicy = policyService.savePolicy(policyDTO);
 
         if (numberOfPayments != null && numberOfPayments > 0) {

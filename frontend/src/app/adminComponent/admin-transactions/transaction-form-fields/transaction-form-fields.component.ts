@@ -93,6 +93,7 @@ export class TransactionFormFieldsComponent {
     const selectedPolicy = event.option.value as Policy;
     if (!this.isEditMode) {
       this.policyNameControl.setValue(event.option.value);
+      console.log("policy name  -> " + this.policyNameControl.getRawValue)
     } else {
       this.policyNameControl.setValue(selectedPolicy.policyName);
     }

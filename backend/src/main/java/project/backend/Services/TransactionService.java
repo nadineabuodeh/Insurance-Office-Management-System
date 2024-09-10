@@ -119,22 +119,24 @@ public class TransactionService {
         transaction.setUpdatedAt(now);
 
         Transaction savedTransaction = transactionRepository.save(transaction);
+
+
         return convertToDTO(savedTransaction);
     }
 
     public TransactionDTO updateTransaction(Long id, TransactionDTO transactionDTO) {
         Transaction existingTransaction = transactionRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Transaction not found with ID: " + id));
-    
+
         existingTransaction.setStartDate(transactionDTO.getStartDate());
         existingTransaction.setAmount(transactionDTO.getAmount());
         existingTransaction.setEndDate(transactionDTO.getEndDate());
         existingTransaction.setTransactionType(transactionDTO.getTransactionType());
         existingTransaction.setUpdatedAt(LocalDate.now());
-    
+
         Transaction updatedTransaction = transactionRepository.save(existingTransaction);
         return convertToDTO(updatedTransaction);
-    }    
+    }
 
     public void deleteTransaction(Long id) {
         if (!transactionRepository.existsById(id)) {
@@ -184,13 +186,13 @@ public class TransactionService {
     public List<TransactionDTO> getUpcomingTransactions(String jwtToken) {
         String adminUsername = jwtUtils.getUserNameFromJwtToken(jwtToken);
         List<Transaction> transactions = transactionRepository.findUpcomingTransactionsByAdmin(adminUsername);
-    
+
         List<TransactionDTO> upcomingTransactions = transactions.stream()
             .sorted(Comparator.comparing(Transaction::getEndDate))
             .limit(10)
             .map(this::convertToDTO)
             .collect(Collectors.toList());
-    
+
         return upcomingTransactions;
     }
 }

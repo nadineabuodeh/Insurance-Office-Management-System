@@ -1,5 +1,6 @@
 package project.backend.Services;
 
+import jakarta.mail.MessagingException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.slf4j.Logger;
@@ -97,7 +98,7 @@ public class UserService {
         return convertToDTO(user);
     }
 
-    public UserDTO createUser(UserDTO userDTO, String jwtToken) {
+    public UserDTO createUser(UserDTO userDTO, String jwtToken) throws MessagingException {
         if (userRepository.existsByEmail(userDTO.getEmail())) {
             throw new ResourceAlreadyExistsException("Email already in use: " + userDTO.getEmail());
         }
@@ -118,14 +119,22 @@ public class UserService {
         resultDTO.setPassword(generatedPassword);
 
         emailService.sendEmail(EmailDetails.builder()
-                .messageBody("Welcome to InsuranceNexus, " + savedUser.getFirstName() + "! We're excited to have you with us. "
-                        + "Your account has been created successfully. Please find your login details below:\n\n"
-                        + "Username: " + savedUser.getUsername() + "\n"
-                        + "Password: " + generatedPassword + "\n\n"
-                        + "Thank you for choosing InsuranceNexus to safeguard your future!\n\n"
-                        + "Best regards,\n"
-                        + "InsuranceNexus Team")
-
+                .recipient(savedUser.getEmail())
+                .subject("Welcome to InsuranceNexus!")
+                .messageBody(
+                        "<html>" +
+                                "<body>" +
+                                "<p>Welcome to InsuranceNexus, " + savedUser.getFirstName() + "!</p>" +
+                                "<p>We're excited to have you with us. Your account has been created successfully. Please find your login details below:</p>" +
+                                "<ul>" +
+                                "<li><strong>Username:</strong> " + savedUser.getUsername() + "</li>" +
+                                "<li><strong>Password:</strong> " + generatedPassword + "</li>" +
+                                "</ul>" +
+                                "<p>Thank you for choosing InsuranceNexus to safeguard your future!</p>" +
+                                "<p>Best regards,<br>InsuranceNexus Team.</p>" +
+                                "</body>" +
+                                "</html>"
+                )
 
                 .recipient(savedUser.getEmail())
                 .subject("Welcome to InsuranceNexus!")
