@@ -1,5 +1,6 @@
 package project.backend.Controllers;
 
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,7 +47,7 @@ public class TransactionController {
             return new ResponseEntity<>(createdTransaction, HttpStatus.CREATED);
         } catch (ResourceNotFoundException ex) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        } catch (IllegalArgumentException ex) {
+        } catch (IllegalArgumentException | MessagingException ex) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
@@ -59,7 +60,7 @@ public class TransactionController {
             return new ResponseEntity<>(updatedTransaction, HttpStatus.OK);
         } catch (ResourceNotFoundException ex) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        } catch (IllegalArgumentException ex) {
+        } catch (IllegalArgumentException | MessagingException ex) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
