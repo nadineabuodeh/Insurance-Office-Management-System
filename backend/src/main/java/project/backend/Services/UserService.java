@@ -123,7 +123,7 @@ public class UserService {
                 .subject("Welcome to InsuranceNexus!")
                 .messageBody(
                         "<html>" +
-                                "<body>" +
+                                "<body >" +
                                 "<p>Welcome to InsuranceNexus, " + savedUser.getFirstName() + "!</p>" +
                                 "<p>We're excited to have you with us. Your account has been created successfully. Please find your login details below:</p>" +
                                 "<ul>" +
