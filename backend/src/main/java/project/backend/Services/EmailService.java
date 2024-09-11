@@ -37,7 +37,6 @@ public class EmailService {
                             background-color: #f5f5f5;
                             overflow: auto;
                             color: black;
-
                         }
                         .email-container {
                             background-color: #ffffff;
@@ -45,6 +44,7 @@ public class EmailService {
                             margin: 20px auto;
                             max-width: 600px;
                             border-radius: 4px;
+                            color: black;
                         }
                         .header {
                             background-color: #2d445d;
@@ -75,12 +75,11 @@ public class EmailService {
                         .content {
                             padding: 20px;
                             color: black;
-
                         }
                     </style>
                 </head>
-                <body>
-                    <div class="email-container">
+                <body style="color: black;">
+                    <div style="color: black;" class="email-container">
                         <div class="header">
                             <img src="cid:logo" alt="InsuranceNexus Logo" title="InsuranceNexus Logo"/>
                             <h1>InsuranceNexus</h1>
@@ -90,8 +89,9 @@ public class EmailService {
 
     private final String emailFooter = """
                 </div>
-                <div class="footer">
+                <div style="color: black;"class="footer">
                     <p>&copy; 2024 InsuranceNexus. All rights reserved.</p>
+                    <p>Visit our website: <a href="www.InsuranceNexuss.com" target="_blank">InsuranceNexus</a></p>
                 </div>
                 </body>
                 </html>
@@ -101,7 +101,6 @@ public class EmailService {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 
-        // Configure email properties
         helper.setFrom(emailSender);
         helper.setTo(emailDetails.getRecipient());
         helper.setSubject(emailDetails.getSubject());
@@ -113,10 +112,9 @@ public class EmailService {
         messageBodyPart.setContent(htmlText, "text/html");
         multipart.addBodyPart(messageBodyPart);
 
-        // Add inline image
         MimeBodyPart imagePart = new MimeBodyPart();
         FileSystemResource imageResource = new FileSystemResource(
-                "C:/Users/shahd/Desktop/IOMS.4.9/backend/src/main/resources/logo.png");
+                "backend/src/main/resources/logo.png");
         if (imageResource.exists()) {
             imagePart.setDataHandler(new DataHandler(new FileDataSource(imageResource.getFile())));
             imagePart.setHeader("Content-ID", "<logo>");
