@@ -10,11 +10,16 @@ import { Component, Input } from '@angular/core';
   @if(column === 'amount'){
   <span>
     {{ transaction.amount | currency: 'ILS':'symbol':'1.2-2' }}
-  </span>}
+  </span>
+}
   @if(column !== 'amount'){
-  <span >
-    {{ getValue() }}
-  </span>}
+    <span [ngClass]="{
+  'debt-row': column === 'transactionType' && transaction.transactionType === 'DEBT',
+  'deposit-row': column === 'transactionType' && transaction.transactionType === 'DEPOSIT'
+}">
+  {{ getValue() }}
+</span>
+  }
 `,
   styleUrl: './transaction-table-col.component.css',
 })

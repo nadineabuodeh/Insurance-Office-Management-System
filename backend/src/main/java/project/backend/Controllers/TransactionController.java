@@ -53,8 +53,15 @@ public class TransactionController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TransactionDTO> updateTransaction(@PathVariable Long id,
-            @RequestBody TransactionDTO transactionDTO) {
+    public ResponseEntity<TransactionDTO> updateTransaction(
+            @PathVariable Long id,
+            @RequestParam(required = false) boolean updateTransactionType,
+            @RequestBody TransactionDTO transactionDTO) throws MessagingException {
+
+        if (updateTransactionType) { // update only the transaction type
+            return ResponseEntity.ok(transactionService.updateTransactionType(id, transactionDTO));
+        }
+
         try {
             TransactionDTO updatedTransaction = transactionService.updateTransaction(id, transactionDTO);
             return new ResponseEntity<>(updatedTransaction, HttpStatus.OK);
@@ -113,4 +120,5 @@ public class TransactionController {
         List<TransactionDTO> transactions = transactionService.getUpcomingTransactions(jwtToken);
         return new ResponseEntity<>(transactions, HttpStatus.OK);
     }
+
 }

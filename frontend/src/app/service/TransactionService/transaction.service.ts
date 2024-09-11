@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, of, Subject, throwError } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { Customer } from '../CustomerService/customer.service';
@@ -23,7 +23,7 @@ export class TransactionService {
   private baseUrl = 'http://localhost:8080/transactions';
   private transactionsChanged = new Subject<void>();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   private getAuthHeaders(): HttpHeaders {
     const token = localStorage.getItem('authToken');
@@ -129,6 +129,16 @@ export class TransactionService {
       );
   }
 
+  updateTransactionType(id: number, transaction: Transaction): Observable<Transaction> {
+    const headers = this.getAuthHeaders();
+    const params = new HttpParams().set('updateTransactionType', 'true');
+    return this.http.put<Transaction>(`${this.baseUrl}/${id}`, transaction, { headers, params })
+      .pipe(
+        tap(() => this.transactionsChanged.next()),
+        catchError(this.handleError<Transaction>('updateTransactionType'))
+      );
+  }
+
   deleteTransaction(id: number): Observable<void> {
     const headers = this.getAuthHeaders();
     return this.http.delete<void>(`${this.baseUrl}/${id}`, { headers }).pipe(
@@ -136,6 +146,7 @@ export class TransactionService {
       catchError(this.handleError<void>('deleteTransaction'))
     );
   }
+
 
 
   private handleError<T>(operation = 'operation', result?: T) {

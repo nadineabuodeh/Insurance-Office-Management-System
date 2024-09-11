@@ -130,6 +130,37 @@ export class TransactionTableComponent implements OnInit {
     }
   }
 
+  updateTransactionType(transaction: Transaction): void {
+    if (transaction && transaction.id) {
+      this.transactionService.updateTransactionType(transaction.id, transaction)
+        .subscribe(
+          updatedTransaction => {
+            console.log('Transaction type updated:', updatedTransaction.transactionType);
+            this.dataSource.data = [...this.dataSource.data];
+            this.loadTransactions();
+          },
+          error => {
+            console.error('Error updating transaction type:', error);
+          }
+        );
+    } else {
+      console.error('Transaction or ID is undefined');
+    }
+  }
+
+
+  getIcon(transactionType: string): string {
+    switch (transactionType) {
+      case 'DEBT':
+        return './assets/moneyyy.png';
+      case 'DEPOSIT':
+        return './assets/payed.png';
+      default:
+        return './assets/moneyyy.png';
+    }
+  }
+
+
 
   AmountFilter(event: Event): void {
     const input = event.target as HTMLInputElement;

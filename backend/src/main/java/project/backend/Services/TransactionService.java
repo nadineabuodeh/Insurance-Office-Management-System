@@ -254,4 +254,17 @@ public class TransactionService {
 
         return upcomingTransactions;
     }
+
+    public TransactionDTO updateTransactionType(Long id, TransactionDTO transactionDTO) throws MessagingException {
+        Transaction existingTransaction = transactionRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Transaction not found with ID: " + id));
+
+        existingTransaction.setTransactionType(TransactionType.DEPOSIT);
+
+        Transaction updatedTransaction = transactionRepository.save(existingTransaction);
+
+        return convertToDTO(updatedTransaction);
+    }
+
+
 }
