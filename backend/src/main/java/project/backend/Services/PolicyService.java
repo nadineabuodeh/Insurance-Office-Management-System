@@ -127,7 +127,7 @@ public class PolicyService {
                 "<li><strong>Policy Name: </strong>" + policy.getPolicyName() + "</li>" +
                 "<li><strong>Start Date: </strong>" + policy.getStartDate() + "</li>" +
                 "<li><strong>End Date: </strong>" + policy.getEndDate() + "</li>" +
-                "<li><strong>Total Amount: </strong>" + String.format("%.2f", policy.getTotalAmount()) + "</li>" +
+                "<li><strong>Total Amount: </strong>&#8362;" + String.format("%.2f", policy.getTotalAmount()) + "</li>" +
                 "<li><strong>Insurance Type: </strong>" + formattedInsuranceType + "</li>" +
                 "</ul>" +
                 "<p>Thank you for choosing InsuranceNexus! If you have any questions or concerns, please do not hesitate to contact us.</p>" +

@@ -31,13 +31,12 @@ public class EmailService {
                             font-family: Georgia, "Times New Roman", Times, serif;
                         }
                         body, html {
-                            font-family: Georgia, "Times New Roman", Times, serif;
                             margin: 0;
                             padding: 0;
                             box-sizing: border-box;
                             background-color: #f5f5f5;
-                              overflow: auto;
-                                                                          color: black;
+                            overflow: auto;
+                            color: black;
 
                         }
                         .email-container {
@@ -45,8 +44,7 @@ public class EmailService {
                             padding: 20px;
                             margin: 20px auto;
                             max-width: 600px;
-                            box-shadow: black !important;
-                            border-radius: 8px;
+                            border-radius: 4px;
                         }
                         .header {
                             background-color: #2d445d;
@@ -76,7 +74,7 @@ public class EmailService {
                         }
                         .content {
                             padding: 20px;
-                                            color: black;
+                            color: black;
 
                         }
                     </style>
