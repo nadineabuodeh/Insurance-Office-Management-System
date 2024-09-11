@@ -89,6 +89,16 @@ button {
   margin-right: 10px;
 }
 
+#money-icon {
+  margin-top: 15px;
+}
+
+#deposit-btn {
+  background-color: transparent;
+  max-width: 50px;
+  margin-left: 0px;
+}
+
 .filter-icon {
   margin-left: 1px;
   max-width: 25px;

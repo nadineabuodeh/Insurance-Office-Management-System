@@ -136,7 +136,7 @@ public class PolicyService {
 
         emailService.sendEmail(EmailDetails.builder()
                 .recipient(user.getEmail())
-                .subject("Your New Insurance Policy with InsuranceNexus")
+                .subject("New Insurance Policy Successfully Created")
                 .messageBody(messageBody)
                 .build());
 
