@@ -23,6 +23,7 @@
   width: 50px;
   height: auto;
   margin-right: 10px;
+  cursor: pointer;
 }
 
 .app-name {
