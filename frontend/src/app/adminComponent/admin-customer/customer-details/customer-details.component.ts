@@ -14,6 +14,7 @@ import { PolicyLayoutComponent } from '../policy-layout/policy-layout.component'
 import { CollapsibleSectionComponent } from '../collapsible-section/collapsible-section.component';
 import { TransactionTableComponent } from '../../admin-transactions/transaction-table/transaction-table.component';
 import { CustomerTransactionComponent } from '../customer-transaction/customer-transaction.component';
+import { LoadingService } from '../../../service/loading.service';
 
 @Component({
   selector: 'app-customer-details',
@@ -41,7 +42,8 @@ export class CustomerDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private customerService: CustomerService,
     public dialog: MatDialog,
-    private location: Location
+    private location: Location,
+    private loadingService: LoadingService,
   ) { }
 
   ngOnInit(): void {
@@ -78,10 +80,17 @@ export class CustomerDetailsComponent implements OnInit {
 
 
   deleteCustomer(id: number): void {
-
     if (confirm('Are you sure you want to delete this customer?')) {
-      this.customerService.deleteCustomer(id).subscribe(() => {
-        this.location.back();
+      this.loadingService.loadingOn();
+      this.customerService.deleteCustomer(id).subscribe({
+        next: () => {
+          this.loadingService.loadingOff();
+          this.location.back();
+        },
+        error: (err) => {
+          this.loadingService.loadingOff();
+          console.error('Error deleting customer:', err);
+        }
       });
     }
   }
@@ -97,6 +106,32 @@ export class CustomerDetailsComponent implements OnInit {
     this.subscriptions.add(
       dialogRef.afterClosed().subscribe(result => {
         if (result) {
+          this.loadingService.loadingOn();
+          this.subscriptions.add(
+            this.customerService.updateCustomer(customer.id, result).subscribe({
+              next: () => {
+                this.loadingService.loadingOff();
+                this.subscriptions.add(
+                  this.route.paramMap.subscribe(params => {
+                    const id = params.get('id');
+                    if (id) {
+                      this.customerService.getCustomerById(Number(id)).subscribe({
+                        next: (data: Customer) => {
+                          this.customer = data;
+                        },
+                        error: (err) => {
+                          this.loadingService.loadingOff();
+                          console.error('Error fetching customer details:', err);
+                        }
+                      });
+                    }
+                  })
+                );
+              },
+              error: (err) => {
+                this.loadingService.loadingOff();
+                console.error('Error updating customer:', err);
+              }
           const updatedCustomer = { ...result, id: customer.id };
 
           this.subscriptions.add(
@@ -121,8 +156,6 @@ export class CustomerDetailsComponent implements OnInit {
             })
           );
         }
-      }, error => {
-        console.error('Error after dialog closed:', error);
       })
     );
 

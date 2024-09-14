@@ -159,6 +159,8 @@ public class UserService {
     public UserDTO updateUser(Long id, UserDTO userDTO, String jwtToken) {
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + id));
+    
+        User admin = existingUser.getAdmin();
 
         String adminUsername = jwtUtils.getUserNameFromJwtToken(jwtToken);
         User admin = userRepository.findByUsername(adminUsername)
@@ -169,16 +171,18 @@ public class UserService {
         userDTO.setId(id);
         System.out.println("id: " + userDTO.getId());
         String existingPassword = existingUser.getPassword();
+        
         User userToUpdate = convertToEntity(userDTO);
         userToUpdate.setAdmin(admin);
 
         userToUpdate.setId(id);
         userToUpdate.setPassword(existingPassword);
-
+        userToUpdate.setAdmin(admin);
+        
         User updatedUser = userRepository.save(userToUpdate);
-        System.out.println("updated user: " + updatedUser.getId());
         return convertToDTO(updatedUser);
     }
+    
 
     public void deleteUser(Long id) {
         if (!userRepository.existsById(id)) {

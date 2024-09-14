@@ -77,6 +77,10 @@ export class TransactionFormFieldsComponent {
       map((value) => this.filterPolicies(value ?? ''))
     );
 
+    if (this.isEditMode) {
+      this.policyNameControl.disable();
+    }
+
   }
 
   private filterPolicies(value: any): Policy[] {

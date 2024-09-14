@@ -26,6 +26,7 @@ public class EmailService {
     private final String emailHeader = """
                 <html>
                 <head>
+                  <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
                     <style>
                         * {
                             font-family: Georgia, "Times New Roman", Times, serif;
@@ -61,6 +62,7 @@ public class EmailService {
                             margin-right: 10px;
                         }
                         .header h1 {
+                            font-family: "Lobster", cursive;
                             font-size: 20px;
                             margin-top: 15px;
                         }

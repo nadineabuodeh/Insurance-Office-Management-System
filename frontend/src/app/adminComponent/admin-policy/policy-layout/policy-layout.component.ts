@@ -12,6 +12,7 @@ import { MatSelectModule } from "@angular/material/select";
 import { MatSortModule, MatSort } from "@angular/material/sort";
 import { MatTableModule, MatTableDataSource } from "@angular/material/table";
 import { FormsModule } from '@angular/forms';
+import { LoadingService } from '../../../service/loading.service';
 
 @Component({
   selector: 'app-policy-layout',
@@ -50,7 +51,7 @@ export class PolicyLayoutComponent {
 
   dataSource = new MatTableDataSource<Policy>();
 
-  constructor(private policyService: PolicyService, public dialog: MatDialog) { }
+  constructor(private policyService: PolicyService, public dialog: MatDialog, private loadingService: LoadingService) { }
 
   ngOnInit(): void {
     this.loadPolicies();
@@ -208,7 +209,9 @@ export class PolicyLayoutComponent {
 
   deletePolicy(id: number): void {
     if (confirm('Are you sure you want to delete this policy?')) {
+      this.loadingService.loadingOn();
       this.policyService.deletePolicy(id).subscribe(() => {
+        this.loadingService.loadingOff();
         this.loadPolicies(); // Reload policies after deleting
       });
     }

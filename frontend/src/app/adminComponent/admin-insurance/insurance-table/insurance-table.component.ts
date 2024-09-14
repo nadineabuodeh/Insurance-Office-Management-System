@@ -4,6 +4,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { InsuranceService } from '../../../service/insurance.service';
 import { MatDialog } from '@angular/material/dialog';
 import { InsuranceFormComponent } from '../inurance-form/insurance-form.component';
+import { LoadingService } from '../../../service/loading.service';
 
 @Component({
   selector: 'app-insurance-table',
@@ -18,7 +19,8 @@ export class InsuranceTableComponent implements OnInit {
 
   constructor(
     private insuranceService: InsuranceService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -46,9 +48,16 @@ export class InsuranceTableComponent implements OnInit {
 
   deleteInsurance(id: number): void {
     if (confirm('Are you sure you want to delete this insurance?')) {
+      this.loadingService.loadingOn();
       this.insuranceService.deleteInsurance(id).subscribe(
-        () => this.loadInsurances(),
-        (error) => console.error('Error deleting insurance:', error)
+        () => {
+          this.loadingService.loadingOff(); 
+          this.loadInsurances();
+        },
+        (error) => {
+          this.loadingService.loadingOff();
+          console.error('Error deleting insurance:', error);
+        }
       );
     }
   }
@@ -61,9 +70,16 @@ export class InsuranceTableComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
+        this.loadingService.loadingOn();
         this.insuranceService.updateInsurance(insurance.id!, result).subscribe(
-          () => this.loadInsurances(),
-          (error) => console.error('Error updating insurance:', error)
+          () => {
+            this.loadingService.loadingOff();
+            this.loadInsurances()
+          },
+          (error) => {
+            this.loadingService.loadingOff();
+            console.error('Error updating insurance:', error)
+          }
         );
       }
     });
