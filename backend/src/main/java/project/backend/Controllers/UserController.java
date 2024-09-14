@@ -61,12 +61,12 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO, HttpServletRequest request) {
         System.out.println("Received PUT request to update user with ID: " + id);
         System.out.println("Data: " + userDTO.toString());
-
+        String jwtToken = request.getHeader("Authorization").substring(7);
         try {
-            UserDTO updatedUser = userService.updateUser(id, userDTO);
+            UserDTO updatedUser = userService.updateUser(id, userDTO, jwtToken);
             System.out.println("UPDATED USER: \n" + updatedUser.toString());
             return new ResponseEntity<>(updatedUser, HttpStatus.OK);
         } catch (ResourceNotFoundException ex) {

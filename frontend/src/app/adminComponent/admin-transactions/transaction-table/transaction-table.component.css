@@ -2,6 +2,14 @@
   font-family: Georgia, "Times New Roman", Times, serif;
 }
 
+.deposit-row {
+  background-color: #e4e6f7;
+}
+
+.deposit-row td {
+  font-weight: bold;
+}
+
 .transaction-table-container {
   border-radius: 10px;
   width: "600px";

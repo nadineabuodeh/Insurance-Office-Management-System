@@ -86,42 +86,9 @@ export class CustomerDetailsComponent implements OnInit {
     }
   }
 
-  // editCustomer(customer: Customer): void {
-  //   const dialogRef = this.dialog.open(CustomerFormComponent, {
-  //     panelClass: 'custom-dialog-container',
-  //     data: { customer }
-  //   });
 
-  //   this.subscriptions.add(
-  //     dialogRef.afterClosed().subscribe(result => {
-  //       if (result) {
-  //         this.subscriptions.add(
-  //           this.customerService.updateCustomer(customer.id, result).subscribe(() => {
-  //             this.subscriptions.add(
-  //               this.route.paramMap.subscribe(params => { // Refresh customer data after update
-  //                 const id = params.get('id');
-  //                 if (id) {
-  //                   this.customerService.getCustomerById(Number(id)).subscribe({
-  //                     next: (data: Customer) => {
-  //                       this.customer = data;
-  //                     },
-  //                     error: (err) => {
-  //                       console.error('Error fetching customer details:', err);
-  //                     }
-  //                   });
-  //                 }
-  //               })
-  //             );
-  //           })
-  //         );
-  //       }
-  //     })
-  //   );
-  // }
 
   editCustomer(customer: Customer): void {
-    console.log('editCustomer called with:', customer);
-
     const dialogRef = this.dialog.open(CustomerFormComponent, {
       panelClass: 'custom-dialog-container',
       data: { customer }
@@ -129,20 +96,17 @@ export class CustomerDetailsComponent implements OnInit {
 
     this.subscriptions.add(
       dialogRef.afterClosed().subscribe(result => {
-        console.log('Dialog closed with result:', result);
         if (result) {
-          console.log('Updating customer with id:', customer.id, 'and data:', result);
+          const updatedCustomer = { ...result, id: customer.id };
+
           this.subscriptions.add(
-            this.customerService.updateCustomer(customer.id, result).subscribe(() => {
-              console.log('Customer updated successfully');
+            this.customerService.updateCustomer(updatedCustomer.id, updatedCustomer).subscribe(() => {
               this.subscriptions.add(
                 this.route.paramMap.subscribe(params => {
                   const id = params.get('id');
-                  console.log('Route param id:', id);
                   if (id) {
                     this.customerService.getCustomerById(Number(id)).subscribe({
                       next: (data: Customer) => {
-                        console.log('Fetched customer data:', data);
                         this.customer = data;
                       },
                       error: (err) => {
@@ -161,6 +125,7 @@ export class CustomerDetailsComponent implements OnInit {
         console.error('Error after dialog closed:', error);
       })
     );
+
   }
 
 
