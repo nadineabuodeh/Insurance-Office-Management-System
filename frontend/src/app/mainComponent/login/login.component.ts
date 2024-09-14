@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
+import { LoadingService } from '../../service/loading.service';
 
 @Component({
   selector: 'app-login',
@@ -35,7 +36,8 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private loadingService: LoadingService
   ) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
@@ -48,15 +50,19 @@ export class LoginComponent {
       return;
     }
 
+    this.loadingService.loadingOn();
+
     this.authService.login(this.loginForm.value).subscribe({
       next: (response) => {
         const token = response.accessToken;
         const role = response.roles[0];
         this.authService.saveToken(token, role);
         this.isLoginFailed = false;
+        this.loadingService.loadingOff();
         this.redirectBasedOnRole();
       },
       error: () => {
+        this.loadingService.loadingOff();
         this.isLoginFailed = true;
       },
     });

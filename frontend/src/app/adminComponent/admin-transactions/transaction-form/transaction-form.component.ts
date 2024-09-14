@@ -23,6 +23,7 @@ import { MatInputModule } from '@angular/material/input';
 import { Subscription } from 'rxjs';
 import { TransactionFormFieldsComponent } from '../transaction-form-fields/transaction-form-fields.component';
 import { endDateAfterStartDateValidator } from '../../../validators/date-validator';
+import { LoadingService } from '../../../service/loading.service';
 
 @Component({
   selector: 'app-transaction-form',
@@ -50,6 +51,7 @@ export class TransactionFormComponent {
     private fb: FormBuilder,
     private transactionService: TransactionService,
     private dialogRef: MatDialogRef<TransactionFormComponent>,
+    private loadingService: LoadingService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.transactionForm = this.fb.group({
@@ -90,6 +92,8 @@ export class TransactionFormComponent {
     if (this.transactionForm.valid) {
       const transactionData: Transaction = this.transactionForm.value;
 
+      this.loadingService.loadingOn();
+
       if (this.isEditMode) {
         this.updateTransaction(transactionData);
       } else {
@@ -104,9 +108,11 @@ export class TransactionFormComponent {
     this.subscription.add(
       this.transactionService.createTransaction(transaction).subscribe({
         next: (response) => {
+          this.loadingService.loadingOff();
           this.dialogRef.close(response);
         },
         error: (error) => {
+          this.loadingService.loadingOff();
           console.error('Error creating transaction:', error);
         },
       })
@@ -119,9 +125,11 @@ export class TransactionFormComponent {
         .updateTransaction(transaction.id, transaction)
         .subscribe({
           next: (response) => {
+            this.loadingService.loadingOff();
             this.dialogRef.close(response);
           },
           error: (error) => {
+            this.loadingService.loadingOff();
             console.error('Error updating transaction:', error);
           },
         })

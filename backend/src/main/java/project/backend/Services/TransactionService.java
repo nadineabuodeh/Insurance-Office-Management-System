@@ -124,17 +124,19 @@ public class TransactionService {
 
         Transaction savedTransaction = transactionRepository.save(transaction);
 
-        String emailBody = "Dear " + transaction.getUser().getFirstName() + ",\n\n"
-                + "We hope this email finds you well. This is to inform you that a new transaction has been successfully created in your account at InsuranceNexus.\n\n"
-                + "Here are the details of the transaction:\n"
-                + "Policy name: " + savedTransaction.getPolicy().getPolicyName() + "\n\n"
-                + "Transaction Type: " + savedTransaction.getTransactionType() + "\n"
-                + "Amount: " + savedTransaction.getAmount() + " ₪ \n"
-                + "Start Date: " + savedTransaction.getStartDate() + "\n"
-                + "End Date: " + savedTransaction.getEndDate() + "\n\n"
-                + "Thank you for choosing InsuranceNexus for your insurance needs.\n\n"
-                + "Best regards,\n"
-                + "InsuranceNexus Team";
+        String emailBody = "<p>Dear " + transaction.getUser().getFirstName() + ",</p>" +
+                "<p>We hope this email finds you well. This is to inform you that a new transaction has been successfully created in your account at InsuranceNexus.</p>"
+                +
+                "<p>Here are the details of the transaction:</p>" +
+                "<ul>" +
+                "<li><strong>Policy Name: </strong>" + savedTransaction.getPolicy().getPolicyName() + "</li>" +
+                "<li><strong>Transaction Type: </strong>" + savedTransaction.getTransactionType() + "</li>" +
+                "<li><strong>Amount: </strong> &#8362;" + savedTransaction.getAmount() + " </li>" +
+                "<li><strong>Start Date: </strong>" + savedTransaction.getStartDate() + "</li>" +
+                "<li><strong>End Date: </strong>" + savedTransaction.getEndDate() + "</li>" +
+                "</ul>" +
+                "<p>Thank you for choosing InsuranceNexus for your insurance needs.</p>" +
+                "<p>Best regards,<br>InsuranceNexus Team.</p>";
 
         emailService.sendEmail(EmailDetails.builder()
                 .messageBody(emailBody)
@@ -158,35 +160,39 @@ public class TransactionService {
         existingTransaction.setUpdatedAt(LocalDate.now());
 
         Transaction updatedTransaction = transactionRepository.save(existingTransaction);
+        String emailBody;
         if (oldTransactionType != TransactionType.DEPOSIT
                 && updatedTransaction.getTransactionType() == TransactionType.DEPOSIT) {
-            String depositEmailBody = "Dear " + updatedTransaction.getUser().getFirstName() + ",\n\n"
-                    + "We are pleased to inform you that your payment for the following transaction has been successfully processed:\n\n"
-                    + "Policy Name: " + updatedTransaction.getPolicy().getPolicyName() + "\n"
-                    + "Amount Paid: " + updatedTransaction.getAmount() + " ₪ \n"
-                    + "Payment Date: " + updatedTransaction.getUpdatedAt() + "\n\n"
-                    + "Thank you for your payment! If you have any questions or concerns, please do not hesitate to contact us.\n\n"
-                    + "Best regards,\n"
-                    + "InsuranceNexus Team";
-
+            emailBody = "<p>Dear " + updatedTransaction.getUser().getFirstName() + ",</p>" +
+                    "<p>We are pleased to inform you that your payment for the following transaction has been successfully processed:</p>"
+                    +
+                    "<ul>" +
+                    "<li><strong>Policy Name: </strong>" + updatedTransaction.getPolicy().getPolicyName() + "</li>" +
+                    "<li><strong>Amount Paid: </strong>&#8362;" + updatedTransaction.getAmount() + " </li>" +
+                    "<li><strong>Payment Date: </strong>" + updatedTransaction.getUpdatedAt() + "</li>" +
+                    "</ul>" +
+                    "<p>Thank you for your payment! If you have any questions or concerns, please do not hesitate to contact us.</p>"
+                    +
+                    "<p>Best regards,<br>InsuranceNexus Team.</p>";
             emailService.sendEmail(EmailDetails.builder()
-                    .messageBody(depositEmailBody)
+                    .messageBody(emailBody)
                     .recipient(updatedTransaction.getUser().getEmail())
                     .subject("Payment Confirmation for Transaction")
                     .build());
         } else {
-            String emailBody = "Dear " + updatedTransaction.getUser().getFirstName() + ",\n\n"
-                    + "This is to inform you that one of your transactions has been updated. "
-                    + "Please find the updated transaction details below:\n\n"
-                    + "Policy Name: " + updatedTransaction.getPolicy().getPolicyName() + "\n"
-                    + "Updated Transaction Type: " + updatedTransaction.getTransactionType() + "\n"
-                    + "Updated Amount: " + updatedTransaction.getAmount() + " ₪ \n"
-                    + "Updated Start Date: " + updatedTransaction.getStartDate() + "\n"
-                    + "Updated End Date: " + updatedTransaction.getEndDate() + "\n\n"
-                    + "If you have any questions regarding this update, feel free to contact us.\n\n"
-                    + "Best regards,\n"
-                    + "InsuranceNexus Team";
-
+            emailBody = "<p>Dear " + updatedTransaction.getUser().getFirstName() + ",</p>" +
+                    "<p>This is to inform you that one of your transactions has been updated. Please find the updated transaction details below:</p>"
+                    +
+                    "<ul>" +
+                    "<li><strong>Policy Name: </strong>" + updatedTransaction.getPolicy().getPolicyName() + "</li>" +
+                    "<li><strong>Updated Transaction Type: </strong>" + updatedTransaction.getTransactionType()
+                    + "</li>" +
+                    "<li><strong>Updated Amount: </strong>&#8362;" + updatedTransaction.getAmount() + " </li>" +
+                    "<li><strong>Updated Start Date: </strong>" + updatedTransaction.getStartDate() + "</li>" +
+                    "<li><strong>Updated End Date: </strong>" + updatedTransaction.getEndDate() + "</li>" +
+                    "</ul>" +
+                    "<p>If you have any questions regarding this update, feel free to contact us.</p>" +
+                    "<p>Best regards,<br>InsuranceNexus Team.</p>";
             emailService.sendEmail(EmailDetails.builder()
                     .messageBody(emailBody)
                     .recipient(updatedTransaction.getUser().getEmail())
@@ -263,8 +269,24 @@ public class TransactionService {
 
         Transaction updatedTransaction = transactionRepository.save(existingTransaction);
 
+        String emailBody = "<p>Dear " + updatedTransaction.getUser().getFirstName() + ",</p>" +
+                "<p>We are pleased to inform you that your payment for the following transaction has been successfully processed:</p>"
+                +
+                "<ul>" +
+                "<li><strong>Policy Name: </strong>" + updatedTransaction.getPolicy().getPolicyName() + "</li>" +
+                "<li><strong>Amount Paid: </strong>&#8362;" + updatedTransaction.getAmount() + " </li>" +
+                "<li><strong>Payment Date: </strong>" + updatedTransaction.getUpdatedAt() + "</li>" +
+                "</ul>" +
+                "<p>Thank you for your payment! If you have any questions or concerns, please do not hesitate to contact us.</p>"
+                +
+                "<p>Best regards,<br>InsuranceNexus Team.</p>";
+        emailService.sendEmail(EmailDetails.builder()
+                .messageBody(emailBody)
+                .recipient(updatedTransaction.getUser().getEmail())
+                .subject("Payment Confirmation for Transaction")
+                .build());
+
         return convertToDTO(updatedTransaction);
     }
-
 
 }

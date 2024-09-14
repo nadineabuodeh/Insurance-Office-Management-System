@@ -1,67 +1,133 @@
 <br><br>
 <div class="transaction-table-container">
+  
+  @if (dataSource.data.length>0 && showFilter) {
+
+  <div class="filter-container">
+
+    <!-- Filter By Column -->
+    <mat-form-field appearance="outline" class="filter">
+      <mat-label>Filter By Column</mat-label>
+      <mat-select [(value)]="selectedColumn">
+        @for (column of columnOptions; track $index) {
+        <mat-option [value]="column">
+          @if (column === 'transactionType') {
+          Transaction Type
+          }
+          @if (column === 'amount') {
+          Amount
+          }
+        </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Transaction Type Filter -->
+    @if (selectedColumn === 'transactionType') {
+    <mat-form-field appearance="outline" class="filter-select">
+      <mat-label>Value</mat-label>
+      <mat-select [(value)]="selectedTransactionType" (selectionChange)="applyFilter()">
+        <mat-option value="">All</mat-option>
+        <mat-option value="DEBT">DEBT</mat-option>
+        <mat-option value="DEPOSIT">DEPOSIT</mat-option>
+      </mat-select>
+    </mat-form-field>
+    }
+
+    <!-- Amount Filter -->
+    @else {
+    <mat-form-field appearance="outline" class="filter-select">
+      <mat-label>Value</mat-label>
+      <input matInput (keyup)="AmountFilter($event)" placeholder="Amount Value.." class="filter-input">
+    </mat-form-field>
+    }
+
+    <button class="refresh-btn" (click)="clearFilter()">
+      <img id="refresh" src="./assets/refresh.png" alt="filter" title="Refresh Table">
+    </button>
+
+
+  </div>
+  }
 
 
   @if (dataSource.data.length > 0) {
+  <ng-container>
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 styled-table">
 
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 styled-table">
-    <ng-container matColumnDef="startDate">
-      <th mat-header-cell *matHeaderCellDef> Start Date </th>
-      <td mat-cell *matCellDef="let transaction">
-        <app-transaction-table-col [transaction]="transaction" column="startDate"></app-transaction-table-col>
-      </td>
-    </ng-container>
+      <ng-container matColumnDef="startDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header (click)="sortData('startDate')"> Start Date </th>
+        <td mat-cell *matCellDef="let transaction">
+          <app-transaction-table-col [transaction]="transaction" column="startDate"></app-transaction-table-col>
+        </td>
 
-    <ng-container matColumnDef="amount">
-      <th mat-header-cell *matHeaderCellDef> Amount </th>
-      <td mat-cell *matCellDef="let transaction">
-        <app-transaction-table-col [transaction]="transaction" column="amount"></app-transaction-table-col>
-      </td>
-    </ng-container>
+      </ng-container>
 
-    <ng-container matColumnDef="endDate">
-      <th mat-header-cell *matHeaderCellDef> End Date </th>
-      <td mat-cell *matCellDef="let transaction">
-        <app-transaction-table-col [transaction]="transaction" column="endDate"></app-transaction-table-col>
-      </td>
-    </ng-container>
+      <ng-container matColumnDef="endDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header (click)="sortData('endDate')" class="hide-arrow"> End Date
+        </th>
+        <td mat-cell *matCellDef="let transaction">
+          <app-transaction-table-col [transaction]="transaction" column="endDate"></app-transaction-table-col>
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="transactionType">
-      <th mat-header-cell *matHeaderCellDef> Transaction Type </th>
-      <td mat-cell *matCellDef="let transaction">
-        <app-transaction-table-col [transaction]="transaction" column="transactionType"></app-transaction-table-col>
-      </td>
-    </ng-container>
+      <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header (click)="sortData('amount')"> Amount </th>
+        <td mat-cell *matCellDef="let transaction">
+          <app-transaction-table-col [transaction]="transaction" column="amount"></app-transaction-table-col>
+      </ng-container>
 
-    <ng-container matColumnDef="createdAt">
-      <th mat-header-cell *matHeaderCellDef> Created At </th>
-      <td mat-cell *matCellDef="let transaction">
-        <app-transaction-table-col [transaction]="transaction" column="createdAt"></app-transaction-table-col>
-      </td>
-    </ng-container>
+      <ng-container matColumnDef="transactionType">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header (click)="sortData('transactionType')"> Transaction Type
+        </th>
+        <td mat-cell *matCellDef="let transaction">
+          <app-transaction-table-col [transaction]="transaction" column="transactionType"></app-transaction-table-col>
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="updatedAt">
-      <th mat-header-cell *matHeaderCellDef> Updated At </th>
-      <td mat-cell *matCellDef="let transaction">
-        <app-transaction-table-col [transaction]="transaction" column="updatedAt"></app-transaction-table-col>
-      </td>
-    </ng-container>
+      <ng-container matColumnDef="createdAt">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header (click)="sortData('createdAt')"> Created At </th>
+        <td mat-cell *matCellDef="let transaction">
+          <app-transaction-table-col [transaction]="transaction" column="createdAt"></app-transaction-table-col>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="updatedAt">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header (click)="sortData('updatedAt')"> Updated At </th>
+        <td mat-cell *matCellDef="let transaction">
+          <app-transaction-table-col [transaction]="transaction" column="updatedAt"></app-transaction-table-col>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <td mat-cell *matCellDef="let transaction">
+          <button class="btns" (click)="deleteTransaction(transaction.id)">
+            <img class="icons" src="./assets/delete.png" alt="delete" title="Delete This Transaction">
+          </button>
+          <button class="btns" (click)="editTransaction(transaction)">
+            <img class="icons" src="./assets/pencil.png" alt="edit" title="Update Transaction">
+          </button>
+          <button id="deposit-btn" 
+            (click)="updateTransactionType(transaction)">
+            <img id="money-icon" [src]="getIcon(transaction.transactionType)" alt="Deposit" title="Update to Deposit">
+          </button>
+        </td>
+      </ng-container>
 
 
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
-
-  }@else {
-
+    </table>
+  </ng-container>
+  }@else{
   <div class="empty-table-message">
     <img src="./assets/logo.png" alt="No Transactions" class="empty-icon">
-    <p class="empty-text">There Are No Transactions <br> for this customer!</p>
-    <p class="empty-subtext">Start adding new transactions by clicking the <br> "Create New Transactions" button in
-      Transactions side.</p>
+    <p class="empty-text">There Are No Transactions!</p>
+    <p class="empty-subtext">Start adding new transactions by clicking the "Add New Transaction" button above.</p>
   </div>
+
 
   }
 

@@ -22,6 +22,7 @@ import {
   CustomerService,
 } from '../../../service/CustomerService/customer.service';
 import { Subscription } from 'rxjs';
+import { LoadingService } from '../../../service/loading.service';
 
 @Component({
   selector: 'app-customer-form',
@@ -58,6 +59,7 @@ export class CustomerFormComponent {
     private customerService: CustomerService,
     private dialogRef: MatDialogRef<CustomerFormComponent>,
     private dialog: MatDialog,
+    private loadingService: LoadingService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.maxDate = new Date();
@@ -145,16 +147,31 @@ export class CustomerFormComponent {
         return;
       }
 
-      if (this.isEditMode) {
-        this.customerService.updateCustomer(
-          this.data.customer.id,
-          customerData
-        ); 
-      } else {
-        this.customerService.addCustomer(customerData); 
-      }
+      this.loadingService.loadingOn();
 
-      this.dialogRef.close(customerData);
+      if (this.isEditMode) {
+        this.customerService
+          .updateCustomer(this.data.customer.id, customerData)
+          .subscribe(
+            () => {
+              this.loadingService.loadingOff(); 
+              this.dialogRef.close(customerData);
+            },
+            () => {
+              this.loadingService.loadingOff();
+            }
+          );
+      } else {
+        this.customerService.addCustomer(customerData).subscribe(
+          () => {
+            this.loadingService.loadingOff(); 
+            this.dialogRef.close(customerData);
+          },
+          () => {
+            this.loadingService.loadingOff();
+          }
+        );
+      }
     }
   }
 

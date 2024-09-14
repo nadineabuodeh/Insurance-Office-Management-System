@@ -59,39 +59,38 @@ export class PolicyFormFieldsComponent {
         name: `${user.firstName} ${user.lastName} (${user.username})`,
       }));
       this.initializeUserControl();
+      
+      if (this.isEditMode && this.formGroup.get('userId')?.value) {
+        const selectedUser = this.users.find(
+          (user) => user.id === this.formGroup.get('userId')?.value
+        );
+        this.userControl.setValue(selectedUser ? selectedUser.name : '');
+      }
     });
-
+  
     this.insuranceService.getInsurances().subscribe((insurances) => {
       this.insurances = insurances.map((insurance) => ({
         id: insurance.id,
         name: `${insurance.insuranceType}`,
       }));
       this.initializeInsuranceControl();
+  
+      if (this.isEditMode && this.formGroup.get('insuranceId')?.value) {
+        const selectedInsurance = this.insurances.find(
+          (insurance) => insurance.id === this.formGroup.get('insuranceId')?.value
+        );
+        this.insuranceControl.setValue(selectedInsurance ? selectedInsurance.name : '');
+        this.userControl.disable();
+      }
     });
-
-    if (this.isEditMode) {
-      const selectedUser = this.users.find(
-        (user) => user.id === this.formGroup.get('userId')?.value
-      );
-      const selectedInsurance = this.insurances.find(
-        (insurance) => insurance.id === this.formGroup.get('insuranceId')?.value
-      );
-
-      this.userControl.setValue(selectedUser ? selectedUser.name : '');
-      this.insuranceControl.setValue(
-        selectedInsurance ? selectedInsurance.name : ''
-      );
-
-      this.userControl.disable();
-    }
-
+  
     this.userControl.valueChanges.subscribe((value) => {
       const selectedUser = this.users.find((user) => user.name === value);
       this.formGroup.patchValue({
         userId: selectedUser ? selectedUser.id : null,
       });
     });
-
+  
     this.insuranceControl.valueChanges.subscribe((value) => {
       const selectedInsurance = this.insurances.find(
         (insurance) => insurance.name === value
@@ -100,22 +99,7 @@ export class PolicyFormFieldsComponent {
         insuranceId: selectedInsurance ? selectedInsurance.id : null,
       });
     });
-    this.userControl.valueChanges.subscribe((value) => {
-      const selectedUser = this.users.find((user) => user.name === value);
-      this.formGroup.patchValue({
-        userId: selectedUser ? selectedUser.id : null,
-      });
-    });
-
-    this.insuranceControl.valueChanges.subscribe((value) => {
-      const selectedInsurance = this.insurances.find(
-        (insurance) => insurance.name === value
-      );
-      this.formGroup.patchValue({
-        insuranceId: selectedInsurance ? selectedInsurance.id : null,
-      });
-    });
-  }
+  }  
 
   onCancel(): void {
     this.dialog.closeAll();

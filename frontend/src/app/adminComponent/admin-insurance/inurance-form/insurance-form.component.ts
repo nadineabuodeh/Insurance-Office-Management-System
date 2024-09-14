@@ -18,6 +18,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { InsuranceFormFieldsComponent } from '../insurance-form-fields/insurance-form-fields.component';
+import { LoadingService } from '../../../service/loading.service';
 
 @Component({
   selector: 'app-insurance-form',
@@ -44,6 +45,7 @@ export class InsuranceFormComponent {
     private fb: FormBuilder,
     private insuranceService: InsuranceService,
     private dialogRef: MatDialogRef<InsuranceFormComponent>,
+    private loadingService: LoadingService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.insuranceForm = this.fb.group({
@@ -61,21 +63,32 @@ export class InsuranceFormComponent {
     if (this.insuranceForm.valid) {
         const insuranceData: Insurance = this.insuranceForm.getRawValue(); // Get form data
 
+        this.loadingService.loadingOn();
+
         if (this.isEditMode) {
             this.insuranceService.updateInsurance(this.data.insurance.id!, insuranceData).subscribe(
                 () => {
+                  this.loadingService.loadingOff();
                     console.log('Insurance updated successfully');
                     this.dialogRef.close(insuranceData);
                 },
-                (error) => console.error('Error updating insurance:', error)
+                
+                (error) => {
+                  this.loadingService.loadingOff();
+                  console.error('Error updating insurance:', error)
+                }
             );
         } else {
             this.insuranceService.addInsurance(insuranceData).subscribe(
                 (newInsurance) => {
+                  this.loadingService.loadingOff();
                     console.log('Insurance added successfully:', newInsurance);
                     this.dialogRef.close(newInsurance);
                 },
-                (error) => console.error('Error adding insurance:', error)
+                (error) => {
+                  this.loadingService.loadingOff();
+                  console.error('Error adding insurance:', error)
+                }
             );
         }
     }
