@@ -162,12 +162,6 @@ public class UserService {
     
         User admin = existingUser.getAdmin();
 
-        String adminUsername = jwtUtils.getUserNameFromJwtToken(jwtToken);
-        User admin = userRepository.findByUsername(adminUsername)
-                .orElseThrow(() -> new ResourceNotFoundException("Admin not found with username: " + adminUsername));
-
-
-
         userDTO.setId(id);
         System.out.println("id: " + userDTO.getId());
         String existingPassword = existingUser.getPassword();
