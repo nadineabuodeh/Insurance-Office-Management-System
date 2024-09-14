@@ -118,8 +118,7 @@
           <button class="btns" (click)="editTransaction(transaction)">
             <img class="icons" src="./assets/pencil.png" alt="edit" title="Update Transaction">
           </button>
-          <button id="deposit-btn" 
-            (click)="updateTransactionType(transaction)">
+          <button id="deposit-btn" (click)="updateTransactionType(transaction)">
             <img id="money-icon" [src]="getIcon(transaction.transactionType)" alt="Deposit" title="Update to Deposit">
           </button>
         </td>
@@ -127,8 +126,12 @@
 
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-
+      <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr> -->
+      <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{
+       
+        'deposit-row': row.transactionType === 'DEPOSIT'
+      }">
+      </tr>
     </table>
   </ng-container>
   }@else{

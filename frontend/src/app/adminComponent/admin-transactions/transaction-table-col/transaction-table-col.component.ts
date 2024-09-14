@@ -13,10 +13,7 @@ import { Component, Input } from '@angular/core';
   </span>
 }
   @if(column !== 'amount'){
-    <span [ngClass]="{
-  'debt-row': column === 'transactionType' && transaction.transactionType === 'DEBT',
-  'deposit-row': column === 'transactionType' && transaction.transactionType === 'DEPOSIT'
-}">
+    <span >
   {{ getValue() }}
 </span>
   }

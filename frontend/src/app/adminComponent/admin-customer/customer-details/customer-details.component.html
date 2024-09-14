@@ -45,13 +45,19 @@
 </div>
 
 <app-collapsible-section header="Customer Policies">
+  @if (customer) {
   <div class="customer-policies">
-    <app-customer-policy-layout *ngIf="customer" [customerId]="customer.id"></app-customer-policy-layout>
+    <app-customer-policy-layout [customerId]="customer.id"></app-customer-policy-layout>
   </div>
+  }
 </app-collapsible-section>
+
+
 <app-collapsible-section header="Customer Transactions">
+  @if (customer) {
   <div class="customer-policies">
-    <app-customer-transaction *ngIf="customer" [customerId]="customer.id"></app-customer-transaction>
+    <app-customer-transaction [customerId]="customer.id"></app-customer-transaction>
   </div>
+  }
 </app-collapsible-section>
 }
