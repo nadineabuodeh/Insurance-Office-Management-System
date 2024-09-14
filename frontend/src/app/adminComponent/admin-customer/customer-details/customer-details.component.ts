@@ -95,38 +95,7 @@ export class CustomerDetailsComponent implements OnInit {
     }
   }
 
-  // editCustomer(customer: Customer): void {
-  //   const dialogRef = this.dialog.open(CustomerFormComponent, {
-  //     panelClass: 'custom-dialog-container',
-  //     data: { customer }
-  //   });
 
-  //   this.subscriptions.add(
-  //     dialogRef.afterClosed().subscribe(result => {
-  //       if (result) {
-  //         this.subscriptions.add(
-  //           this.customerService.updateCustomer(customer.id, result).subscribe(() => {
-  //             this.subscriptions.add(
-  //               this.route.paramMap.subscribe(params => { // Refresh customer data after update
-  //                 const id = params.get('id');
-  //                 if (id) {
-  //                   this.customerService.getCustomerById(Number(id)).subscribe({
-  //                     next: (data: Customer) => {
-  //                       this.customer = data;
-  //                     },
-  //                     error: (err) => {
-  //                       console.error('Error fetching customer details:', err);
-  //                     }
-  //                   });
-  //                 }
-  //               })
-  //             );
-  //           })
-  //         );
-  //       }
-  //     })
-  //   );
-  // }
 
   editCustomer(customer: Customer): void {
     const dialogRef = this.dialog.open(CustomerFormComponent, {
@@ -163,11 +132,33 @@ export class CustomerDetailsComponent implements OnInit {
                 this.loadingService.loadingOff();
                 console.error('Error updating customer:', err);
               }
+          const updatedCustomer = { ...result, id: customer.id };
+
+          this.subscriptions.add(
+            this.customerService.updateCustomer(updatedCustomer.id, updatedCustomer).subscribe(() => {
+              this.subscriptions.add(
+                this.route.paramMap.subscribe(params => {
+                  const id = params.get('id');
+                  if (id) {
+                    this.customerService.getCustomerById(Number(id)).subscribe({
+                      next: (data: Customer) => {
+                        this.customer = data;
+                      },
+                      error: (err) => {
+                        console.error('Error fetching customer details:', err);
+                      }
+                    });
+                  }
+                })
+              );
+            }, error => {
+              console.error('Error updating customer:', error);
             })
           );
         }
       })
     );
+
   }
 
 

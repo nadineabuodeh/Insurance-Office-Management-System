@@ -156,15 +156,25 @@ public class UserService {
         return password.toString();
     }
 
-    public UserDTO updateUser(Long id, UserDTO userDTO) {
+    public UserDTO updateUser(Long id, UserDTO userDTO, String jwtToken) {
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + id));
     
         User admin = existingUser.getAdmin();
-    
+
+        String adminUsername = jwtUtils.getUserNameFromJwtToken(jwtToken);
+        User admin = userRepository.findByUsername(adminUsername)
+                .orElseThrow(() -> new ResourceNotFoundException("Admin not found with username: " + adminUsername));
+
+
+
+        userDTO.setId(id);
+        System.out.println("id: " + userDTO.getId());
         String existingPassword = existingUser.getPassword();
         
         User userToUpdate = convertToEntity(userDTO);
+        userToUpdate.setAdmin(admin);
+
         userToUpdate.setId(id);
         userToUpdate.setPassword(existingPassword);
         userToUpdate.setAdmin(admin);
