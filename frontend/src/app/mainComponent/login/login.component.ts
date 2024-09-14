@@ -64,10 +64,12 @@ export class LoginComponent {
 
   private redirectBasedOnRole(): void {
     const role = this.authService.getUserRole();
-    if (role === 'ROLE_ADMIN') {
+    if (role === 'ROLE_ADMIN' ) {
       this.router.navigate(['/admin/dashboard']);
     } else if (role === 'ROLE_CUSTOMER') {
       this.router.navigate(['/customer/dashboard']);
     }
   }
+
+
 }
