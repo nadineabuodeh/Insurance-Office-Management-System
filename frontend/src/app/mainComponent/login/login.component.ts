@@ -31,6 +31,7 @@ import { MatOptionModule } from '@angular/material/core';
 export class LoginComponent {
   loginForm: FormGroup;
   isLoginFailed: boolean = false;
+  defaultCurrency: string | undefined;
 
   constructor(
     private fb: FormBuilder,
@@ -47,6 +48,7 @@ export class LoginComponent {
     if (this.loginForm.invalid) {
       return;
     }
+    localStorage.clear();
 
     this.authService.login(this.loginForm.value).subscribe({
       next: (response) => {
@@ -54,7 +56,7 @@ export class LoginComponent {
         const role = response.roles[0];
         this.authService.saveToken(token, role);
         this.isLoginFailed = false;
-        this.redirectBasedOnRole();
+        this.redirectBasedOnRole(this.loginForm.value.username);
       },
       error: () => {
         this.isLoginFailed = true;
@@ -62,9 +64,13 @@ export class LoginComponent {
     });
   }
 
-  private redirectBasedOnRole(): void {
+  private redirectBasedOnRole(username: string): void {
     const role = this.authService.getUserRole();
-    if (role === 'ROLE_ADMIN' ) {
+    this.defaultCurrency = localStorage.getItem('defaultCurrency') || undefined;
+
+    if (role === 'ROLE_ADMIN' && !this.defaultCurrency) {
+      this.router.navigate(['/admin/currency'], { queryParams: { username: username } });
+    } else if (role === 'ROLE_ADMIN' && this.defaultCurrency) {
       this.router.navigate(['/admin/dashboard']);
     } else if (role === 'ROLE_CUSTOMER') {
       this.router.navigate(['/customer/dashboard']);
