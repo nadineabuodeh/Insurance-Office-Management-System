@@ -15,4 +15,14 @@ export class AdminHeaderComponent {
   logout(): void {
     this.authService.logout();
   }
+
+  openSettings(): void {
+    const adminId = this.authService.getAdminId();
+    if (adminId) {
+      this.router.navigate([`/admin/admin-details/${adminId}`]);
+    } else {
+      console.error('Admin ID not found!!');
+    }
+
+  }
 }

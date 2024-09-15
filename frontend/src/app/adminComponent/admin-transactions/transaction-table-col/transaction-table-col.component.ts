@@ -9,7 +9,7 @@ import { Component, Input } from '@angular/core';
   template: `
   @if(column === 'amount'){
   <span>
-    {{ transaction.amount | currency: 'ILS':'symbol':'1.2-2' }}
+    {{ transaction.amount |  currency: selectedCurrency:'symbol':'1.2-2' }}
   </span>
 }
   @if(column !== 'amount'){
@@ -23,6 +23,12 @@ import { Component, Input } from '@angular/core';
 export class TransactionTableColComponent {
   @Input() transaction!: Transaction;
   @Input() column!: string;
+  selectedCurrency: string = 'ILS';
+
+
+  ngOnInit(): void {
+    this.selectedCurrency = localStorage.getItem('defaultCurrency') || 'ILS';
+  }
 
   getValue(): string {
     return (this.transaction as any)[this.column] || '';

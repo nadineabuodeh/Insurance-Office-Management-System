@@ -1,0 +1,17 @@
+<div class="admin-details-container">
+  <h1>Admin Details</h1>
+
+
+  <div class="currency-selection">
+    <mat-form-field appearance="outline">
+      <mat-label>Currency</mat-label>
+      <mat-select [(ngModel)]="selectedCurrency" (ngModelChange)="onCurrencyChange()">
+        @for (currency of currenciesWithSymbols; track $index) {
+        <mat-option [value]="currency.code">
+          {{ currency.symbol }} ({{ currency.code }})
+        </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>

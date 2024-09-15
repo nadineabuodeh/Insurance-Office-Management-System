@@ -49,11 +49,16 @@ export class PolicyLayoutComponent {
   columnOptions: string[] = ['policyName', 'insuranceType', 'username', 'totalAmount'];
 
   dataSource = new MatTableDataSource<Policy>();
+  selectedCurrency: string = 'ILS';
 
+
+  
   constructor(private policyService: PolicyService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.loadPolicies();
+    this.selectedCurrency = localStorage.getItem('defaultCurrency') || 'ILS';
+
   }
 
 

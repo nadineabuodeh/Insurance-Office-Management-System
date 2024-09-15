@@ -21,10 +21,13 @@ export class PolicyLayoutComponent {
     'insuranceDescription',
   ];
   dataSource = new MatTableDataSource<Policy>();
+  selectedCurrency: string = 'ILS';
 
-  constructor(private policyService: PolicyService) {}
+  constructor(private policyService: PolicyService) { }
 
   ngOnChanges(changes: SimpleChanges): void {
+    this.selectedCurrency = localStorage.getItem('defaultCurrency') || 'ILS';
+
     if (changes['customerId'] && this.customerId) {
       this.dataSource.data = [];
       this.loadPolicies();
