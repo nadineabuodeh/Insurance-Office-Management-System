@@ -1,0 +1,89 @@
+<h5 mat-dialog-title class="title">
+  {{adminName}}
+</h5>
+
+<mat-dialog-content style="margin-top: 15px;">
+  <form [formGroup]="formGroup">
+    <div class="name-fields-container">
+      <mat-form-field appearance="fill" class="custom-form-field">
+        <mat-label>First Name</mat-label>
+        <input matInput formControlName="firstName" />
+        @if (formGroup.get('firstName')?.hasError('required')) {
+        <mat-error>First Name is required</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="custom-form-field">
+        <mat-label>Last Name</mat-label>
+        <input matInput formControlName="lastName" />
+        @if (formGroup.get('lastName')?.hasError('required')) {
+        <mat-error>Last Name is required</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="fill" class="custom-form-field">
+      <mat-label>Username</mat-label>
+      <input matInput formControlName="username" />
+    </mat-form-field>
+
+
+    <mat-form-field appearance="fill" class="custom-form-field">
+      <mat-label>ID Number</mat-label>
+      <input matInput formControlName="idNumber" />
+    </mat-form-field>
+
+
+    <mat-form-field appearance="fill" class="custom-form-field">
+      <mat-label>Phone Number</mat-label>
+      <input matInput formControlName="phoneNumber" />
+
+      @if (formGroup.get('phoneNumber')?.hasError('required')) {
+      <mat-error>Phone Number is required</mat-error>
+      }
+      @if (formGroup.get('phoneNumber')?.hasError('pattern')) {
+      <mat-error> Phone number must be 10 digits and contain only numbers</mat-error>
+      }
+
+      @if (formGroup.get('phoneNumber')?.hasError('duplicate')) {
+      <mat-error> Phone number is already in use</mat-error>
+      }
+    </mat-form-field>
+
+
+
+    <mat-form-field appearance="fill" class="custom-form-field">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" />
+      @if (formGroup.get('email')?.hasError('required')) {
+      <mat-error>Email is required</mat-error>
+      }
+      @if (formGroup.get('email')?.hasError('email')) {
+      <mat-error>Invalid email format</mat-error>
+      }
+      @if (formGroup.get('email')?.hasError('duplicate')) {
+      <mat-error>Email is already in use</mat-error>
+      }
+    </mat-form-field>
+
+
+    <mat-form-field id="currency" appearance="outline">
+      <mat-label >Currency</mat-label>
+      <mat-select class="options" formControlName="currency">
+        @for (currency of currenciesWithSymbols; track $index) {
+        <mat-option class="options" [value]="currency.code">
+          {{ currency.code }} - {{ currency.symbol }}
+        </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" [disabled]="formGroup.invalid">Submit</button>
+</mat-dialog-actions>

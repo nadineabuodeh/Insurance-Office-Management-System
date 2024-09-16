@@ -6,11 +6,12 @@ import {
 import { TransactionTableColComponent } from '../../admin-transactions/transaction-table-col/transaction-table-col.component';
 import { CommonModule } from '@angular/common';
 import { Component, Input, SimpleChanges } from '@angular/core';
+import { AdminSidebarComponent } from "../../admin-sidebar/admin-sidebar.component";
 
 @Component({
   selector: 'app-admin-upcoming-transaction',
   standalone: true,
-  imports: [TransactionTableColComponent, CommonModule, MatTableModule],
+  imports: [TransactionTableColComponent, CommonModule, MatTableModule, AdminSidebarComponent],
   templateUrl: './admin-upcoming-transaction.component.html',
   styleUrl: './admin-upcoming-transaction.component.css',
 })

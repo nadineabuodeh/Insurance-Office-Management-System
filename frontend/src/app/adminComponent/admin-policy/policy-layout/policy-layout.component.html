@@ -15,7 +15,6 @@
 
   <div class="filter-container">
 
-    <!-- columnOptions: string[] = ['policyName','transactionType','username', 'amount']; -->
 
     <!-- Filter By Column -->
     <mat-form-field appearance="outline" class="filter">
@@ -95,7 +94,7 @@
 
     <ng-container matColumnDef="totalAmount">
       <th mat-header-cell *matHeaderCellDef mat-sort-header (click)="sortData('totalAmount')"> Total Amount </th>
-      <td mat-cell *matCellDef="let policy">{{ policy.totalAmount | currency:'ILS':'symbol':'1.2-2' }}</td>
+      <td mat-cell *matCellDef="let policy">{{ policy.totalAmount |   currency: selectedCurrency:'symbol':'1.2-2' }}</td>
     </ng-container>
 
     <ng-container matColumnDef="coverageDetails">

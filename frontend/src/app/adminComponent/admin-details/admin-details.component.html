@@ -1,0 +1,47 @@
+@if (admin) {
+<div class="admin-details-container">
+
+  <div class="container">
+    <h3 id="header"> Admin Details For {{ capitalizeFirstLetter(admin.firstName) }} {{
+      capitalizeFirstLetter(admin.lastName) }}</h3>
+
+    <button class="btns" (click)="editAdmin(admin)">
+      <img class="icons" src="./assets/pencil.png" alt="edit" title="Update admin's Information">
+    </button>
+  </div>
+
+  <div class="admin-info">
+    <div class="info-item">
+      <label>First Name:</label>
+      <span>{{ admin.firstName }}</span>
+    </div>
+    <div class="info-item">
+      <label>Last Name:</label>
+      <span>{{ admin.lastName }}</span>
+    </div>
+    <div class="info-item">
+      <label>Username:</label>
+      <span>{{ admin.username }}</span>
+    </div>
+    <div class="info-item">
+      <label>ID Number:</label>
+      <span>{{ admin.idNumber }}</span>
+    </div>
+    <div class="info-item">
+      <label>Phone Number:</label>
+      <span>{{ admin.phoneNumber }}</span>
+    </div>
+    <div class="info-item">
+      <label>Email:</label>
+      <span>{{ admin.email }}</span>
+    </div>
+    <div class="info-item">
+      <label>Currency:</label>
+      <span>{{ admin.currency }}</span>
+    </div>
+
+  </div>
+
+</div>
+
+}

@@ -154,7 +154,7 @@ export class CustomerFormComponent {
           .updateCustomer(this.data.customer.id, customerData)
           .subscribe(
             () => {
-              this.loadingService.loadingOff(); 
+              this.loadingService.loadingOff();
               this.dialogRef.close(customerData);
             },
             () => {
@@ -164,7 +164,7 @@ export class CustomerFormComponent {
       } else {
         this.customerService.addCustomer(customerData).subscribe(
           () => {
-            this.loadingService.loadingOff(); 
+            this.loadingService.loadingOff();
             this.dialogRef.close(customerData);
           },
           () => {

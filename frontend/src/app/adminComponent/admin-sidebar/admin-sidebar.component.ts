@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { CustomerTreeListComponent } from '../admin-customer/customer-tree-list/customer-tree-list.component';
 import { SplitterModule } from 'primeng/splitter';
 import { TreeModule } from 'primeng/tree';
 import { CustomerDetailsComponent } from '../admin-customer/customer-details/customer-details.component';
 import { Customer } from '../../service/CustomerService/customer.service';
 import { RouterModule } from '@angular/router';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-admin-sidebar',
@@ -39,4 +40,6 @@ export class AdminSidebarComponent {
   onCustomerSelected(customer: Customer): void {
     this.selectedCustomer = customer;
   }
+
 }
+

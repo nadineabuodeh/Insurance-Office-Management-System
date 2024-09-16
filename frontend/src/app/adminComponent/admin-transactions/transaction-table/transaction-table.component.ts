@@ -24,6 +24,7 @@ import {
 import { TransactionFormComponent } from '../transaction-form/transaction-form.component';
 import { TransactionTableColComponent } from '../transaction-table-col/transaction-table-col.component';
 import { LoadingService } from '../../../service/loading.service';
+import { CurrencyService } from '../../../service/currency.service';
 
 @Component({
   selector: 'app-transaction-table',
@@ -68,8 +69,8 @@ export class TransactionTableComponent implements OnInit {
   constructor(
     private transactionService: TransactionService,
     public dialog: MatDialog,
-    private loadingService: LoadingService
-  ) {}
+    private loadingService: LoadingService, private currencyService: CurrencyService
+  ) { }
 
   ngOnInit(): void {
     this.loadTransactions();
@@ -81,6 +82,7 @@ export class TransactionTableComponent implements OnInit {
       this.loadTransactions();
     }
   }
+
   toggleFilter() {
     this.showFilter = !this.showFilter;
   }

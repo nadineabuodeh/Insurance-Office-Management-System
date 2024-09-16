@@ -39,27 +39,35 @@ public class AdminController {
         return ResponseEntity.ok(admin);
     }
 
+
     @PutMapping("/updateProfile")
     public ResponseEntity<?> updateAdminProfile(@Validated @RequestBody UpdateAdminRequest updateRequest,
-            @RequestHeader("Authorization") String token) {
-        String username = jwtUtils.getUserNameFromJwtToken(token.substring(7));
-        User admin = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("Admin not found"));
+                                                @RequestHeader("Authorization") String token) {
+        try {
+            String username = jwtUtils.getUserNameFromJwtToken(token.substring(7));
+            User admin = userRepository.findByUsername(username)
+                    .orElseThrow(() -> new RuntimeException("Admin not found"));
 
-        admin.setCurrency(updateRequest.getCurrency());
-        admin.setFirstName(updateRequest.getFirstName());
-        admin.setLastName(updateRequest.getLastName());
-        admin.setEmail(updateRequest.getEmail());
-        admin.setPhoneNumber(updateRequest.getPhoneNumber());
 
-        userRepository.save(admin);
+            admin.setCurrency(updateRequest.getCurrency());
+            admin.setFirstName(updateRequest.getFirstName());
+            admin.setLastName(updateRequest.getLastName());
+            admin.setEmail(updateRequest.getEmail());
+            admin.setPhoneNumber(updateRequest.getPhoneNumber());
 
-        return ResponseEntity.ok(new MessageResponse("Admin profile updated successfully"));
+            userRepository.save(admin);
+
+            return ResponseEntity.ok(new MessageResponse("Admin profile updated successfully"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new MessageResponse("An error occurred: " + e.getMessage()));
+        }
     }
+
 
     @PostMapping("/setCurrency")
     public ResponseEntity<?> setCurrency(@RequestBody CurrencyRequest currencyRequest,
-            @RequestHeader("Authorization") String token) {
+                                         @RequestHeader("Authorization") String token) {
         String username = jwtUtils.getUserNameFromJwtToken(token.substring(7));
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -74,4 +82,14 @@ public class AdminController {
 
         return ResponseEntity.ok(new MessageResponse("Currency updated successfully!"));
     }
+
+    @GetMapping("/currency")
+    public ResponseEntity<?> getAdminCurrency(@RequestHeader("Authorization") String token) {
+        String username = jwtUtils.getUserNameFromJwtToken(token.substring(7));
+        User admin = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Admin not found"));
+        System.out.println("CURRENCY ->" + admin.getCurrency());
+        return ResponseEntity.ok(admin.getCurrency());
+    }
+
 }

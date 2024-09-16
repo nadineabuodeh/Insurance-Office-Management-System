@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { LoginRequest } from '../model/login-request';
 import { JwtResponse } from '../model/jwt-response';
-import { catchError, tap, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, tap, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -11,8 +11,9 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   private baseUrl = 'http://localhost:8080/api/auth';
+  private adminId: string | null = null
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) { }
 
   login(loginRequest: LoginRequest): Observable<JwtResponse> {
     return this.http
@@ -24,6 +25,11 @@ export class AuthService {
             console.log('JWT Token:', response.accessToken);
             const role = response.roles[0];
             this.saveToken(response.accessToken, role);
+            this.adminId = response.id?.toString() || null; // Save admin ID
+            if (this.adminId) {
+              localStorage.setItem('adminId', this.adminId); // Also store adminId in localStorage
+            }
+            console.log('Admin ID:', this.adminId);
           } else {
             console.warn('Token is undefined or null');
           }
@@ -49,9 +55,11 @@ export class AuthService {
     localStorage.removeItem('authToken');
     localStorage.removeItem('tokenExpiration');
     localStorage.removeItem('userRole');
+    localStorage.removeItem('adminId');
 
     const tokenAfterLogout = localStorage.getItem('authToken');
     console.log('Token after logout:', tokenAfterLogout);
+    this.adminId = null;
 
     this.router.navigate(['/login']);
   }
@@ -69,6 +77,7 @@ export class AuthService {
     localStorage.removeItem('authToken');
     localStorage.removeItem('tokenExpiration');
     localStorage.removeItem('userRole');
+    localStorage.removeItem('adminId');
   }
 
   getUserRole(): string | null {
@@ -84,4 +93,9 @@ export class AuthService {
     }
     return throwError(() => new Error(errorMessage));
   }
+
+  getAdminId(): string | null {
+    return this.adminId || localStorage.getItem('adminId'); 
+  }
+
 }

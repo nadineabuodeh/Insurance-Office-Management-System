@@ -13,6 +13,7 @@ import { MatSortModule, MatSort } from "@angular/material/sort";
 import { MatTableModule, MatTableDataSource } from "@angular/material/table";
 import { FormsModule } from '@angular/forms';
 import { LoadingService } from '../../../service/loading.service';
+import { CurrencyService } from '../../../service/currency.service';
 
 @Component({
   selector: 'app-policy-layout',
@@ -50,13 +51,32 @@ export class PolicyLayoutComponent {
   columnOptions: string[] = ['policyName', 'insuranceType', 'username', 'totalAmount'];
 
   dataSource = new MatTableDataSource<Policy>();
+  selectedCurrency: string = 'NIS';
 
-  constructor(private policyService: PolicyService, public dialog: MatDialog, private loadingService: LoadingService) { }
+
+  constructor(
+    private policyService: PolicyService,
+    public dialog: MatDialog,
+    private loadingService: LoadingService,
+    private currencyService: CurrencyService) { }
 
   ngOnInit(): void {
     this.loadPolicies();
+    this.getAdminCurrency()
+
   }
 
+  getAdminCurrency(): void {
+    this.currencyService.getAdminCurrency().subscribe({
+      next: (currency: string) => {
+        this.selectedCurrency = currency === 'NIS' ? 'ILS' : currency;
+        console.log("policy table currency -> " + this.selectedCurrency)
+      },
+      error: (err) => {
+        console.error('Error fetching currency:', err);
+      }
+    });
+  }
 
   toggleFilter() {
     this.showFilter = !this.showFilter;

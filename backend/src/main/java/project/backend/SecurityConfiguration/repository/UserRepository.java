@@ -22,4 +22,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
   @Query("SELECT u FROM User u WHERE u.admin.username = :adminUsername")
   List<User> findAllByAdminUsername(@Param("adminUsername") String adminUsername);
+
+
 }

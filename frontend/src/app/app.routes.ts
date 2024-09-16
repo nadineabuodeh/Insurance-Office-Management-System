@@ -15,6 +15,8 @@ import { PolicyCustomerComponent } from './customerComponent/customer-policies/p
 import { TransactionCustomerTableComponent } from './customerComponent/customer-payment-history/transaction-table/transaction-table.component';
 import { TransactionDebtTableComponent } from './customerComponent/customer-debts/transaction-debt-table/transaction-table.component';
 import { CustomerInfoComponent } from './customerComponent/customer-info/customer-details.component';
+import { SelectCurrencyComponent } from './adminComponent/select-currency/select-currency.component';
+import { AdminDetailsComponent } from './adminComponent/admin-details/admin-details.component';
 
 export const routes: Routes = [
   { path: '', component: SplashScreenComponent },
@@ -31,6 +33,9 @@ export const routes: Routes = [
       { path: 'policy', component: PolicyLayoutComponent },
       { path: 'insurance', component: InsuranceTableComponent },
       { path: 'transactions', component: TransactionTableComponent },
+      { path: 'currency', component: SelectCurrencyComponent },
+      { path: 'admin-details', component: AdminDetailsComponent },
+      { path: 'admin-details/:id', component: AdminDetailsComponent },
       { path: '**', redirectTo: 'dashboard' },
     ],
   },

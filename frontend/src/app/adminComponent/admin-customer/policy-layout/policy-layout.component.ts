@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, SimpleChanges, ViewChild } from '@angular/core';
 
 import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { PolicyService } from '../../../service/policy.service';
@@ -13,14 +13,16 @@ import { MatTableModule, MatTableDataSource } from "@angular/material/table";
 import { FormsModule } from '@angular/forms';
 import { LoadingService } from '../../../service/loading.service';
 import { PolicyFormComponent } from '../../admin-policy/policy-form/policy-form.component';
+import { CurrencyService } from '../../../service/currency.service';
 
 @Component({
   selector: 'app-customer-policy-layout',
   standalone: true,
   imports: [
     CommonModule, MatSortModule, MatTableModule, FormsModule,
-    MatTableModule, DatePipe, CurrencyPipe,
-    MatDialogModule, CommonModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatSortModule, MatSort],
+    DatePipe, CurrencyPipe, MatDialogModule, MatFormFieldModule,
+    MatInputModule, MatSelectModule
+  ],
   templateUrl: './policy-layout.component.html',
   styleUrl: './policy-layout.component.css',
 })
@@ -49,11 +51,41 @@ export class PolicyLayoutComponent {
   columnOptions: string[] = ['policyName', 'insuranceType', 'username', 'totalAmount'];
 
   dataSource = new MatTableDataSource<Policy>();
+  selectedCurrency: string = 'NIS';
 
-  constructor(private policyService: PolicyService, public dialog: MatDialog, private loadingService: LoadingService) { }
+  constructor(
+    private policyService: PolicyService,
+    public dialog: MatDialog,
+    private loadingService: LoadingService,
+    private currencyService: CurrencyService) { }
+
+  ngOnChanges(changes: SimpleChanges): void {
+
+    console.log("CURRENCY POLICY --->> " + this.selectedCurrency)
+    if (changes['customerId'] && this.customerId) {
+      this.dataSource.data = [];
+      this.loadPolicies();
+    }
+  }
+
+
 
   ngOnInit(): void {
+    this.getAdminCurrency()
     this.loadPolicies();
+  }
+
+
+  getAdminCurrency(): void {
+    this.currencyService.getAdminCurrency().subscribe({
+      next: (currency: string) => {
+        this.selectedCurrency = currency === 'NIS' ? 'ILS' : currency;
+        console.log("policy table currency -> " + this.selectedCurrency)
+      },
+      error: (err) => {
+        console.error('Error fetching currency:', err);
+      }
+    });
   }
 
 
@@ -85,21 +117,15 @@ export class PolicyLayoutComponent {
   applyFilter() {
     if (this.selectedColumn === 'policyName') {
       this.dataSource.filterPredicate = (data: Policy, filter: string) => {
-
-
         const PolicyNameLower = data.policyName.toLowerCase();
         const filterLower = filter.toLowerCase();
-
         const result = PolicyNameLower === filterLower || filterLower === '';
         return result;
       };
       this.dataSource.filter = this.selectedPolicyName.trim().toLowerCase();
     } else {
       this.dataSource.filterPredicate = (data: Policy, filter: string) => {
-
-
         const dataStr = (data as any)[this.selectedColumn]?.toString().toLowerCase();
-
         const result = dataStr?.indexOf(filter.toLowerCase()) !== -1;
         return result;
       };
@@ -109,21 +135,15 @@ export class PolicyLayoutComponent {
 
     if (this.selectedColumn === 'username') {
       this.dataSource.filterPredicate = (data: Policy, filter: string) => {
-
-
         const userNameLower = data.username.toLowerCase();
         const filterLower = filter.toLowerCase();
-
         const result = userNameLower === filterLower || filterLower === '';
         return result;
       };
       this.dataSource.filter = this.selectedUserName.trim().toLowerCase();
     } else {
       this.dataSource.filterPredicate = (data: Policy, filter: string) => {
-
-
         const dataStr = (data as any)[this.selectedColumn]?.toString().toLowerCase();
-
         const result = dataStr?.indexOf(filter.toLowerCase()) !== -1;
         return result;
       };
@@ -133,21 +153,15 @@ export class PolicyLayoutComponent {
 
     if (this.selectedColumn === 'insuranceType') {
       this.dataSource.filterPredicate = (data: Policy, filter: string) => {
-
-
         const insuranceTypeLower = data.insuranceType.toLowerCase();
         const filterLower = filter.toLowerCase();
-
         const result = insuranceTypeLower === filterLower || filterLower === '';
         return result;
       };
       this.dataSource.filter = this.selectedInsuranceType.trim().toLowerCase();
     } else {
       this.dataSource.filterPredicate = (data: Policy, filter: string) => {
-
-
         const dataStr = (data as any)[this.selectedColumn]?.toString().toLowerCase();
-
         const result = dataStr?.indexOf(filter.toLowerCase()) !== -1;
         return result;
       };
@@ -156,8 +170,6 @@ export class PolicyLayoutComponent {
 
 
   }
-
-
 
   AmountFilter(event: Event): void {
     const input = event.target as HTMLInputElement;

@@ -6,13 +6,13 @@ import jakarta.validation.constraints.Size;
 import project.backend.SecurityConfiguration.models.CurrencyType;
 
 public class UpdateAdminRequest {
-    
+
     private CurrencyType currency;
-    
+
     @NotBlank
     @Size(max = 50)
     private String firstName;
-    
+
     @NotBlank
     @Size(max = 50)
     private String lastName;
@@ -65,4 +65,6 @@ public class UpdateAdminRequest {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+
 }
