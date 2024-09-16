@@ -1,31 +1,26 @@
 <div class="currency-selection-container">
   <img src="./assets/logo.png" alt="No Policies" class="empty-icon">
 
-  <h1>Welcome {{ username }} To InsuranceNexus!</h1>
+  <h1>Welcome {{ capitalizeFirstLetter(username!) }} To InsuranceNexus!</h1>
   <p>At InsuranceNexus, We are dedicated to providing you with <br> an exceptional experience as an insurance company
-    administrator. <br> <br> Please select your preferred default currency to get started.</p>
+    administrator. <br> <br> Please select your preferred currency to get started.</p>
 
   <div class="currency-selection">
     <mat-form-field appearance="outline">
       <mat-label class="select">Currency</mat-label>
-      <mat-select [(ngModel)]="selectedCurrency">
+      <mat-select id="font" [(ngModel)]="selectedCurrency">
         @for (currency of currenciesWithSymbols; track $index) {
         <mat-option class="select" [value]="currency.code">
           {{ currency.symbol }} ({{ currency.code }})
         </mat-option>
         }
       </mat-select>
-  
-    </mat-form-field> 
-    @if (currencyError) {
-      <mat-error style="color: rgb(202, 23, 23);">Please select a currency!</mat-error>
-      }
-      <br>
+    </mat-form-field>
+
+    <br>
     <button class="select" mat-raised-button color="primary" (click)="onCurrencySelect()">
       Set Currency
     </button>
-    <button class="select" mat-raised-button color="warn" (click)="clearCurrency()">
-      Reset Currency
-    </button>
+
   </div>
 </div>

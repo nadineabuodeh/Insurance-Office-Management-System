@@ -6,10 +6,12 @@
   <form [formGroup]="formGroup">
 
 
+    @if(!isEditMode){
     <div class="switch-container">
       <mat-slide-toggle id="switch" formControlName="installmentsEnabled"></mat-slide-toggle>
       <span class="switch-label">Installment</span>
     </div>
+    }
 
     @if ( formGroup.get('installmentsEnabled')?.value ) {
     <mat-form-field appearance="fill" class="custom-form-field">

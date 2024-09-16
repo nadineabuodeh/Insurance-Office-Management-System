@@ -1,7 +1,7 @@
 <header class="admin-header">
   <div class="header-left">
     <a href="#">
-      <img src="assets/logo.png" alt="InsuranceNexus Logo" class="logo" title="InsuranceNexus" />
+      <img src="assets/logo.png" alt="InsuranceNexus Logo" class="logo" title="Go To Dashboard Page" />
     </a>
     <div class="app-name">InsuranceNexus</div>
   </div>
@@ -11,7 +11,11 @@
       <button class="more-button"><i class="fas fa-ellipsis-v"></i></button>
 
       <div class="dropdown-content">
-        <a (click)="openSettings()">Settings</a>
+        <!-- <a (click)="openSettings()">Settings</a> -->
+        <a [ngClass]="{ disabled: isCurrencyRoute }" (click)="openSettings()"
+          [style.color]="isCurrencyRoute ? 'grey' : ''">
+          Settings
+        </a>
         <a (click)="logout()">Logout</a>
       </div>
 

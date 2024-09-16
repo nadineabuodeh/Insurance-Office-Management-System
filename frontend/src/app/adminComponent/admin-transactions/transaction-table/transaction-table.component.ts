@@ -1,34 +1,51 @@
-import { DatePipe, CurrencyPipe, CommonModule } from "@angular/common";
-import { Component, OnInit, AfterViewInit, ViewChild, Input, SimpleChanges, ViewEncapsulation } from "@angular/core";
-import { FormsModule } from "@angular/forms";
+import { DatePipe, CurrencyPipe, CommonModule } from '@angular/common';
+import {
+  Component,
+  OnInit,
+  AfterViewInit,
+  ViewChild,
+  Input,
+  SimpleChanges,
+  ViewEncapsulation,
+} from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-import { MatDialogModule, MatDialog } from "@angular/material/dialog";
-import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatInputModule } from "@angular/material/input";
-import { MatSelectModule } from "@angular/material/select";
-import { MatSortModule, MatSort } from "@angular/material/sort";
-import { MatTableModule, MatTableDataSource } from "@angular/material/table";
+import { MatDialogModule, MatDialog } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSortModule, MatSort } from '@angular/material/sort';
+import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 
-import { Transaction, TransactionService } from "../../../service/TransactionService/transaction.service";
-import { TransactionFormComponent } from "../transaction-form/transaction-form.component";
-import { TransactionTableColComponent } from "../transaction-table-col/transaction-table-col.component";
-
-
+import {
+  Transaction,
+  TransactionService,
+} from '../../../service/TransactionService/transaction.service';
+import { TransactionFormComponent } from '../transaction-form/transaction-form.component';
+import { TransactionTableColComponent } from '../transaction-table-col/transaction-table-col.component';
+import { LoadingService } from '../../../service/loading.service';
+import { CurrencyService } from '../../../service/currency.service';
 
 @Component({
   selector: 'app-transaction-table',
   standalone: true,
   imports: [
     FormsModule,
-    MatTableModule, DatePipe, CurrencyPipe,
-    MatDialogModule, CommonModule,
-    TransactionTableColComponent, MatFormFieldModule, MatInputModule, MatSelectModule, MatSortModule, MatSort
+    MatTableModule,
+    DatePipe,
+    CurrencyPipe,
+    MatDialogModule,
+    CommonModule,
+    TransactionTableColComponent,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatSortModule,
+    MatSort,
   ],
   templateUrl: './transaction-table.component.html',
   styleUrls: ['./transaction-table.component.css'],
 })
-
-
 export class TransactionTableComponent implements OnInit {
   @Input() customerId!: number;
 
@@ -38,7 +55,6 @@ export class TransactionTableComponent implements OnInit {
   columnOptions: string[] = ['transactionType', 'amount'];
   showFilter: boolean = false;
   selectedTransactionType: string = '';
-
 
   displayedColumns: string[] = [
     'startDate',
@@ -50,10 +66,10 @@ export class TransactionTableComponent implements OnInit {
     'actions',
   ];
 
-
   constructor(
     private transactionService: TransactionService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private loadingService: LoadingService, private currencyService: CurrencyService
   ) { }
 
   ngOnInit(): void {
@@ -66,10 +82,10 @@ export class TransactionTableComponent implements OnInit {
       this.loadTransactions();
     }
   }
+
   toggleFilter() {
     this.showFilter = !this.showFilter;
   }
-
 
   get filterIcon(): string {
     return this.dataSource.data.length === 0
@@ -78,24 +94,24 @@ export class TransactionTableComponent implements OnInit {
   }
 
   clearFilter() {
-    const amountInput = document.querySelector('.filter-input') as HTMLInputElement;
+    const amountInput = document.querySelector(
+      '.filter-input'
+    ) as HTMLInputElement;
     if (amountInput) {
       amountInput.value = '';
     }
     this.selectedTransactionType = '';
     this.dataSource.filter = '';
-    this.dataSource.filterPredicate = (data: Transaction, filter: string) => true;
+    this.dataSource.filterPredicate = (data: Transaction, filter: string) =>
+      true;
     this.loadTransactions();
   }
 
-
   loadTransactions(): void {
-    this.transactionService.getAllTransactions().subscribe(transactions => {
+    this.transactionService.getAllTransactions().subscribe((transactions) => {
       this.dataSource.data = transactions;
     });
   }
-
-
 
   onAddTransactionClick(): void {
     const dialogRef = this.dialog.open(TransactionFormComponent, {
@@ -124,7 +140,9 @@ export class TransactionTableComponent implements OnInit {
 
   deleteTransaction(id: number): void {
     if (confirm('Are you sure you want to delete this transaction?')) {
+      this.loadingService.loadingOn();
       this.transactionService.deleteTransaction(id).subscribe(() => {
+        this.loadingService.loadingOff();
         this.loadTransactions();
       });
     }
@@ -132,14 +150,21 @@ export class TransactionTableComponent implements OnInit {
 
   updateTransactionType(transaction: Transaction): void {
     if (transaction && transaction.id) {
-      this.transactionService.updateTransactionType(transaction.id, transaction)
+      this.loadingService.loadingOn();
+      this.transactionService
+        .updateTransactionType(transaction.id, transaction)
         .subscribe(
-          updatedTransaction => {
-            console.log('Transaction type updated:', updatedTransaction.transactionType);
+          (updatedTransaction) => {
+            this.loadingService.loadingOff();
+            console.log(
+              'Transaction type updated:',
+              updatedTransaction.transactionType
+            );
             this.dataSource.data = [...this.dataSource.data];
             this.loadTransactions();
           },
-          error => {
+          (error) => {
+            this.loadingService.loadingOff();
             console.error('Error updating transaction type:', error);
           }
         );
@@ -147,7 +172,6 @@ export class TransactionTableComponent implements OnInit {
       console.error('Transaction or ID is undefined');
     }
   }
-
 
   getIcon(transactionType: string): string {
     switch (transactionType) {
@@ -160,44 +184,46 @@ export class TransactionTableComponent implements OnInit {
     }
   }
 
-
-
   AmountFilter(event: Event): void {
     const input = event.target as HTMLInputElement;
     const filterValue = input ? input.value : '';
 
     this.dataSource.filterPredicate = (data: Transaction, filter: string) => {
       const columnValue = data[this.selectedColumn as keyof Transaction];
-      return columnValue?.toString().toLowerCase().includes(filter.toLowerCase()) || false;
+      return (
+        columnValue?.toString().toLowerCase().includes(filter.toLowerCase()) ||
+        false
+      );
     };
 
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-
-
   applyFilter() {
     if (this.selectedColumn === 'transactionType') {
       this.dataSource.filterPredicate = (data: Transaction, filter: string) => {
-
-
         const transactionTypeLower = data.transactionType.toLowerCase();
         const filterLower = filter.toLowerCase();
 
-        const result = transactionTypeLower === filterLower || filterLower === '';
+        const result =
+          transactionTypeLower === filterLower || filterLower === '';
         return result;
       };
-      this.dataSource.filter = this.selectedTransactionType.trim().toLowerCase();
+      this.dataSource.filter = this.selectedTransactionType
+        .trim()
+        .toLowerCase();
     } else {
       this.dataSource.filterPredicate = (data: Transaction, filter: string) => {
-
-
-        const dataStr = (data as any)[this.selectedColumn]?.toString().toLowerCase();
+        const dataStr = (data as any)[this.selectedColumn]
+          ?.toString()
+          .toLowerCase();
 
         const result = dataStr?.indexOf(filter.toLowerCase()) !== -1;
         return result;
       };
-      this.dataSource.filter = this.selectedTransactionType.trim().toLowerCase();
+      this.dataSource.filter = this.selectedTransactionType
+        .trim()
+        .toLowerCase();
     }
   }
 
@@ -233,9 +259,13 @@ export class TransactionTableComponent implements OnInit {
   sortData(column: string): void {
     const data = this.dataSource.data.slice();
     const isAsc = this.sortDirection === 'asc';
-    this.sortDirection = isAsc ? 'desc' : 'asc';  // Toggle sort direction
+    this.sortDirection = isAsc ? 'desc' : 'asc'; // Toggle sort direction
     this.dataSource.data = data.sort((a, b) => {
-      return this.compare(this.getSortingValue(a, column), this.getSortingValue(b, column), isAsc);
+      return this.compare(
+        this.getSortingValue(a, column),
+        this.getSortingValue(b, column),
+        isAsc
+      );
     });
   }
 
@@ -243,4 +273,4 @@ export class TransactionTableComponent implements OnInit {
   compare(a: any, b: any, isAsc: boolean): number {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
-}  
+}

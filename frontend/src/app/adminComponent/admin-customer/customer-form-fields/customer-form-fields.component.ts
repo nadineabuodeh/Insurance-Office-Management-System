@@ -33,6 +33,8 @@ export class CustomerFormFieldsComponent {
 
   ngOnInit(): void {
     this.initialFormValue = this.formGroup.getRawValue();
+    console.log("customer name ->"+this.customerName)
+
   }
 
   onCancel(): void {

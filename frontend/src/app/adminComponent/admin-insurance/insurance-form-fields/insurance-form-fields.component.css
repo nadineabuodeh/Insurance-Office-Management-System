@@ -1,3 +1,10 @@
+
+.title {
+  color: #201e43;
+  font-weight: bold;
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
+
 form {
   display: flex;
   flex-direction: column;
@@ -6,3 +13,4 @@ form {
   margin: auto;
   overflow: hidden;
 }
+

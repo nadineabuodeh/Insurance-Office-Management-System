@@ -2,6 +2,8 @@ package project.backend.SecurityConfiguration.payload.response;
 
 import java.util.List;
 
+import project.backend.SecurityConfiguration.models.CurrencyType;
+
 public class JwtResponse {
   private String token;
   private String type = "Bearer";
@@ -9,13 +11,16 @@ public class JwtResponse {
   private String username;
   private String email;
   private List<String> roles;
+  private CurrencyType currency;
 
-  public JwtResponse(String accessToken, Long id, String username, String email, List<String> roles) {
+  public JwtResponse(String accessToken, Long id, String username, String email, List<String> roles,
+      CurrencyType currency) {
     this.token = accessToken;
     this.id = id;
     this.username = username;
     this.email = email;
     this.roles = roles;
+    this.currency = currency;
   }
 
   public String getAccessToken() {
@@ -60,5 +65,13 @@ public class JwtResponse {
 
   public List<String> getRoles() {
     return roles;
+  }
+
+  public CurrencyType getCurrency() {
+    return currency;
+  }
+
+  public void setCurrency(CurrencyType currency) {
+    this.currency = currency;
   }
 }

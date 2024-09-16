@@ -1,0 +1,39 @@
+.title {
+  color: #201e43;
+  font-weight: bold;
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
+*{
+  font-family: 'Times New Roman', Times, serif;
+}
+.name-fields-container {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.options {
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.custom-form-field {
+  width: 100%;
+  margin-bottom: 1rem;
+  flex: 1;
+  min-width: 150px;
+}
+
+.mat-error {
+  color: #f44336;
+}
+
+.mat-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem;
+  align-content: end;
+}
+
+#currency {
+  width: 495px;
+}

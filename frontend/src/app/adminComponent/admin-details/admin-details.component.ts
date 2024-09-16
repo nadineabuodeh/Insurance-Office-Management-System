@@ -8,56 +8,78 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { AdminService } from '../../service/admin.service';
+import { Admin } from '../../model/admin';
+import { MatDialog } from '@angular/material/dialog';
+import { LoadingService } from '../../service/loading.service';
+import { AdminFormComponent } from '../admin-form/admin-form.component';
 
 @Component({
   selector: 'app-admin-details',
   standalone: true,
   imports: [NgClass, CommonModule, MatFormFieldModule,
     MatInputModule, FormsModule,
-    MatButtonModule, MatOptionModule, MatSelectModule],  templateUrl: './admin-details.component.html',
+    MatButtonModule, MatOptionModule, MatSelectModule], templateUrl: './admin-details.component.html',
   styleUrl: './admin-details.component.css'
 })
 export class AdminDetailsComponent implements OnInit {
   username: string | undefined;
-  currencies = ['ILS', 'USD', 'EUR', 'JOD'];
-  selectedCurrency: string = 'ILS';
-  currencySymbols: { [key: string]: string } = {
-    ILS: '₪',
-    USD: '$',
-    EUR: '€',
-    JOD: '',
-  };
-  currenciesWithSymbols: { code: string; symbol: string }[] = [];
+  admin: Admin | undefined;
 
-  constructor(private router: Router, private authService: AuthService, private route: ActivatedRoute) { }
+  constructor(private adminService: AdminService,
+    public dialog: MatDialog, private loadingService: LoadingService, private authService: AuthService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    this.fetchAdminProfile();
+
     const adminId = this.authService.getAdminId();
     if (adminId) {
       console.log("Admin ID ------> " + adminId)
     }
     this.route.queryParams.subscribe(params => {
       this.username = params['username'];
-      console.log("USERNAME22 -> " + this.username);
+    });
+  }
+
+  fetchAdminProfile(): void {
+    this.adminService.getAdminProfile().subscribe({
+      next: (data) => {
+        this.admin = data;
+      },
+      error: (err) => {
+        console.error('Error fetching admin profile:', err);
+      }
+    });
+  }
+
+  editAdmin(admin: Admin): void {
+    const dialogRef = this.dialog.open(AdminFormComponent, {
+      panelClass: 'custom-dialog-container',
+      data: { admin }
     });
 
-    this.selectedCurrency = localStorage.getItem('defaultCurrency') || 'ILS';
-    this.currenciesWithSymbols = this.currencies.map(currencyCode => ({
-      code: currencyCode,
-      symbol: this.getCurrencySymbol(currencyCode)
-    }));
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log("Dialog closed with result:", result);
+        this.loadingService.loadingOn();
+        this.adminService.updateAdminProfile(admin.id, result).subscribe({
+          next: () => {
+            this.loadingService.loadingOff();
+            this.fetchAdminProfile();
+          },
+          error: (err) => {
+            this.loadingService.loadingOff();
+            console.error('Error updating admin:', err);
+          }
+        });
+      }
+    });
   }
 
- 
 
-  getCurrencySymbol(currencyCode: string): string {
-    return this.currencySymbols[currencyCode] || currencyCode;
+  capitalizeFirstLetter(value: string): string {
+    if (!value) return value;
+    return value.charAt(0).toUpperCase() + value.slice(1);
   }
-
-  onCurrencyChange(): void {
-    localStorage.setItem('defaultCurrency', this.selectedCurrency);
-    console.log("Selected currency changed to:", this.selectedCurrency);
-  }
-
 
 }

@@ -101,7 +101,6 @@ public class PolicyService {
         return convertToDTO(policy);
     }
 
-
     String formattedInsuranceType;
     String insuranceType;
 
@@ -111,7 +110,8 @@ public class PolicyService {
         User user = userRepository.findById(policyDTO.getUserId())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + policyDTO.getUserId()));
         Insurance insurance = insuranceRepository.findById(policyDTO.getInsuranceId())
-                .orElseThrow(() -> new ResourceNotFoundException("Insurance not found with ID: " + policyDTO.getInsuranceId()));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Insurance not found with ID: " + policyDTO.getInsuranceId()));
 
         policy.setUser(user);
         policy.setInsurance(insurance);
@@ -122,17 +122,19 @@ public class PolicyService {
         formattedInsuranceType = insuranceType.substring(0, 1).toUpperCase() + insuranceType.substring(1).toLowerCase();
 
         String messageBody = "<p>Dear " + user.getFirstName() + ",</p>" +
-                "<p>We are pleased to inform you that your policy has been successfully created with the following details:</p>" +
+                "<p>We are pleased to inform you that your policy has been successfully created with the following details:</p>"
+                +
                 "<ul>" +
                 "<li><strong>Policy Name: </strong>" + policy.getPolicyName() + "</li>" +
                 "<li><strong>Start Date: </strong>" + policy.getStartDate() + "</li>" +
                 "<li><strong>End Date: </strong>" + policy.getEndDate() + "</li>" +
-                "<li><strong>Total Amount: </strong>&#8362;" + String.format("%.2f", policy.getTotalAmount()) + "</li>" +
+                "<li><strong>Total Amount: </strong>&#8362;" + String.format("%.2f", policy.getTotalAmount()) + "</li>"
+                +
                 "<li><strong>Insurance Type: </strong>" + formattedInsuranceType + "</li>" +
                 "</ul>" +
-                "<p>Thank you for choosing InsuranceNexus! If you have any questions or concerns, please do not hesitate to contact us.</p>" +
+                "<p>Thank you for choosing InsuranceNexus! If you have any questions or concerns, please do not hesitate to contact us.</p>"
+                +
                 "<p>Best regards,<br>InsuranceNexus Team.</p>";
-
 
         emailService.sendEmail(EmailDetails.builder()
                 .recipient(user.getEmail())
@@ -142,7 +144,6 @@ public class PolicyService {
 
         return convertToDTO(policy);
     }
-
 
     public PolicyDTO updatePolicy(Long id, PolicyDTO policyDTO) {
         Policy existingPolicy = policyRepository.findById(id)
@@ -154,7 +155,8 @@ public class PolicyService {
         policyDTO.setUserId(existingPolicy.getUser().getId());
 
         Insurance insurance = insuranceRepository.findById(policyDTO.getInsuranceId())
-                .orElseThrow(() -> new ResourceNotFoundException("Insurance not found with ID: " + policyDTO.getInsuranceId()));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Insurance not found with ID: " + policyDTO.getInsuranceId()));
         existingPolicy.setInsurance(insurance);
 
         existingPolicy.setCoverageDetails(policyDTO.getCoverageDetails());
@@ -193,72 +195,71 @@ public class PolicyService {
 
     public void generateTransactions(PolicyDTO policyDTO, int numberOfPayments) throws MessagingException {
         Policy policy = convertToEntity(policyDTO);
-
+    
         List<Transaction> transactions = new ArrayList<>();
         double totalAmount = policy.getTotalAmount();
         double amountPerPayment = totalAmount / numberOfPayments;
-
+    
         // Calculate the remainder (Aguras)
         double payment = Math.floor(amountPerPayment);
         double remainder = totalAmount - (payment * numberOfPayments);
-
+    
         LocalDate startDate = policy.getStartDate();
         LocalDate endDate = policy.getEndDate();
         long daysBetween = ChronoUnit.DAYS.between(startDate, endDate);
         long interval = daysBetween / numberOfPayments;
-
+    
         User user = policy.getUser();
         logger.debug("User ID: {}", user.getId());
-
+    
         StringBuilder transactionDetails = new StringBuilder();
-
+    
         for (int i = 0; i < numberOfPayments; i++) {
             LocalDate paymentDate = startDate.plusDays(i * interval);
-
+    
             if (i == numberOfPayments - 1) { // Making sure the date of the last payment is set to the end date
                 paymentDate = endDate;
             }
-
+    
             double paymentAmount;
             if (i == 0) {
                 paymentAmount = payment + remainder; // Adding the remainder to the first payment
-
             } else {
                 paymentAmount = payment;
             }
-
+    
             Transaction transaction = new Transaction(
-                    null,
-                    paymentDate, // (startDate)
-                    paymentAmount,
-                    paymentDate, // (endDate)
-                    TransactionType.DEBT,
-                    LocalDate.now(), // (createdAt)
-                    LocalDate.now(), // (updatedAt)
-                    user,
-                    policy);
-
+                null,
+                paymentDate, // (startDate)
+                paymentAmount,
+                paymentDate, // (endDate)
+                TransactionType.DEBT,
+                LocalDate.now(), // (createdAt)
+                LocalDate.now(), // (updatedAt)
+                user,
+                policy
+            );
+    
             transactions.add(transaction);
-
-            transactionDetails.append("Payment ").append(i + 1).append(":\n")
-                    .append("Amount: ").append(paymentAmount).append(" ₪\n")
-                    .append("Payment Date: ").append(paymentDate).append("\n\n");
+    
+            transactionDetails.append("<strong>Payment ").append(i + 1).append(":</strong><br>")
+                    .append("<strong>Amount:</strong> &#8362;").append(String.format("%.2f", paymentAmount)).append("<br>")
+                    .append("<strong>Payment Date:</strong> ").append(paymentDate).append("<br><br>");
         }
+    
         transactionRepository.saveAll(transactions);
-
-        String emailBody = "Dear " + user.getFirstName() + ",\n\n"
-                + "We are pleased to inform you that your new policy has been created with multiple payment installments. "
-                + "Below are the details of the transactions for your policy: " + policy.getPolicyName() + "\n\n"
-                + transactionDetails.toString()
-                + "If you have any questions, feel free to reach out to us.\n\n"
-                + "Best regards,\n"
-                + "InsuranceNexus Team";
-        
+    
+        String emailBody = "<p>Dear " + user.getFirstName() + ",</p>" +
+            "<p>We are pleased to inform you that your new policy has been created with multiple payment installments. Below are the details of the transactions for your policy: "
+            + policy.getPolicyName() + "</p>" +
+            "<p>" + transactionDetails.toString() + "</p>" +
+            "<p>If you have any questions, feel free to reach out to us.</p>" +
+            "<p>Best regards,<br>InsuranceNexus Team</p>";
+    
         emailService.sendEmail(EmailDetails.builder()
                 .messageBody(emailBody)
                 .recipient(user.getEmail())
                 .subject("Installment Payment Schedule for Your Policy")
                 .build());
-    }
-
+    }    
 }

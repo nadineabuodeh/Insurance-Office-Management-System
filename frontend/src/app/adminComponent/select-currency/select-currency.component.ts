@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router'; import { FormsModule } from '@angular/forms';
+import { CurrencyService } from '../../service/currency.service';
 @Component({
   selector: 'app-select-currency',
   standalone: true,
@@ -18,27 +19,37 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router'; import 
   styleUrl: './select-currency.component.css'
 })
 export class SelectCurrencyComponent implements OnInit {
-  currencies = ['ILS', 'USD', 'EUR', 'JOD']
-  selectedCurrency: string = 'ILS';;
-  // selectedCurrency: string = 'ILS';
-  currencyError: boolean = false;
+  currencies = ['NIS', 'USD', 'EUR', 'JOD']
+  selectedCurrency: string = 'NIS';;
   username: string | undefined;
   currencySymbols: { [key: string]: string } = {
-    ILS: '₪',
+    NIS: '₪',
     USD: '$',
     EUR: '€',
-    JOD: '',
+    JOD: 'JOD',
 
   };
   currenciesWithSymbols: { code: string; symbol: string }[] = [];
 
-  constructor(private router: Router, private route: ActivatedRoute) { }
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private currencyService: CurrencyService) { }
 
 
   ngOnInit(): void {
+
     this.route.queryParams.subscribe(params => {
       this.username = params['username'];
-      console.log("USERNAME -> " + this.username);
+    });
+
+    this.currencyService.getAdminProfile().subscribe({
+      next: (profile) => {
+        this.selectedCurrency = profile.currency || 'NIS';
+      },
+      error: (err) => {
+        console.error('Error fetching admin profile:', err);
+      }
     });
 
     this.currenciesWithSymbols = this.currencies.map(currencyCode => ({
@@ -47,32 +58,33 @@ export class SelectCurrencyComponent implements OnInit {
     }));
   }
 
-
   getCurrencySymbol(currencyCode: string): string {
     return this.currencySymbols[currencyCode] || currencyCode;
+  }
+  get selectedCurrencySymbol(): string {
+    return this.currencySymbols[this.selectedCurrency] || '';
   }
 
 
   onCurrencySelect(): void {
+
     if (this.selectedCurrency) {
-      localStorage.setItem('defaultCurrency', this.selectedCurrency);
-      console.log("currency -> " + this.selectedCurrency)
-      this.currencyError = false;
-      this.router.navigate(['#']);
+      this.currencyService.setCurrency(this.selectedCurrency).subscribe({
+        next: () => {
+          this.router.navigate(['#']);
+        },
+        error: (err) => {
+          console.error('Failed to update currency on the backend:', err);
+        },
+      });
+    } else {
+      console.log('No currency selected.');
     }
-    else {
-      this.currencyError = true;
-
-    }
-
-    console.log()
-  }
-
-  clearCurrency(): void {
-    localStorage.removeItem('defaultCurrency');
-    this.selectedCurrency = 'ILS';;
-    this.currencyError = false;
   }
 
 
+  capitalizeFirstLetter(value: string): string {
+    if (!value) return value;
+    return value.charAt(0).toUpperCase() + value.slice(1);
+  }
 }

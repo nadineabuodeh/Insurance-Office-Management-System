@@ -1,3 +1,4 @@
+import { CurrencyService } from './../../service/currency.service';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../service/auth.service';
@@ -10,6 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
+import { LoadingService } from '../../service/loading.service';
 
 @Component({
   selector: 'app-login',
@@ -36,7 +38,9 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private loadingService: LoadingService,
+    private currencyService: CurrencyService
   ) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
@@ -49,6 +53,7 @@ export class LoginComponent {
       return;
     }
     localStorage.clear();
+    this.loadingService.loadingOn();
 
     this.authService.login(this.loginForm.value).subscribe({
       next: (response) => {
@@ -56,22 +61,36 @@ export class LoginComponent {
         const role = response.roles[0];
         this.authService.saveToken(token, role);
         this.isLoginFailed = false;
+
+        this.loadingService.loadingOff();
+        // this.redirectBasedOnRole();
         this.redirectBasedOnRole(this.loginForm.value.username);
+
       },
       error: () => {
+        this.loadingService.loadingOff();
         this.isLoginFailed = true;
       },
     });
   }
 
+
   private redirectBasedOnRole(username: string): void {
     const role = this.authService.getUserRole();
-    this.defaultCurrency = localStorage.getItem('defaultCurrency') || undefined;
 
-    if (role === 'ROLE_ADMIN' && !this.defaultCurrency) {
-      this.router.navigate(['/admin/currency'], { queryParams: { username: username } });
-    } else if (role === 'ROLE_ADMIN' && this.defaultCurrency) {
-      this.router.navigate(['/admin/dashboard']);
+    if (role === 'ROLE_ADMIN') {
+      this.currencyService.getAdminCurrency().subscribe({
+        next: (currency) => {
+          if (!currency) {
+            this.router.navigate(['/admin/currency'], { queryParams: { username: username } });
+          } else {
+            this.router.navigate(['/admin/dashboard']);
+          }
+        },
+        error: () => {
+          this.router.navigate(['/admin/dashboard']);
+        }
+      });
     } else if (role === 'ROLE_CUSTOMER') {
       this.router.navigate(['/customer/dashboard']);
     }

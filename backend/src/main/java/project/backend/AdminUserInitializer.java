@@ -22,8 +22,8 @@ public class AdminUserInitializer implements CommandLineRunner {
 
     public void run(String... args) throws Exception {
         createAdminUser("1234567",
-                "Admin",
-                "User",
+                "Asal",
+                "Company",
                 "asal",
                 "0597279600",
                 "asal@example.com",
@@ -43,7 +43,7 @@ public class AdminUserInitializer implements CommandLineRunner {
 
         createAdminUser("7894567",
                 "International",
-                "User",
+                "Company",
                 "international",
                 "0599316669",
                 "international@example.com",

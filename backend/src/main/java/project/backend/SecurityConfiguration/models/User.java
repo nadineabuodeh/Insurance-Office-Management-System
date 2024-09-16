@@ -11,6 +11,8 @@ import project.backend.models.Transaction;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "users", uniqueConstraints = {
         @UniqueConstraint(columnNames = "username"),
@@ -18,12 +20,15 @@ import java.util.List;
 })
 public class User {
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Transaction> transactions;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Policy> policies;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "admin")
     private List<Insurance> insurancesCreated;
 
@@ -56,10 +61,15 @@ public class User {
 
     @ManyToOne
     @JoinColumn(name = "admin_id")
+    @JsonIgnore
     private User admin;
 
     @OneToMany(mappedBy = "admin")
+    @JsonIgnore
     private List<User> customers;
+
+    @Enumerated(EnumType.STRING)
+    private CurrencyType currency;
 
     public User() {
     }
@@ -195,5 +205,13 @@ public class User {
 
     public void setInsurancesCreated(List<Insurance> insurancesCreated) {
         this.insurancesCreated = insurancesCreated;
+    }
+
+    public CurrencyType getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(CurrencyType currency) {
+        this.currency = currency;
     }
 }

@@ -17,6 +17,7 @@ import { PolicyFormFieldsComponent } from '../policy-form-fields/policy-form-fie
 import { Policy } from '../../../model/policy.model';
 import { Observable, switchMap, catchError, map, of, take, tap } from 'rxjs';
 import { endDateAfterStartDateValidator } from '../../../validators/date-validator';
+import { LoadingService } from '../../../service/loading.service';
 
 
 @Component({
@@ -44,7 +45,8 @@ export class PolicyFormComponent implements OnInit {
     private fb: FormBuilder,
     private policyService: PolicyService,
     private dialogRef: MatDialogRef<PolicyFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private loadingService: LoadingService
   ) {
     this.policyForm = this.fb.group({
       id: [null],
@@ -88,6 +90,11 @@ export class PolicyFormComponent implements OnInit {
         numberOfPaymentsControl?.disable();
       }
     });
+    
+    this.policyForm.patchValue({
+      insuranceId: this.data.policy.insuranceId
+    });
+    
   }
 
 
@@ -95,9 +102,12 @@ export class PolicyFormComponent implements OnInit {
     if (this.policyForm.valid) {
       const policyData: Policy = this.policyForm.value;
 
+      this.loadingService.loadingOn();
+
       if (this.isEditMode) {
         this.policyService.updatePolicy(policyData.id, policyData)
           .subscribe(() => {
+            this.loadingService.loadingOff();
             this.dialogRef.close(policyData);
           });
       } else {
@@ -107,6 +117,7 @@ export class PolicyFormComponent implements OnInit {
 
         if (isDuplicate) {
           this.policyForm.get('policyName')?.setErrors({ duplicate: true });
+          this.loadingService.loadingOff();
         } else {
           const numberOfPayments = this.policyForm.value.installmentsEnabled ? this.policyForm.value.numberOfPayments : undefined;
           console.log("numberOfPayments->" + numberOfPayments)
@@ -115,11 +126,14 @@ export class PolicyFormComponent implements OnInit {
               if (this.policyForm.value.installmentsEnabled) {
                 this.policyForm.patchValue({ id: createdPolicy.id });
                 console.log("Installment enabled with policy id ->" + createdPolicy.id);
+                this.loadingService.loadingOff();
                 this.dialogRef.close(createdPolicy);
               } else {
+                this.loadingService.loadingOff();
                 this.dialogRef.close(createdPolicy);
               }
             }, error => {
+              this.loadingService.loadingOff();
               console.error('Error creating policy:', error);
             });
         }

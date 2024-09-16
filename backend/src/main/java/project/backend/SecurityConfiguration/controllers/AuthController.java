@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import jakarta.validation.Valid;
+import project.backend.SecurityConfiguration.models.User;
 import project.backend.SecurityConfiguration.payload.request.LoginRequest;
 import project.backend.SecurityConfiguration.payload.response.JwtResponse;
 import project.backend.SecurityConfiguration.payload.response.MessageResponse;
@@ -58,11 +59,14 @@ public class AuthController {
                     .map(item -> item.getAuthority())
                     .collect(Collectors.toList());
 
+            User user = userRepository.findById(userDetails.getId()).orElseThrow(() -> new RuntimeException("User not found"));
+
             return ResponseEntity.ok(new JwtResponse(jwt,
                     userDetails.getId(),
                     userDetails.getUsername(),
                     userDetails.getEmail(),
-                    roles));
+                    roles,
+                    user.getCurrency()));
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(new MessageResponse("Error: Invalid username or password!"));
