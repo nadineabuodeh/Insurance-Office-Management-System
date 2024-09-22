@@ -52,7 +52,7 @@ public class AdminUserInitializer implements CommandLineRunner {
                 "internationalPassword");
     }
 
-    private void createAdminUser(String idNumber, String firstName, String lastName, String username,
+    void createAdminUser(String idNumber, String firstName, String lastName, String username,
             String phoneNumber, String email, Date birthDate, ERole role, String password) {
         if (username == null || username.trim().isEmpty()) {
             System.out.println("Username CAN NOT be blank");

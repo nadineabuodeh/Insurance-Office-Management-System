@@ -194,6 +194,10 @@ public class PolicyService {
     // amount into equal payments based on the # of payments.,
 
     public void generateTransactions(PolicyDTO policyDTO, int numberOfPayments) throws MessagingException {
+        if (numberOfPayments <= 0) {
+            throw new IllegalArgumentException("Number of payments must be greater than zero.");
+        }
+        
         Policy policy = convertToEntity(policyDTO);
     
         List<Transaction> transactions = new ArrayList<>();
