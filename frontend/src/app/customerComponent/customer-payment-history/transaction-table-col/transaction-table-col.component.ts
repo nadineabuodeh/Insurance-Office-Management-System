@@ -9,7 +9,7 @@ import { Component, Input } from '@angular/core';
 
   styleUrl: './transaction-table-col.component.css',
 })
-export class TransactionTableColComponent {
+export class TransactionTableColComponentCustomer {
   @Input() transaction!: Transaction;
   @Input() column!: string;
 

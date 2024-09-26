@@ -31,7 +31,6 @@ import { TreeModule } from 'primeng/tree';
 import { TransactionService } from './service/TransactionService/transaction.service';
 import { CollapsibleSectionComponent } from './adminComponent/admin-customer/collapsible-section/collapsible-section.component';
 import { MatSortModule ,MatSort} from '@angular/material/sort';
-import { LoadingIndicatorComponent } from './mainComponent/loading-indicator/loading-indicator.component';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -56,7 +55,7 @@ export const appConfig: ApplicationConfig = {
       FormsModule,
       TreeModule,
       ReactiveFormsModule,
-      CookieService
+      CookieService,
     ),
     CustomerService,
     TransactionService,

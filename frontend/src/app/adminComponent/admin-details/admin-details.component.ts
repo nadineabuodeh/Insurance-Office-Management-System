@@ -9,7 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { AdminService } from '../../service/admin.service';
-import { Admin } from '../../model/admin';
+import { Admin } from '../../model/admin.model';
 import { MatDialog } from '@angular/material/dialog';
 import { LoadingService } from '../../service/loading.service';
 import { AdminFormComponent } from '../admin-form/admin-form.component';

@@ -4,25 +4,23 @@ import {
   CustomerService,
 } from '../../../service/CustomerService/customer.service';
 import { ActivatedRoute } from '@angular/router';
-import { CustomerTreeListComponent } from '../customer-tree-list/customer-tree-list.component';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { CustomerFormComponent } from '../customer-form/customer-form.component';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { PolicyLayoutComponent } from '../policy-layout/policy-layout.component';
 import { CollapsibleSectionComponent } from '../collapsible-section/collapsible-section.component';
 import { TransactionTableComponent } from '../../admin-transactions/transaction-table/transaction-table.component';
 import { CustomerTransactionComponent } from '../customer-transaction/customer-transaction.component';
 import { LoadingService } from '../../../service/loading.service';
+import { PolicyLayoutCustomerComponent } from '../policy-layout/policy-layout.component';
 
 @Component({
   selector: 'app-customer-details',
   standalone: true,
   imports: [
-    CustomerTreeListComponent,
     DatePipe,
-    PolicyLayoutComponent,
+    PolicyLayoutCustomerComponent,
     CommonModule,
     CollapsibleSectionComponent,
     TransactionTableComponent,

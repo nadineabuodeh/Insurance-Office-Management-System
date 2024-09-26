@@ -11,9 +11,9 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   private baseUrl = 'http://localhost:8080/api/auth';
-  private adminId: string | null = null
+  private adminId: string | null = null;
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router) {}
 
   login(loginRequest: LoginRequest): Observable<JwtResponse> {
     return this.http
@@ -95,7 +95,6 @@ export class AuthService {
   }
 
   getAdminId(): string | null {
-    return this.adminId || localStorage.getItem('adminId'); 
+    return this.adminId || localStorage.getItem('adminId');
   }
-
 }

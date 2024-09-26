@@ -7,7 +7,6 @@ import { TreeModule } from 'primeng/tree';
 import { CustomerDetailsComponent } from '../admin-customer/customer-details/customer-details.component';
 import { Customer } from '../../service/CustomerService/customer.service';
 import { RouterModule } from '@angular/router';
-import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-admin-sidebar',
