@@ -26,7 +26,7 @@ import { CurrencyService } from '../../../service/currency.service';
   templateUrl: './policy-layout.component.html',
   styleUrl: './policy-layout.component.css',
 })
-export class PolicyLayoutComponent {
+export class PolicyLayoutCustomerComponent {
   @Input() customerId!: number;
   sortDirection: 'asc' | 'desc' = 'asc';
   selectedColumn: string = 'insuranceType';

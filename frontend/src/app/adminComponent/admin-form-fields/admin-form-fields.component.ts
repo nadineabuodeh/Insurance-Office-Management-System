@@ -76,11 +76,9 @@ export class AdminFormFieldsComponent {
         this.formGroup.markAsPristine();
         this.formGroup.markAsUntouched();
 
-        this.formGroup.reset();
         this.dialog.closeAll();
       }
     } else {
-      this.formGroup.reset();
       this.dialog.closeAll();
     }
   }

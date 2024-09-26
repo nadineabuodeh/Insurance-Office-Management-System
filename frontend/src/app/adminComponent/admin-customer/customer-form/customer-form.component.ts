@@ -125,7 +125,10 @@ export class CustomerFormComponent {
 
   onSubmit() {
     if (this.customerForm.valid) {
-      const customerData: Customer = this.customerForm.value;
+      const customerData: Customer = {
+        ...this.customerForm.value,
+        role: 'ROLE_CUSTOMER'
+      };
 
       if (this.isEmailDuplicate(customerData.email)) {
         this.customerForm.get('email')?.setErrors({ duplicate: true });

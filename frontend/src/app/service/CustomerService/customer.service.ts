@@ -23,6 +23,8 @@ export class CustomerService {
   private baseUrl = 'http://localhost:8080/users';
   private customersChanged = new Subject<void>();
 
+  customersChanged$ = this.customersChanged.asObservable();
+
   constructor(private http: HttpClient, private authService: AuthService) {}
 
   private getAuthHeaders(): HttpHeaders {
@@ -33,7 +35,6 @@ export class CustomerService {
       Authorization: `Bearer ${token}`,
     });
   }
-
 
   getCustomers(): Observable<Customer[]> {
     const headers = this.getAuthHeaders();
@@ -67,7 +68,7 @@ export class CustomerService {
   }
 
   addCustomer(customer: Customer): Observable<Customer> {
-    customer.role = 'ROLE_CUSTOMER'; 
+    customer.role = 'ROLE_CUSTOMER';
 
     const headers = this.getAuthHeaders();
     return this.http.post<Customer>(this.baseUrl, customer, { headers }).pipe(
@@ -89,23 +90,20 @@ export class CustomerService {
     );
   }
 
- updateCustomer(id: number, updatedCustomer: Customer): Observable<Customer> {
+  updateCustomer(id: number, updatedCustomer: Customer): Observable<Customer> {
     const headers = this.getAuthHeaders();
-    updatedCustomer.role = 'ROLE_CUSTOMER';// Specify the role as customer
-    return this.http.put<Customer>(`${this.baseUrl}/${id}`, updatedCustomer, { headers })
+    updatedCustomer.role = 'ROLE_CUSTOMER'; // Specify the role as customer
+    return this.http
+      .put<Customer>(`${this.baseUrl}/${id}`, updatedCustomer, { headers })
       .pipe(
         tap(() => this.customersChanged.next()),
         catchError(this.handleError<Customer>('updateCustomer'))
       );
   }
 
-  customersChanged$ = this.customersChanged.asObservable();
-
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       return of(result as T);
     };
   }
-
-  
 }

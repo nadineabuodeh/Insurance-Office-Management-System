@@ -3,8 +3,8 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { TransactionService } from './../../../service/TransactionService/transaction.service';
 import { Transaction } from '../../../service/TransactionService/transaction.service';
-import { TransactionTableColComponent } from '../transaction-table-col/transaction-table-col.component';
 import { FormsModule } from '@angular/forms';
+import { TransactionTableColComponentCustomer } from '../transaction-table-col/transaction-table-col.component';
 
 @Component({
   selector: 'app-transaction-table',
@@ -13,7 +13,7 @@ import { FormsModule } from '@angular/forms';
     FormsModule,
     MatTableModule,
     MatDialogModule,
-    TransactionTableColComponent,
+    TransactionTableColComponentCustomer,
   ],
   templateUrl: './transaction-table.component.html',
   styleUrls: ['./transaction-table.component.css'],
